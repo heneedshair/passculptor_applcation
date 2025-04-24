@@ -25,7 +25,6 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 80),
                 const Logo(),
                 const TextLargeTitleWidget(),
                 const SizedBox(height: 90),
