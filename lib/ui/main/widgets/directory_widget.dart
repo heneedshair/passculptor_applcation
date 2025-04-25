@@ -1,3 +1,4 @@
+import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +8,7 @@ class DirectoryDrawerWidget extends StatelessWidget {
     required this.listenableEntityState,
   });
 
-  final ValueNotifier<EntityState<Map<String, Set<String>>>>
-      listenableEntityState;
+  final ValueNotifier<EntityState<List<Keyword>>> listenableEntityState;
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +19,22 @@ class DirectoryDrawerWidget extends StatelessWidget {
         loadingBuilder: (_, __) => const Center(
           child: CircularProgressIndicator(),
         ),
-        builder: (_, jsonMap) => ListView(
+        builder: (_, keywords) => ListView(
           children: [
-            const DrawerHeader(
-              child: Text('Сохраненные пароли'),
+            const Text('Сохраненные пароли'),
+            ...?keywords?.map(
+              (keyword) => ExpansionTile(
+                initiallyExpanded: true,
+                title: Text(keyword.name),
+                children: keyword.logins
+                    .map(
+                      (login) => ExpansionTile(
+                        title: Text(login.username),
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
-            Text(jsonMap.toString()),
           ],
         ),
       ),

@@ -7,7 +7,6 @@ import 'package:code_generator_app/ui/main/widgets/middle_bar_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/password_field.dart';
 import 'package:code_generator_app/ui/main/widgets/text_large_title_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/themed_text_field.dart';
-import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:code_generator_app/ui/widgets/decorations/logo.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +36,6 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                 ThemedTextField(
                   labelText: 'Название сайта',
                   prefixIcon: const Icon(Icons.web_asset),
-                  suffixIcon: const Icon(
-                    Icons.bookmark_add_rounded,
-                    color: AppColors.lightPrimaryColor,
-                    //TODO сделать цвет изменяющийся
-                  ),
                   controller: wm.wordController,
                 ),
                 const SizedBox(height: 15),
@@ -79,7 +73,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
       onEndDrawerChanged: (isDrawerOpened) =>
           wm.onDrawerChanged(isDrawerOpened),
       endDrawer: DirectoryDrawerWidget(
-        listenableEntityState: wm.savedWebsitesListenable,
+        listenableEntityState: wm.savedKeywordsListenable,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: Builder(

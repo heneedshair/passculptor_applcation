@@ -1,9 +1,17 @@
+import 'package:code_generator_app/data/models/keyword/keyword.dart';
+import 'package:code_generator_app/data/models/login/login.dart';
 import 'package:code_generator_app/ui/main/main_screen.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() {
-  // CodeGenerator.test('google');
+Future<void> main() async {
+  // HIVE
+  await Hive.initFlutter();
+  Hive.registerAdapter(KeywordAdapter());
+  Hive.registerAdapter(LoginAdapter());
+  await Hive.openBox<Keyword>('websites');
+
   runApp(const MyApp());
 }
 

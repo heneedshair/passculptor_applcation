@@ -1,5 +1,5 @@
+import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/objects/code_generator.dart';
-import 'package:code_generator_app/objects/saved_json.dart';
 import 'package:code_generator_app/ui/main/main_model.dart';
 import 'package:code_generator_app/ui/main/main_screen.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
@@ -39,8 +39,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onGuideTap();
 
-  ValueNotifier<EntityState<Map<String, Set<String>>>>
-      get savedWebsitesListenable;
+  ValueNotifier<EntityState<List<Keyword>>> get savedKeywordsListenable;
 
   void onDrawerChanged(bool isDrawerOpened);
 }
@@ -77,13 +76,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   ValueNotifier<String> get result => _result;
 
   @override
-  Future<void> initWidgetModel() async {
-    _jsonWebsites = await SavedJSon.create('saved_passwords');
-
-    super.initWidgetModel();
-  }
-
-  @override
   Future<void> onEnterTap() async {
     result.value = CodeGenerator.generate(
       _wordController.text,
@@ -92,12 +84,15 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     );
 
     if (doSave.value) {
-      _jsonWebsites.addPairToJson(
-        _keyController.text,
-        _wordController.text,
+      //TODO: Длеать initDrawer
+      model.addWebsite(
+        loginController.text,
+        wordController.text,
+        keyController.text,
       );
 
       needsDrawerUpdate = true;
+      _initDrawer();
     }
   }
 
@@ -107,6 +102,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     Clipboard.setData(
       ClipboardData(text: _result.value),
     ).then(
+      //TODO мб надо сделать context параметром метода
       (_) => ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -160,25 +156,23 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }
 
   Future<void> _initDrawer() async {
-    _savedWebsitesEntity.loading();
+    _savedKeywordsEntity.loading();
     await Future.delayed(const Duration(seconds: 2));
 
     try {
-      _savedWebsitesEntity.content(_jsonWebsites.jsonMap);
+      _savedKeywordsEntity.content(model.keywordsList);
     } on Exception {
-      _savedWebsitesEntity.error();
+      _savedKeywordsEntity.error();
     }
 
     needsDrawerUpdate = false;
   }
 
-  late final SavedJSon _jsonWebsites;
-
   bool needsDrawerUpdate = true;
 
-  final _savedWebsitesEntity = EntityStateNotifier<Map<String, Set<String>>>();
+  final _savedKeywordsEntity = EntityStateNotifier<List<Keyword>>();
 
   @override
-  ValueNotifier<EntityState<Map<String, Set<String>>>>
-      get savedWebsitesListenable => _savedWebsitesEntity;
+  ValueNotifier<EntityState<List<Keyword>>> get savedKeywordsListenable =>
+      _savedKeywordsEntity;
 }

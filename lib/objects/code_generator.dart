@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:code_generator_app/app_data/app_data.dart';
+import 'package:code_generator_app/objects/app_data.dart';
 import 'package:code_generator_app/objects/over_word.dart';
 import 'package:flutter/material.dart';
 
