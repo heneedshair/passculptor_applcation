@@ -34,7 +34,11 @@ class WebsiteTileWidget extends StatelessWidget {
                 enteredWebsite: website,
               ),
       child: InkWell(
-        onTap: () => print(111111),
+        onTap: () => context.read<DirectoryFunctionsData>().onWebsiteTap(
+              enteredKeyword: parentKeyword.name,
+              enteredLogin: parentLogin.username,
+              enteredWebsite: website,
+            ),
         child: ListTile(
           title: Text(website),
         ),

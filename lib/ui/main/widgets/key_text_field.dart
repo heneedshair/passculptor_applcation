@@ -8,10 +8,12 @@ class KeyTextField extends StatelessWidget {
     required this.isKeyObscured,
     required this.keyController,
     required this.onObscureKeyTap,
+    this.focusNode,
   });
 
   final ValueNotifier<bool> isKeyObscured;
   final TextEditingController keyController;
+  final FocusNode? focusNode;
   final VoidCallback onObscureKeyTap;
 
   @override
@@ -26,6 +28,7 @@ class KeyTextField extends StatelessWidget {
           color: isKeyObscured ? null : AppColors.white,
         ),
         controller: keyController,
+        focusNode: focusNode,
         obscureText: isKeyObscured,
         onObscureTap: () => onObscureKeyTap(),
       ),

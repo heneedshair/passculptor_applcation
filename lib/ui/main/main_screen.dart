@@ -19,6 +19,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
   @override
   Widget build(IMainScreenWidgetModel wm) {
     return Scaffold(
+      key: wm.scaffoldKey,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Center(
@@ -44,6 +45,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                 KeyTextField(
                   isKeyObscured: wm.isKeyObscured,
                   keyController: wm.keyController,
+                  focusNode: wm.keywordFocusNode,
                   onObscureKeyTap: () => wm.onObscureKeyTap(),
                 ),
                 const SizedBox(height: 5),
@@ -87,6 +89,15 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
             enteredLogin: enteredLogin,
             enteredKeyword: enteredKeyword,
           ),
+          onWebsiteTap: ({
+            required String enteredKeyword,
+            required String enteredLogin,
+            required String enteredWebsite,
+          }) =>
+              wm.onWebsiteTap(
+                  enteredWebsite: enteredWebsite,
+                  enteredLogin: enteredLogin,
+                  enteredKeyword: enteredKeyword),
         ),
         child: DirectoryDrawerWidget(
           listenableEntityState: wm.savedKeywordsListenable,

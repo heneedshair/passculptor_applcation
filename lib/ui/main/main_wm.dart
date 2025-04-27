@@ -25,6 +25,8 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onObscureLoginTap();
 
+  FocusNode get keywordFocusNode;
+
   ValueNotifier<bool> get isLoginObscured;
 
   ValueNotifier<bool> get isKeyObscured;
@@ -50,6 +52,14 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
     required String enteredLogin,
     required String enteredKeyword,
   });
+
+  void onWebsiteTap({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  });
+
+  GlobalKey<ScaffoldState> get scaffoldKey;
 }
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
@@ -202,4 +212,29 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       enteredKeyword: enteredKeyword,
     );
   }
+
+  final FocusNode _keywordFocusNode = FocusNode();
+
+  @override
+  FocusNode get keywordFocusNode => _keywordFocusNode;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
+
+  @override
+  void onWebsiteTap({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) {
+    loginController.text = enteredLogin;
+    wordController.text = enteredWebsite;
+    keyController.text = enteredKeyword[0];
+    
+    _scaffoldKey.currentState?.closeEndDrawer();
+    _keywordFocusNode.requestFocus();
+  }
+
 }

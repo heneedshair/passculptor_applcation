@@ -10,12 +10,14 @@ class ThemedTextField extends StatelessWidget {
     this.controller,
     this.obscureText = false,
     this.onObscureTap,
+    this.focusNode,
   });
 
   final String labelText;
   final Icon? prefixIcon;
   final Icon? suffixIcon;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
   final bool obscureText;
   final VoidCallback? onObscureTap;
 
@@ -23,6 +25,7 @@ class ThemedTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      focusNode: focusNode,
       obscureText: obscureText,
       decoration: InputDecoration(
         labelText: labelText,
