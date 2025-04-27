@@ -33,40 +33,45 @@ class MainScreenModel extends IMainScreenModel {
     final List<Keyword> keywords = websites.values.toList();
 
     // Ищем ключевое слово
-    Keyword? keyword = keywords.firstWhere(
-      (k) => k.name == enteredKeyword,
-      orElse: () => Keyword(enteredKeyword, []),
-    );
+    Keyword? keyword = _getKeyword(keywords, enteredKeyword);
 
-    // Ищем логин в ключевом слове
-    Login? login = keyword.logins.firstWhere(
-      (l) => l.username == enteredLogin,
-      orElse: () => Login(enteredLogin, []),
-    );
+    Login? login = keyword.getLogin(enteredLogin);
 
-    // Добавляем сайт, если его ещё нет
-    if (!login.websites.contains(enteredWebsite)) {
-      login.websites.add(enteredWebsite);
-    }
+    login.addWebsite(enteredWebsite);
 
     // Обновляем логин в ключевом слове
-    if (!keyword.logins.any((l) => l.username == enteredLogin)) {
-      keyword.logins.add(login);
-    }
+    keyword.addNewLogin(login);
 
     // Обновляем ключевое слово в Box
-    final int keywordIndex =
-        keywords.indexWhere((k) => k.name == enteredKeyword);
-    if (keywordIndex != -1) {
-      websites.putAt(keywordIndex, keyword); // Обновляем существующее
-    } else {
-      websites.add(keyword); // Добавляем новое
-    }
+    _updateBox(websites, keywords, keyword);
   }
 
   static String _maskString(String input) {
     if (input.isEmpty) return input;
     return input[0] + '*' * (input.length - 1);
+  }
+
+  static Keyword _getKeyword(List<Keyword> keywords, String enteredKeyword) {
+    return keywords.firstWhere(
+      (k) => k.name == enteredKeyword,
+      orElse: () => Keyword(enteredKeyword, []),
+    );
+  }
+
+  /// Обновляем ключевое слово в Box.
+  static void _updateBox(
+    Box<Keyword> websites,
+    List<Keyword> keywords,
+    Keyword keyword,
+  ) {
+    final int keywordIndex = keywords.indexWhere((k) {
+      return k.name == keyword.name;
+    });
+    if (keywordIndex != -1) {
+      websites.putAt(keywordIndex, keyword); // Обновляем существующее
+    } else {
+      websites.add(keyword); // Добавляем новое
+    }
   }
 
   @override

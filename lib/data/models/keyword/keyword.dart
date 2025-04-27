@@ -14,4 +14,19 @@ class Keyword {
 
   @override
   String toString() => '$name: $logins';
+
+  /// Ищем логин в ключевом слове.
+  Login getLogin(String enteredLogin) {
+    return logins.firstWhere(
+      (l) => l.username == enteredLogin,
+      orElse: () => Login(enteredLogin, []),
+    );
+  }
+
+  /// Добавляем логин, если он уникален.
+  void addNewLogin(Login newLogin) {
+    if (!logins.any((l) => l.username == newLogin.username)) {
+      logins.add(newLogin);
+    }
+  }
 }

@@ -14,4 +14,11 @@ class Login {
 
   @override
   String toString() => '$username: $websites';
+
+  /// Добавляем сайт, если его ещё нет.
+  void addWebsite(String enteredWebsite) {
+    if (!websites.contains(enteredWebsite)) {
+      websites.add(enteredWebsite);
+    }
+  }
 }
