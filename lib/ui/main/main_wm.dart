@@ -102,7 +102,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     );
 
     if (doSave.value) {
-      //TODO: Длеать initDrawer
       model.addWebsite(
         loginController.text,
         wordController.text,
@@ -153,7 +152,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     Scaffold.of(context).openEndDrawer();
   }
 
-  final _doSave = ValueNotifier<bool>(false);
+  final _doSave = ValueNotifier<bool>(true);
 
   @override
   ValueNotifier<bool> get doSave => _doSave;
@@ -178,7 +177,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     // await Future.delayed(const Duration(seconds: 1));
 
     try {
-      _savedKeywordsEntity.content(model.keywordsList);
+      _savedKeywordsEntity.content(await model.keywordsList);
     } on Exception {
       _savedKeywordsEntity.error();
     }
@@ -211,6 +210,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       enteredLogin: enteredLogin,
       enteredKeyword: enteredKeyword,
     );
+    await _initDrawer();
   }
 
   final FocusNode _keywordFocusNode = FocusNode();
@@ -233,8 +233,8 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     wordController.text = enteredWebsite;
     keyController.text = enteredKeyword[0];
     
-    _scaffoldKey.currentState?.closeEndDrawer();
     _keywordFocusNode.requestFocus();
+    _scaffoldKey.currentState?.closeEndDrawer();
   }
 
 }

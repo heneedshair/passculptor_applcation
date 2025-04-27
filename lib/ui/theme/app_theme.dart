@@ -108,6 +108,12 @@ class AppTheme {
     */
     expansionTileTheme: const ExpansionTileThemeData(),
     dividerColor: AppColors.backgroundColor,
+    /*
+        LIST TILE
+    */
+    listTileTheme: const ListTileThemeData(
+      iconColor: AppColors.grayColor,
+    ),
   );
 }
 

@@ -29,4 +29,8 @@ class Keyword {
       logins.add(newLogin);
     }
   }
+
+  void deleteLogin(String enteredLogin) {
+    logins.removeWhere((l) => l.username == enteredLogin);
+  }
 }

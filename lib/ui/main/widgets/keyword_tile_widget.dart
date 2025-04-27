@@ -23,6 +23,7 @@ class KeywordTileWidget extends StatelessWidget {
         ),
       ),
       subtitle: const Text('Ключевое слово'),
+      trailing: const Icon(Icons.key_rounded),
       children: [
         Container(
           padding: const EdgeInsets.only(left: 30),

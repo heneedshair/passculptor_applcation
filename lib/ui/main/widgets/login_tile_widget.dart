@@ -18,7 +18,7 @@ class LoginTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExpansionTile(
       initiallyExpanded: true,
-      childrenPadding: const EdgeInsets.only(left: 30),
+      // childrenPadding: const EdgeInsets.only(left: 30),
       title: Text(
         login.username,
         style: const TextStyle(
@@ -30,6 +30,7 @@ class LoginTileWidget extends StatelessWidget {
         'Логин',
         style: TextStyle(color: AppColors.grayColor),
       ),
+      trailing: const Icon(Icons.account_circle_rounded),
       children: login.websites
           .map((website) => WebsiteTileWidget(
                 website: website,

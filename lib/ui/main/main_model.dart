@@ -6,12 +6,17 @@ import 'package:hive/hive.dart';
 abstract interface class IMainScreenModel extends ElementaryModel {
   void addWebsite(String login, String website, String key);
 
-  List<Keyword> get keywordsList;
+  Future<List<Keyword>> get keywordsList;
 
   Future<void> clearAll();
 
   Future<void> deleteWebsite({
     required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  });
+
+  Future<void> deleteLogin({
     required String enteredLogin,
     required String enteredKeyword,
   });
@@ -21,11 +26,11 @@ class MainScreenModel extends IMainScreenModel {
   MainScreenModel();
 
   @override
-  void addWebsite(
+  Future<void> addWebsite(
     String enteredLogin,
     String enteredWebsite,
     String enteredKeyword,
-  ) {
+  ) async {
     if (enteredLogin == '') enteredLogin = 'Без логина';
     enteredKeyword = _maskString(enteredKeyword);
 
@@ -41,7 +46,7 @@ class MainScreenModel extends IMainScreenModel {
     keyword.addNewLogin(login);
 
     // Обновляем ключевое слово в Box
-    _updateBox(websites, keywords, keyword);
+    await _updateBox(websites, keywords, keyword);
   }
 
   static String _maskString(String input) {
@@ -57,24 +62,24 @@ class MainScreenModel extends IMainScreenModel {
   }
 
   /// Обновляем ключевое слово в Box.
-  static void _updateBox(
+  static Future<void> _updateBox(
     Box<Keyword> websites,
     List<Keyword> keywords,
     Keyword keyword,
-  ) {
+  ) async {
     final int keywordIndex = keywords.indexWhere((k) {
       return k.name == keyword.name;
     });
     if (keywordIndex != -1) {
-      websites.putAt(keywordIndex, keyword); // Обновляем существующее
+      await websites.putAt(keywordIndex, keyword); // Обновляем существующее
     } else {
-      websites.add(keyword); // Добавляем новое
+      await websites.add(keyword); // Добавляем новое
     }
   }
 
   @override
-  List<Keyword> get keywordsList {
-    final websites = Hive.box<Keyword>('websites');
+  Future<List<Keyword>> get keywordsList async {
+    final websites = await Hive.openBox<Keyword>('websites');
     return websites.values.toList();
   }
 
@@ -96,8 +101,29 @@ class MainScreenModel extends IMainScreenModel {
     Keyword keyword = _getKeyword(keywords, enteredKeyword);
     Login login = keyword.getLogin(enteredLogin);
     login.deleteWebsite(enteredWebsite);
-    //TODO сделать удаление при пустом списке сайтов
 
-    _updateBox(websites, keywords, keyword);
+    // Удаление при пустом списке сайтов.
+    if (login.websites.isEmpty) {
+      await deleteLogin(
+        enteredLogin: enteredLogin,
+        enteredKeyword: enteredKeyword,
+      );
+    }
+    await _updateBox(websites, keywords, keyword);
+  }
+
+  @override
+  Future<void> deleteLogin({
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) async {
+    final websites = Hive.box<Keyword>('websites');
+    final List<Keyword> keywords = websites.values.toList();
+
+    Keyword keyword = _getKeyword(keywords, enteredKeyword);
+
+    keyword.deleteLogin(enteredLogin);
+
+    await _updateBox(websites, keywords, keyword);
   }
 }
