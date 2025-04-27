@@ -42,6 +42,8 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   ValueNotifier<EntityState<List<Keyword>>> get savedKeywordsListenable;
 
   void onDrawerChanged(bool isDrawerOpened);
+
+  void onClearAllTap();
 }
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
@@ -92,7 +94,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       );
 
       needsDrawerUpdate = true;
-      _initDrawer();
+      await _initDrawer();
     }
   }
 
@@ -157,7 +159,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
   Future<void> _initDrawer() async {
     _savedKeywordsEntity.loading();
-    await Future.delayed(const Duration(seconds: 2));
+    // await Future.delayed(const Duration(seconds: 1));
 
     try {
       _savedKeywordsEntity.content(model.keywordsList);
@@ -175,4 +177,10 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   @override
   ValueNotifier<EntityState<List<Keyword>>> get savedKeywordsListenable =>
       _savedKeywordsEntity;
+
+  @override
+  Future<void> onClearAllTap() async {
+    await model.clearAll();
+    await _initDrawer();
+  }
 }

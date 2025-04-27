@@ -8,7 +8,13 @@ abstract interface class IMainScreenModel extends ElementaryModel {
 
   List<Keyword> get keywordsList;
 
-  void clearAll();
+  Future<void> clearAll();
+
+  Future<void> deleteWebsite({
+    required String websiteName,
+    required String loginName,
+    required String keywordName,
+  });
 }
 
 class MainScreenModel extends IMainScreenModel {
@@ -16,7 +22,10 @@ class MainScreenModel extends IMainScreenModel {
 
   @override
   void addWebsite(
-      String enteredLogin, String enteredWebsite, String enteredKeyword) {
+    String enteredLogin,
+    String enteredWebsite,
+    String enteredKeyword,
+  ) {
     if (enteredLogin == '') enteredLogin = 'Без логина';
     enteredKeyword = _maskString(enteredKeyword);
 
@@ -65,10 +74,19 @@ class MainScreenModel extends IMainScreenModel {
     final websites = Hive.box<Keyword>('websites');
     return websites.values.toList();
   }
-  
+
   @override
-  void clearAll() {
-    final websites = Hive.box<Keyword>('websites');
-    websites.clear();
+  Future<void> clearAll() async {
+    final websites = await Hive.openBox<Keyword>('websites');
+    await websites.clear();
+  }
+
+  @override
+  Future<void> deleteWebsite({
+    required String websiteName,
+    required String loginName,
+    required String keywordName,
+  }) async {
+    final websites = await Hive.openBox<Keyword>('websites');
   }
 }

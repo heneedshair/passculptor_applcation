@@ -74,6 +74,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
           wm.onDrawerChanged(isDrawerOpened),
       endDrawer: DirectoryDrawerWidget(
         listenableEntityState: wm.savedKeywordsListenable,
+        onClearAllTap: () => wm.onClearAllTap(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: Builder(

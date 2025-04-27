@@ -102,7 +102,12 @@ class AppTheme {
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       circularTrackColor: AppColors.backgroundColor,
       color: AppColors.primaryColor,
-    )
+    ),
+    /*
+        EXPANSION TILE
+    */
+    expansionTileTheme: const ExpansionTileThemeData(),
+    dividerColor: AppColors.backgroundColor,
   );
 }
 
