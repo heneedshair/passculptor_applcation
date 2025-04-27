@@ -11,9 +11,9 @@ abstract interface class IMainScreenModel extends ElementaryModel {
   Future<void> clearAll();
 
   Future<void> deleteWebsite({
-    required String websiteName,
-    required String loginName,
-    required String keywordName,
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
   });
 }
 
@@ -32,9 +32,7 @@ class MainScreenModel extends IMainScreenModel {
     final websites = Hive.box<Keyword>('websites');
     final List<Keyword> keywords = websites.values.toList();
 
-    // Ищем ключевое слово
     Keyword? keyword = _getKeyword(keywords, enteredKeyword);
-
     Login? login = keyword.getLogin(enteredLogin);
 
     login.addWebsite(enteredWebsite);
@@ -82,16 +80,24 @@ class MainScreenModel extends IMainScreenModel {
 
   @override
   Future<void> clearAll() async {
-    final websites = await Hive.openBox<Keyword>('websites');
+    final websites = Hive.box<Keyword>('websites');
     await websites.clear();
   }
 
   @override
   Future<void> deleteWebsite({
-    required String websiteName,
-    required String loginName,
-    required String keywordName,
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
   }) async {
-    final websites = await Hive.openBox<Keyword>('websites');
+    final websites = Hive.box<Keyword>('websites');
+    final List<Keyword> keywords = websites.values.toList();
+
+    Keyword keyword = _getKeyword(keywords, enteredKeyword);
+    Login login = keyword.getLogin(enteredLogin);
+    login.deleteWebsite(enteredWebsite);
+    //TODO сделать удаление при пустом списке сайтов
+
+    _updateBox(websites, keywords, keyword);
   }
 }

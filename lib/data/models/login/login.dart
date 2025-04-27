@@ -21,4 +21,6 @@ class Login {
       websites.add(enteredWebsite);
     }
   }
+
+  void deleteWebsite(String enteredWebsite) => websites.remove(enteredWebsite);
 }

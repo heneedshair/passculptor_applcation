@@ -1,3 +1,4 @@
+import 'package:code_generator_app/data/provider/directory_functions_data.dart';
 import 'package:code_generator_app/ui/main/main_wm.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/key_text_field.dart';
@@ -10,6 +11,7 @@ import 'package:code_generator_app/ui/main/widgets/themed_text_field.dart';
 import 'package:code_generator_app/ui/widgets/decorations/logo.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
   const MainScreen({super.key}) : super(defaultMainScreenWidgetModelFactory);
@@ -72,9 +74,23 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
       drawerEdgeDragWidth: MediaQuery.of(wm.context).size.width,
       onEndDrawerChanged: (isDrawerOpened) =>
           wm.onDrawerChanged(isDrawerOpened),
-      endDrawer: DirectoryDrawerWidget(
-        listenableEntityState: wm.savedKeywordsListenable,
-        onClearAllTap: () => wm.onClearAllTap(),
+      endDrawer: Provider<DirectoryFunctionsData>.value(
+        value: DirectoryFunctionsData(
+          onClearAllTap: () => wm.onClearAllTap(),
+          onDeleteWebsite: ({
+            required enteredKeyword,
+            required enteredLogin,
+            required enteredWebsite,
+          }) =>
+              wm.onDeleteWebsite(
+            enteredWebsite: enteredWebsite,
+            enteredLogin: enteredLogin,
+            enteredKeyword: enteredKeyword,
+          ),
+        ),
+        child: DirectoryDrawerWidget(
+          listenableEntityState: wm.savedKeywordsListenable,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: Builder(

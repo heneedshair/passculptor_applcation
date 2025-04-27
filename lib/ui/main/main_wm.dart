@@ -44,6 +44,12 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   void onDrawerChanged(bool isDrawerOpened);
 
   void onClearAllTap();
+
+  void onDeleteWebsite({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  });
 }
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
@@ -122,7 +128,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   @override
   void onObscureLoginTap() => _isLoginObscured.value = !_isLoginObscured.value;
 
-  final _isLoginObscured = ValueNotifier<bool>(true);
+  final _isLoginObscured = ValueNotifier<bool>(false);
 
   @override
   ValueNotifier<bool> get isLoginObscured => _isLoginObscured;
@@ -182,5 +188,18 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   Future<void> onClearAllTap() async {
     await model.clearAll();
     await _initDrawer();
+  }
+
+  @override
+  Future<void> onDeleteWebsite({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) async {
+    await model.deleteWebsite(
+      enteredWebsite: enteredWebsite,
+      enteredLogin: enteredLogin,
+      enteredKeyword: enteredKeyword,
+    );
   }
 }

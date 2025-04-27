@@ -29,7 +29,10 @@ class KeywordTileWidget extends StatelessWidget {
           color: AppColors.backgroundColor,
           child: Column(
             children: keyword.logins
-                .map((login) => LoginTileWidget(login: login))
+                .map((login) => LoginTileWidget(
+                      login: login,
+                      parentKeyword: keyword,
+                    ))
                 .toList(),
           ),
         ),

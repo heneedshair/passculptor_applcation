@@ -1,4 +1,6 @@
+import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
+import 'package:code_generator_app/ui/main/widgets/website_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -6,9 +8,11 @@ class LoginTileWidget extends StatelessWidget {
   const LoginTileWidget({
     super.key,
     required this.login,
+    required this.parentKeyword,
   });
 
   final Login login;
+  final Keyword parentKeyword;
 
   @override
   Widget build(BuildContext context) {
@@ -27,22 +31,11 @@ class LoginTileWidget extends StatelessWidget {
         style: TextStyle(color: AppColors.grayColor),
       ),
       children: login.websites
-          .map(
-            (website) => Dismissible(
-              background: Container(
-                color: Colors.red,
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 25),
-                child: const Icon(Icons.delete_forever_rounded),
-              ),
-              key: UniqueKey(),
-              direction: DismissDirection.endToStart,
-              onDismissed: (_) => {},
-              child: ListTile(
-                title: Text(website),
-              ),
-            ),
-          )
+          .map((website) => WebsiteTileWidget(
+                website: website,
+                parentLogin: login,
+                parentKeyword: parentKeyword,
+              ))
           .toList(),
     );
   }
