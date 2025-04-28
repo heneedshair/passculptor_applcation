@@ -40,7 +40,10 @@ class WebsiteTileWidget extends StatelessWidget {
               enteredWebsite: website,
             ),
         child: ListTile(
-          title: Text(website),
+          title: Text(
+            website,
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
           leading: const Icon(Icons.web_asset_rounded),
         ),
       ),

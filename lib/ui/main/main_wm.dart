@@ -2,7 +2,6 @@ import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/objects/code_generator.dart';
 import 'package:code_generator_app/ui/main/main_model.dart';
 import 'package:code_generator_app/ui/main/main_screen.dart';
-import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -122,10 +121,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       //TODO мб надо сделать context параметром метода
       (_) => ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'Пароль успешно скопирован!',
-            style: TextStyle(color: AppColors.white),
-          ),
+          content: Text('Пароль успешно скопирован!'),
         ),
       ),
     );

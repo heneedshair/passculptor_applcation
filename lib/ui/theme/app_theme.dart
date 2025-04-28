@@ -89,6 +89,7 @@ class AppTheme {
           top: Radius.circular(20),
         ),
       ),
+      contentTextStyle: TextStyle(fontWeight: FontWeight.w500),
     ),
     /*
         DRAWER
