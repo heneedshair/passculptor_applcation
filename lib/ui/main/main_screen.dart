@@ -95,9 +95,10 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
             required String enteredWebsite,
           }) =>
               wm.onWebsiteTap(
-                  enteredWebsite: enteredWebsite,
-                  enteredLogin: enteredLogin,
-                  enteredKeyword: enteredKeyword),
+            enteredWebsite: enteredWebsite,
+            enteredLogin: enteredLogin,
+            enteredKeyword: enteredKeyword,
+          ),
         ),
         child: DirectoryDrawerWidget(
           listenableEntityState: wm.savedKeywordsListenable,
@@ -106,9 +107,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: Builder(
         builder: (context) {
-          return DirectoryButton(
-            onPressed: () => wm.onDrawerTap(context),
-          );
+          return DirectoryButton(onPressed: () => wm.onDrawerTap(context));
         },
       ),
     );

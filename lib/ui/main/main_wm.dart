@@ -229,12 +229,16 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     required String enteredLogin,
     required String enteredKeyword,
   }) {
-    loginController.text = enteredLogin;
-    wordController.text = enteredWebsite;
-    keyController.text = enteredKeyword[0];
-    
-    _keywordFocusNode.requestFocus();
+    _loginController.text = enteredLogin;
+    _wordController.text = enteredWebsite;
+    if (_keyController.text.length != enteredKeyword.length ||
+        _keyController.text[0] != enteredKeyword[0]) {
+      _keyController.text = '';
+      _result.value = 'Здесь появится пароль';
+      _keywordFocusNode.requestFocus();
+    } else {
+      onEnterTap();
+    }
     _scaffoldKey.currentState?.closeEndDrawer();
   }
-
 }
