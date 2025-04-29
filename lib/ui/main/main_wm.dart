@@ -93,7 +93,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   ValueNotifier<String> get result => _result;
 
   @override
-  Future<void> onEnterTap() async {
+  void onEnterTap() {
     result.value = CodeGenerator.generate(
       _wordController.text,
       _keyController.text,
@@ -108,21 +108,21 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       );
 
       needsDrawerUpdate = true;
-      await _initDrawer();
     }
   }
 
   @override
-  void onPasswordTap() {
+  Future<void> onPasswordTap() async {
+    await Clipboard.setData(ClipboardData(text: _result.value));
+
+    _showSnackBar('Пароль успешно скопирован!');
+  }
+
+  void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
-    Clipboard.setData(
-      ClipboardData(text: _result.value),
-    ).then(
-      //TODO мб надо сделать context параметром метода
-      (_) => ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Пароль успешно скопирован!'),
-        ),
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
       ),
     );
   }
@@ -177,8 +177,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     } on Exception {
       _savedKeywordsEntity.error();
     }
-
-    needsDrawerUpdate = false;
   }
 
   bool needsDrawerUpdate = true;
@@ -220,20 +218,23 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
 
   @override
-  void onWebsiteTap({
+  Future<void> onWebsiteTap({
     required String enteredWebsite,
     required String enteredLogin,
     required String enteredKeyword,
-  }) {
+  }) async {
     _loginController.text = enteredLogin;
     _wordController.text = enteredWebsite;
+
     if (_keyController.text.length != enteredKeyword.length ||
         _keyController.text[0] != enteredKeyword[0]) {
       _keyController.text = '';
       _result.value = 'Здесь появится пароль';
       _keywordFocusNode.requestFocus();
+      _showSnackBar('Введите ключевое слово');
     } else {
       onEnterTap();
+      _showSnackBar('Пароль успешно создан!');
     }
     _scaffoldKey.currentState?.closeEndDrawer();
   }

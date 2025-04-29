@@ -76,29 +76,12 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
       drawerEdgeDragWidth: MediaQuery.of(wm.context).size.width,
       onEndDrawerChanged: (isDrawerOpened) =>
           wm.onDrawerChanged(isDrawerOpened),
+          //TODO заменить на inherited
       endDrawer: Provider<DirectoryFunctionsData>.value(
         value: DirectoryFunctionsData(
           onClearAllTap: () => wm.onClearAllTap(),
-          onDeleteWebsite: ({
-            required enteredKeyword,
-            required enteredLogin,
-            required enteredWebsite,
-          }) =>
-              wm.onDeleteWebsite(
-            enteredWebsite: enteredWebsite,
-            enteredLogin: enteredLogin,
-            enteredKeyword: enteredKeyword,
-          ),
-          onWebsiteTap: ({
-            required String enteredKeyword,
-            required String enteredLogin,
-            required String enteredWebsite,
-          }) =>
-              wm.onWebsiteTap(
-            enteredWebsite: enteredWebsite,
-            enteredLogin: enteredLogin,
-            enteredKeyword: enteredKeyword,
-          ),
+          onDeleteWebsite: wm.onDeleteWebsite,
+          onWebsiteTap: wm.onWebsiteTap,
         ),
         child: DirectoryDrawerWidget(
           listenableEntityState: wm.savedKeywordsListenable,
