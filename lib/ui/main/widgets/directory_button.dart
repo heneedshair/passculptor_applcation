@@ -1,4 +1,3 @@
-import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class DirectoryButton extends StatelessWidget {
@@ -11,15 +10,12 @@ class DirectoryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () => onPressed(),
-      backgroundColor: AppColors.backgroundColor,
-      elevation: 0,
-      mini: true,
-      child: const Icon(
+    return IconButton(
+      icon: const Icon(
         Icons.menu_rounded,
         size: 30,
       ),
+      onPressed: () => onPressed(),
     );
   }
 }

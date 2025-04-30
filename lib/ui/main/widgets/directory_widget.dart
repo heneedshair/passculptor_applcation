@@ -18,7 +18,6 @@ class DirectoryDrawerWidget extends StatelessWidget {
     return Drawer(
       width: MediaQuery.of(context).size.width * 5 / 6,
       child: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 30),
         children: [
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),

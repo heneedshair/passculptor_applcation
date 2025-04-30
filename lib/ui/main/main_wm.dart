@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:code_generator_app/common/utils/navigation/app_router.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/objects/code_generator.dart';
 import 'package:code_generator_app/ui/main/main_model.dart';
@@ -59,6 +61,8 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   });
 
   GlobalKey<ScaffoldState> get scaffoldKey;
+
+  void onSettingsTap();
 }
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
@@ -237,5 +241,10 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       _showSnackBar('Пароль успешно создан!');
     }
     _scaffoldKey.currentState?.closeEndDrawer();
+  }
+  
+  @override
+  void onSettingsTap() {
+    AutoRouter.of(context).push(const SettingsRoute());
   }
 }

@@ -1,3 +1,5 @@
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/data/provider/directory_functions_data.dart';
 import 'package:code_generator_app/ui/main/main_wm.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_widget.dart';
@@ -13,6 +15,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+@RoutePage()
 class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
   const MainScreen({super.key}) : super(defaultMainScreenWidgetModelFactory);
 
@@ -20,63 +23,84 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
   Widget build(IMainScreenWidgetModel wm) {
     return Scaffold(
       key: wm.scaffoldKey,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+      body: SafeArea(
+        minimum: const EdgeInsets.symmetric(horizontal: 25),
+        child: Stack(
+          children: [
+            Row(
               children: [
-                const Logo(),
-                const TextLargeTitleWidget(),
-                const SizedBox(height: 90),
-                LoginTextField(
-                  isLoginObscured: wm.isLoginObscured,
-                  loginController: wm.loginController,
-                  onObscureLoginTap: () => wm.onObscureLoginTap(),
-                ),
-                const SizedBox(height: 15),
-                ThemedTextField(
-                  labelText: 'Название сайта',
-                  prefixIcon: const Icon(Icons.web_asset),
-                  controller: wm.wordController,
-                ),
-                const SizedBox(height: 15),
-                KeyTextField(
-                  isKeyObscured: wm.isKeyObscured,
-                  keyController: wm.keyController,
-                  focusNode: wm.keywordFocusNode,
-                  onObscureKeyTap: () => wm.onObscureKeyTap(),
-                ),
-                const SizedBox(height: 5),
-                MiddleBarWidget(
-                  doSave: wm.doSave,
-                  onSaveCheckTap: () => wm.onSaveCheckTap(),
-                  onGuideTap: () => wm.onGuideTap(),
-                ),
-                const SizedBox(height: 5),
-                PasswordField(
-                  result: wm.result,
-                  onTap: () => wm.onPasswordTap(),
-                ),
-                const SizedBox(height: 15),
-                SizedBox(
-                  width: double.maxFinite,
-                  child: ElevatedButton(
-                    onPressed: () => wm.onEnterTap(),
-                    child: const Text('Создать пароль'),
+                IconButton(
+                  icon: const Icon(
+                    Icons.settings_rounded,
+                    size: 30,
                   ),
+                  onPressed: () => wm.onSettingsTap(),
                 ),
-                const SizedBox(height: 25),
+                const Spacer(),
+                Builder(builder: (context) {
+                  return DirectoryButton(
+                    onPressed: () => wm.onDrawerTap(context),
+                  );
+                }),
               ],
             ),
-          ),
+            Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  // mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Logo(),
+                    const TextLargeTitleWidget(),
+                    // const SizedBox(height: 90),
+                    LoginTextField(
+                      isLoginObscured: wm.isLoginObscured,
+                      loginController: wm.loginController,
+                      onObscureLoginTap: () => wm.onObscureLoginTap(),
+                    ),
+                    const SizedBox(height: 15),
+                    ThemedTextField(
+                      labelText: 'Название сайта',
+                      prefixIcon: const Icon(Icons.web_asset),
+                      controller: wm.wordController,
+                    ),
+                    const SizedBox(height: 15),
+                    KeyTextField(
+                      isKeyObscured: wm.isKeyObscured,
+                      keyController: wm.keyController,
+                      focusNode: wm.keywordFocusNode,
+                      onObscureKeyTap: () => wm.onObscureKeyTap(),
+                    ),
+                    const SizedBox(height: 5),
+                    MiddleBarWidget(
+                      doSave: wm.doSave,
+                      onSaveCheckTap: () => wm.onSaveCheckTap(),
+                      onGuideTap: () => wm.onGuideTap(),
+                    ),
+                    const SizedBox(height: 5),
+                    PasswordField(
+                      result: wm.result,
+                      onTap: () => wm.onPasswordTap(),
+                    ),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
+                        onPressed: () => wm.onEnterTap(),
+                        child: const Text('Создать пароль'),
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       drawerEdgeDragWidth: MediaQuery.of(wm.context).size.width,
       onEndDrawerChanged: (isDrawerOpened) =>
           wm.onDrawerChanged(isDrawerOpened),
-          //TODO заменить на inherited
+      //TODO заменить на inherited
       endDrawer: Provider<DirectoryFunctionsData>.value(
         value: DirectoryFunctionsData(
           onClearAllTap: () => wm.onClearAllTap(),
@@ -86,12 +110,6 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
         child: DirectoryDrawerWidget(
           listenableEntityState: wm.savedKeywordsListenable,
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: Builder(
-        builder: (context) {
-          return DirectoryButton(onPressed: () => wm.onDrawerTap(context));
-        },
       ),
     );
   }
