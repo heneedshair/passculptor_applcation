@@ -27,22 +27,25 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
         minimum: const EdgeInsets.symmetric(horizontal: 25),
         child: Stack(
           children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.settings_rounded,
-                    size: 30,
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.settings_rounded,
+                      size: 30,
+                    ),
+                    onPressed: () => wm.onSettingsTap(),
                   ),
-                  onPressed: () => wm.onSettingsTap(),
-                ),
-                const Spacer(),
-                Builder(builder: (context) {
-                  return DirectoryButton(
-                    onPressed: () => wm.onDrawerTap(context),
-                  );
-                }),
-              ],
+                  const Spacer(),
+                  Builder(builder: (context) {
+                    return DirectoryButton(
+                      onPressed: () => wm.onDrawerTap(context),
+                    );
+                  }),
+                ],
+              ),
             ),
             Center(
               child: SingleChildScrollView(
@@ -51,7 +54,11 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                   children: [
                     const Logo(),
                     const TextLargeTitleWidget(),
-                    // const SizedBox(height: 90),
+                    Builder(
+                      builder: (context) {
+                        return SizedBox(height: MediaQuery.of(context).size.height / 10);
+                      }
+                    ),
                     LoginTextField(
                       isLoginObscured: wm.isLoginObscured,
                       loginController: wm.loginController,

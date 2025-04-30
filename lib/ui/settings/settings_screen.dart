@@ -7,13 +7,32 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? selectedValue;
+    List<String> items = ['Встроенный метод', 'HashCode метод'];
+
     return Scaffold(
       appBar: AppBar(title: const Text('Настройки')),
-      body: Center(
-          child: ElevatedButton(
-              onPressed: () {
-              },
-              child: const Text('Назад'))),
+      body: SafeArea(
+        minimum: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+        child: Center(
+          child: Column(
+            children: [
+              const Text('Выберите метод создания пароля', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),),
+              DropdownButton<String>(
+                value: selectedValue,
+                hint: const Text('Встроенный метод'),
+                items: items.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {},
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
