@@ -8,6 +8,7 @@ import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   TextEditingController get wordController;
@@ -22,23 +23,23 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onPasswordTap();
 
-  void onObscureKeyTap();
-
   void onObscureLoginTap();
 
-  FocusNode get keywordFocusNode;
+  void onObscureKeyTap();
+
+  void onSaveCheckTap();
 
   ValueNotifier<bool> get isLoginObscured;
 
   ValueNotifier<bool> get isKeyObscured;
 
-  void onDrawerTap(BuildContext context);
-
-  BuildContext get context;
-
   ValueNotifier<bool> get doSave;
 
-  void onSaveCheckTap();
+  void onDrawerTap(BuildContext context);
+
+  FocusNode get keywordFocusNode;
+
+  BuildContext get context;
 
   void onGuideTap();
 
@@ -75,6 +76,21 @@ MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
 class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     implements IMainScreenWidgetModel {
   MainScreenWidgetModel(super.model);
+
+  late final SharedPreferences _prefs;
+
+  @override
+  Future<void> initWidgetModel() async {
+    _savedKeywordsEntity.loading();
+
+    _prefs = await SharedPreferences.getInstance();
+    final bool isLoginObscured = _prefs.getBool('isLoginObscured') ?? false;
+    _isLoginObscured = ValueNotifier(isLoginObscured);
+    final bool isKeyObscured = _prefs.getBool('isKeyObscured') ?? true;
+    _isKeyObscured = ValueNotifier(isKeyObscured);
+
+    super.initWidgetModel();
+  }
 
   final _wordController = TextEditingController();
 
@@ -132,17 +148,23 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }
 
   @override
-  void onObscureKeyTap() => _isKeyObscured.value = !_isKeyObscured.value;
+  void onObscureKeyTap() {
+    _isKeyObscured.value = !_isKeyObscured.value;
+    _prefs.setBool('isKeyObscured', _isKeyObscured.value);
+  }
 
   @override
-  void onObscureLoginTap() => _isLoginObscured.value = !_isLoginObscured.value;
+  void onObscureLoginTap() {
+    _isLoginObscured.value = !_isLoginObscured.value;
+    _prefs.setBool('isLoginObscured', _isLoginObscured.value);
+  }
 
-  final _isLoginObscured = ValueNotifier<bool>(false);
+  late final ValueNotifier<bool> _isLoginObscured;
 
   @override
   ValueNotifier<bool> get isLoginObscured => _isLoginObscured;
 
-  final _isKeyObscured = ValueNotifier<bool>(true);
+  late final ValueNotifier<bool> _isKeyObscured;
 
   @override
   ValueNotifier<bool> get isKeyObscured => _isKeyObscured;
@@ -242,9 +264,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     }
     _scaffoldKey.currentState?.closeEndDrawer();
   }
-  
+
   @override
-  void onSettingsTap() {
-    AutoRouter.of(context).push(const SettingsRoute());
-  }
+  void onSettingsTap() => AutoRouter.of(context).push(const SettingsRoute());
 }

@@ -54,10 +54,8 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                   children: [
                     const Logo(),
                     const TextLargeTitleWidget(),
-                    Builder(
-                      builder: (context) {
-                        return SizedBox(height: MediaQuery.of(context).size.height / 10);
-                      }
+                    SizedBox(
+                      height: MediaQuery.of(wm.context).size.height / 10,
                     ),
                     LoginTextField(
                       isLoginObscured: wm.isLoginObscured,
