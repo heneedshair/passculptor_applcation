@@ -1,36 +1,36 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:code_generator_app/ui/settings/settings_wm.dart';
+import 'package:code_generator_app/ui/settings/widgets/algorithm_dropdown_widget.dart';
+import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
+  const SettingsScreen({super.key})
+      : super(defaultSettingsScreenWidgetModelFactory);
 
   @override
-  Widget build(BuildContext context) {
-    String? selectedValue;
-    List<String> items = ['Встроенный метод', 'HashCode метод'];
-
+  Widget build(ISettingsScreenWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(title: const Text('Настройки')),
       body: SafeArea(
-        minimum: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-        child: Center(
-          child: Column(
-            children: [
-              const Text('Выберите метод создания пароля', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),),
-              DropdownButton<String>(
-                value: selectedValue,
-                hint: const Text('Встроенный метод'),
-                items: items.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {},
+        minimum: const EdgeInsets.symmetric(horizontal: 25),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(18),
+              child: Text(
+                'Алгоритм создания пароля:',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
               ),
-            ],
-          ),
+            ),
+            AlgorithmDropdownWidget(
+              encryptionAlgorithmList: wm.encryptionAlgorithmList,
+              onEncryptionAlgorithmChanged: wm.onEncryptionAlgorithmChanged,
+              encryptionAlgorithmListenable: wm.encryptionAlgorithmListenable,
+            ),
+          ],
         ),
       ),
     );
