@@ -50,7 +50,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
             Center(
               child: SingleChildScrollView(
                 child: Column(
-                  // mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const Logo(),
                     const TextLargeTitleWidget(),
@@ -58,7 +58,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                       height: MediaQuery.of(wm.context).size.height / 10,
                     ),
                     LoginTextField(
-                      isLoginObscured: wm.isLoginObscured,
+                      isLoginObscuredListenable: wm.isLoginObscuredListenable,
                       loginController: wm.loginController,
                       onObscureLoginTap: () => wm.onObscureLoginTap(),
                     ),
@@ -70,14 +70,14 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                     ),
                     const SizedBox(height: 15),
                     KeyTextField(
-                      isKeyObscured: wm.isKeyObscured,
+                      isKeyObscuredListenable: wm.isKeyObscuredListenable,
                       keyController: wm.keyController,
                       focusNode: wm.keywordFocusNode,
                       onObscureKeyTap: () => wm.onObscureKeyTap(),
                     ),
                     const SizedBox(height: 5),
                     MiddleBarWidget(
-                      doSave: wm.doSave,
+                      doSaveListenable: wm.doSaveListenable,
                       onSaveCheckTap: () => wm.onSaveCheckTap(),
                       onGuideTap: () => wm.onGuideTap(),
                     ),

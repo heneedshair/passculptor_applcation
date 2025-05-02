@@ -29,11 +29,11 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onSaveCheckTap();
 
-  ValueNotifier<bool> get isLoginObscured;
+  ValueNotifier<EntityState<bool>> get isLoginObscuredListenable;
 
-  ValueNotifier<bool> get isKeyObscured;
+  ValueNotifier<EntityState<bool>> get isKeyObscuredListenable;
 
-  ValueNotifier<bool> get doSave;
+  ValueNotifier<EntityState<bool>> get doSaveListenable;
 
   void onDrawerTap(BuildContext context);
 
@@ -84,10 +84,8 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     _savedKeywordsEntity.loading();
 
     _prefs = await SharedPreferences.getInstance();
-    final bool isLoginObscured = _prefs.getBool('isLoginObscured') ?? false;
-    _isLoginObscured = ValueNotifier(isLoginObscured);
-    final bool isKeyObscured = _prefs.getBool('isKeyObscured') ?? true;
-    _isKeyObscured = ValueNotifier(isKeyObscured);
+
+    _initEntityStates();
 
     super.initWidgetModel();
   }
@@ -120,7 +118,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       _loginController.text,
     );
 
-    if (doSave.value) {
+    if (doSaveListenable.value.data!) {
       model.addWebsite(
         loginController.text,
         wordController.text,
@@ -141,46 +139,58 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
+      SnackBar(content: Text(message)),
     );
   }
 
   @override
-  void onObscureKeyTap() {
-    _isKeyObscured.value = !_isKeyObscured.value;
-    _prefs.setBool('isKeyObscured', _isKeyObscured.value);
-  }
-
-  @override
   void onObscureLoginTap() {
-    _isLoginObscured.value = !_isLoginObscured.value;
-    _prefs.setBool('isLoginObscured', _isLoginObscured.value);
+    _isLoginObscuredEntity.content(!_isLoginObscuredEntity.value.data!);
+    _prefs.setBool('isLoginObscured', _isLoginObscuredEntity.value.data!);
   }
 
-  late final ValueNotifier<bool> _isLoginObscured;
-
   @override
-  ValueNotifier<bool> get isLoginObscured => _isLoginObscured;
-
-  late final ValueNotifier<bool> _isKeyObscured;
-
-  @override
-  ValueNotifier<bool> get isKeyObscured => _isKeyObscured;
-
-  @override
-  void onDrawerTap(BuildContext context) {
-    Scaffold.of(context).openEndDrawer();
+  void onObscureKeyTap() {
+    _isKeyObscuredEntity.content(!_isKeyObscuredEntity.value.data!);
+    _prefs.setBool('isKeyObscured', _isKeyObscuredEntity.value.data!);
   }
 
-  final _doSave = ValueNotifier<bool>(true);
+  final _isLoginObscuredEntity = EntityStateNotifier<bool>();
 
   @override
-  ValueNotifier<bool> get doSave => _doSave;
+  ValueNotifier<EntityState<bool>> get isLoginObscuredListenable =>
+      _isLoginObscuredEntity;
+
+  final _isKeyObscuredEntity = EntityStateNotifier<bool>();
 
   @override
-  void onSaveCheckTap() => _doSave.value = !_doSave.value;
+  ValueNotifier<EntityState<bool>> get isKeyObscuredListenable =>
+      _isKeyObscuredEntity;
+
+  @override
+  void onDrawerTap(BuildContext context) =>
+      Scaffold.of(context).openEndDrawer();
+
+  final _doSaveEntity = EntityStateNotifier<bool>();
+
+  @override
+  ValueNotifier<EntityState<bool>> get doSaveListenable => _doSaveEntity;
+
+  @override
+  void onSaveCheckTap() {
+    _doSaveEntity.content(!_doSaveEntity.value.data!);
+    _prefs.setBool('doSave', _doSaveEntity.value.data!);
+  }
+
+  void _initEntityStates() {
+    _isLoginObscuredEntity.loading();
+    _isKeyObscuredEntity.loading();
+    _doSaveEntity.loading();
+
+    _isLoginObscuredEntity.content(_prefs.getBool('isLoginObscured') ?? false);
+    _isKeyObscuredEntity.content(_prefs.getBool('isKeyObscured') ?? true);
+    _doSaveEntity.content(_prefs.getBool('doSave') ?? true);
+  }
 
   @override
   void onGuideTap() {
