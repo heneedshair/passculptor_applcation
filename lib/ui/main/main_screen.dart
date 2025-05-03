@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/data/provider/directory_functions_data.dart';
 import 'package:code_generator_app/ui/main/main_wm.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_widget.dart';
+import 'package:code_generator_app/ui/main/widgets/enter_button.dart';
 import 'package:code_generator_app/ui/main/widgets/key_text_field.dart';
 import 'package:code_generator_app/ui/main/widgets/login_text_field.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_button.dart';
@@ -87,12 +88,9 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                       onTap: () => wm.onPasswordTap(),
                     ),
                     const SizedBox(height: 15),
-                    SizedBox(
-                      width: double.maxFinite,
-                      child: ElevatedButton(
-                        onPressed: () => wm.onEnterTap(),
-                        child: const Text('Создать пароль'),
-                      ),
+                    EnterButton(
+                      listenableEntityState: wm.encryptionAlgorithmListenable,
+                      onEnterTap: () => wm.onEnterTap(),
                     ),
                     const SizedBox(height: 25),
                   ],

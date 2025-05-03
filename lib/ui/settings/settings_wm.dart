@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/ui/settings/settings_model.dart';
 import 'package:code_generator_app/ui/settings/settings_screen.dart';
 import 'package:elementary/elementary.dart';
@@ -11,6 +12,8 @@ abstract interface class ISettingsScreenWidgetModel implements IWidgetModel {
   void onEncryptionAlgorithmChanged(String? selectedValue);
 
   ValueNotifier<EntityState<String>> get encryptionAlgorithmListenable;
+
+  void onBackTap();
 }
 
 SettingsScreenWidgetModel defaultSettingsScreenWidgetModelFactory(
@@ -62,4 +65,8 @@ class SettingsScreenWidgetModel
     _encryptionAlgorithmEntity
         .content(_prefs.getString('encryptionAlgorithm') ?? 'Встроенный');
   }
+
+  @override
+  void onBackTap() =>
+      AutoRouter.of(context).maybePop(_encryptionAlgorithmEntity.value.data);
 }

@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:code_generator_app/common/objects/code_generator/hmac_code_generator.dart';
+import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
-import 'package:code_generator_app/objects/code_generator.dart';
+import 'package:code_generator_app/common/objects/code_generator/code_generator.dart';
 import 'package:code_generator_app/ui/main/main_model.dart';
 import 'package:code_generator_app/ui/main/main_screen.dart';
 import 'package:elementary/elementary.dart';
@@ -64,6 +66,8 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   GlobalKey<ScaffoldState> get scaffoldKey;
 
   void onSettingsTap();
+
+  ValueNotifier<EntityState<String>> get encryptionAlgorithmListenable;
 }
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
@@ -79,6 +83,8 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
   late final SharedPreferences _prefs;
 
+  late ICodeGenerator _codeGenerator;
+
   @override
   Future<void> initWidgetModel() async {
     _savedKeywordsEntity.loading();
@@ -87,7 +93,31 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
     _initEntityStates();
 
+    _initEncryptionAlgorithm();
+
     super.initWidgetModel();
+  }
+
+  void _initEncryptionAlgorithm() {
+    _encryptionAlgorithmEntity.loading();
+
+    final String result =
+        _prefs.getString('encryptionAlgorithm') ?? 'Встроенный';
+
+    _encryptionAlgorithmEntity.content(result);
+
+    _initCodeGenerator();
+  }
+
+  void _initCodeGenerator() {
+    //TODO Заменить на enum
+    switch (_encryptionAlgorithmEntity.value.data) {
+      case 'Hash-метод':
+        _codeGenerator = _codeGenerator = HmacCodeGenerator();
+      case 'Встроенный':
+      default:
+        _codeGenerator = _codeGenerator = CodeGenerator();
+    }
   }
 
   final _wordController = TextEditingController();
@@ -112,7 +142,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
   @override
   void onEnterTap() {
-    result.value = CodeGenerator.generate(
+    result.value = _codeGenerator.generate(
       _wordController.text,
       _keyController.text,
       _loginController.text,
@@ -276,5 +306,15 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }
 
   @override
-  void onSettingsTap() => AutoRouter.of(context).push(const SettingsRoute());
+  Future<void> onSettingsTap() async {
+    await AutoRouter.of(context).push(const SettingsRoute());
+
+    _initEncryptionAlgorithm();
+  }
+
+  final _encryptionAlgorithmEntity = EntityStateNotifier<String>();
+
+  @override
+  ValueNotifier<EntityState<String>> get encryptionAlgorithmListenable =>
+      _encryptionAlgorithmEntity;
 }
