@@ -151,21 +151,26 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
     if (doSaveListenable.value.data!) {
       model.addWebsite(
-        loginController.text,
-        wordController.text,
-        keyController.text,
+        _loginController.text,
+        _wordController.text,
+        _keyController.text,
       );
 
       needsDrawerUpdate = true;
     }
+
+    _setPasswordToClipboard();
+    _showSnackBar('Пароль успешно создан и скопирован!');
   }
 
   @override
   Future<void> onPasswordTap() async {
-    await Clipboard.setData(ClipboardData(text: _result.value));
-
+    await _setPasswordToClipboard();
     _showSnackBar('Пароль успешно скопирован!');
   }
+
+  Future<void> _setPasswordToClipboard() async =>
+      await Clipboard.setData(ClipboardData(text: _result.value));
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();

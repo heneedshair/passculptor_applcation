@@ -44,7 +44,8 @@ class WebsiteTileWidget extends StatelessWidget {
             website,
             style: const TextStyle(fontWeight: FontWeight.w500),
           ),
-          leading: const Icon(Icons.web_asset_rounded),
+          leading: const Icon(Icons.web_asset_rounded, size: 20),
+          minLeadingWidth: 0,
         ),
       ),
     );

@@ -83,13 +83,17 @@ class AppTheme {
         SNACK BAR
     */
     snackBarTheme: const SnackBarThemeData(
-      backgroundColor: AppColors.appBarColor,
+      backgroundColor: AppColors.lightPrimaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),
       ),
-      contentTextStyle: TextStyle(fontWeight: FontWeight.w500),
+      contentTextStyle: TextStyle(
+        fontSize: 14.5,
+        fontWeight: FontWeight.w500,
+        color: AppColors.backgroundColor,
+      ),
     ),
     /*
         DRAWER
