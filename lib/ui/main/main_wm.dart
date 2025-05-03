@@ -81,6 +81,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     implements IMainScreenWidgetModel {
   MainScreenWidgetModel(super.model);
 
+  //TODO сделать через репозиторий в model
   late final SharedPreferences _prefs;
 
   late ICodeGenerator _codeGenerator;

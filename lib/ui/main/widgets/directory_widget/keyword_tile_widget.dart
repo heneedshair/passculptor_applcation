@@ -1,5 +1,5 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
-import 'package:code_generator_app/ui/main/widgets/login_tile_widget.dart';
+import 'package:code_generator_app/ui/main/widgets/directory_widget/login_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 

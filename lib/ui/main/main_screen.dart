@@ -2,15 +2,15 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/data/provider/directory_functions_data.dart';
 import 'package:code_generator_app/ui/main/main_wm.dart';
-import 'package:code_generator_app/ui/main/widgets/directory_widget.dart';
+import 'package:code_generator_app/ui/main/widgets/directory_widget/directory_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/enter_button.dart';
-import 'package:code_generator_app/ui/main/widgets/key_text_field.dart';
-import 'package:code_generator_app/ui/main/widgets/login_text_field.dart';
-import 'package:code_generator_app/ui/main/widgets/directory_button.dart';
+import 'package:code_generator_app/ui/main/widgets/themed_text_field/key_text_field.dart';
+import 'package:code_generator_app/ui/main/widgets/themed_text_field/login_text_field.dart';
+import 'package:code_generator_app/ui/main/widgets/top_buttons_bar_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/middle_bar_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/password_field.dart';
 import 'package:code_generator_app/ui/main/widgets/text_large_title_widget.dart';
-import 'package:code_generator_app/ui/main/widgets/themed_text_field.dart';
+import 'package:code_generator_app/ui/main/widgets/themed_text_field/themed_text_field.dart';
 import 'package:code_generator_app/ui/widgets/decorations/logo.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
@@ -28,25 +28,9 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
         minimum: const EdgeInsets.symmetric(horizontal: 25),
         child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.settings_rounded,
-                      size: 30,
-                    ),
-                    onPressed: () => wm.onSettingsTap(),
-                  ),
-                  const Spacer(),
-                  Builder(builder: (context) {
-                    return DirectoryButton(
-                      onPressed: () => wm.onDrawerTap(context),
-                    );
-                  }),
-                ],
-              ),
+            TopButtonsBarWidget(
+              onSettingsTap: () => wm.onSettingsTap(),
+              onDrawerTap: (BuildContext context) => wm.onDrawerTap(context),
             ),
             Center(
               child: SingleChildScrollView(
@@ -104,6 +88,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
       onEndDrawerChanged: (isDrawerOpened) =>
           wm.onDrawerChanged(isDrawerOpened),
       //TODO заменить на inherited
+      //TODO удалить провайдер из зависимостей
       endDrawer: Provider<DirectoryFunctionsData>.value(
         value: DirectoryFunctionsData(
           onClearAllTap: () => wm.onClearAllTap(),
