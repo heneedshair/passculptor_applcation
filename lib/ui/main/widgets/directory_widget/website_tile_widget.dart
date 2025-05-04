@@ -1,6 +1,7 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
 import 'package:code_generator_app/data/provider/directory_functions_data.dart';
+import 'package:code_generator_app/ui/main/widgets/directory_widget/custom_dismissible_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,22 +19,15 @@ class WebsiteTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      background: Container(
-        color: Colors.red,
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 25),
-        child: const Icon(Icons.delete_forever_rounded),
-      ),
-      key: UniqueKey(),
-      direction: DismissDirection.endToStart,
+    return CustomDismissibleWidget(
       onDismissed: (_) =>
           context.read<DirectoryFunctionsData>().onDeleteWebsite(
-                enteredKeyword: parentKeyword.name,
-                enteredLogin: parentLogin.username,
                 enteredWebsite: website,
+                enteredLogin: parentLogin.username,
+                enteredKeyword: parentKeyword.name,
               ),
       child: InkWell(
+        onLongPress: () {},
         onTap: () => context.read<DirectoryFunctionsData>().onWebsiteTap(
               enteredKeyword: parentKeyword.name,
               enteredLogin: parentLogin.username,

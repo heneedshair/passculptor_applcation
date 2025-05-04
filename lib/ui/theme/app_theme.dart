@@ -119,9 +119,7 @@ class AppTheme {
     listTileTheme: const ListTileThemeData(
       iconColor: AppColors.grayColor,
     ),
-    /*
-        DROPDOWN
-    */
+    dialogTheme: const DialogThemeData(backgroundColor: AppColors.appBarColor),
   );
 }
 
