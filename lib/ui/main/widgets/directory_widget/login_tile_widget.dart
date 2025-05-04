@@ -1,5 +1,6 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
+import 'package:code_generator_app/ui/main/widgets/confirmation_dialog.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_widget/website_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -47,53 +48,6 @@ class LoginTileWidget extends StatelessWidget {
                 ))
             .toList(),
       ),
-    );
-  }
-}
-
-class ConfirmationDialog extends StatelessWidget {
-  const ConfirmationDialog({
-    super.key,
-    this.content = 'Вы уверены, что хотите удалить этот элемент?',
-    required this.onConfirmTap,
-  });
-
-  final String content;
-  final VoidCallback onConfirmTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      content: Text(content),
-      contentTextStyle: const TextStyle(
-        fontSize: 16,
-        height: 1.5,
-      ),
-      contentPadding: const EdgeInsets.only(
-        top: 25,
-        right: 30,
-        left: 30,
-        bottom: 3,
-      ),
-      actionsPadding: const EdgeInsets.symmetric(vertical: 8),
-      actionsAlignment: MainAxisAlignment.spaceEvenly,
-      actions: [
-        TextButton(
-          child: const Text('Отмена'),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        const SizedBox(
-          height: 30,
-          child: VerticalDivider(thickness: 1, color: AppColors.grayColor),
-        ),
-        TextButton(
-          child: const Text(
-            'Удалить',
-            style: TextStyle(color: Colors.red),
-          ),
-          onPressed: () => onConfirmTap(),
-        ),
-      ],
     );
   }
 }
