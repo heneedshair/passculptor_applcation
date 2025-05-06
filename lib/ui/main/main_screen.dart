@@ -94,6 +94,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
           onClearAllTap: () => wm.onClearAllTap(),
           onDeleteWebsite: wm.onDeleteWebsite,
           onWebsiteTap: wm.onWebsiteTap,
+          onLoginLongPress: wm.onLoginLongPress,
         ),
         child: DirectoryDrawerWidget(
           listenableEntityState: wm.savedKeywordsListenable,

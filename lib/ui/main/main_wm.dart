@@ -51,7 +51,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onClearAllTap();
 
-  void onDeleteWebsite({
+  Future<void> onDeleteWebsite({
     required String enteredWebsite,
     required String enteredLogin,
     required String enteredKeyword,
@@ -59,6 +59,11 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onWebsiteTap({
     required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  });
+
+  Future<void> onLoginLongPress({
     required String enteredLogin,
     required String enteredKeyword,
   });
@@ -309,6 +314,18 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       _showSnackBar('Пароль успешно создан!');
     }
     _scaffoldKey.currentState?.closeEndDrawer();
+  }
+
+  @override
+  Future<void> onLoginLongPress({
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) async {
+    await model.deleteLogin(
+      enteredLogin: enteredLogin,
+      enteredKeyword: enteredKeyword,
+    );
+    await _initDrawer();
   }
 
   @override

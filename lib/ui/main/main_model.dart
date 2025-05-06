@@ -20,10 +20,14 @@ abstract interface class IMainScreenModel extends ElementaryModel {
     required String enteredLogin,
     required String enteredKeyword,
   });
+
+  Future<void> deleteKeyword(String enteredKeyword);
 }
 
 class MainScreenModel extends IMainScreenModel {
   MainScreenModel();
+
+  //TODO мб стоит заинитить список и box
 
   @override
   Future<void> addWebsite(
@@ -67,14 +71,20 @@ class MainScreenModel extends IMainScreenModel {
     List<Keyword> keywords,
     Keyword keyword,
   ) async {
-    final int keywordIndex = keywords.indexWhere((k) {
-      return k.name == keyword.name;
-    });
+    int keywordIndex = _getKeywordIndex(keywords, keyword);
+    print('index --- $keywordIndex');
     if (keywordIndex != -1) {
       await websites.putAt(keywordIndex, keyword); // Обновляем существующее
     } else {
       await websites.add(keyword); // Добавляем новое
     }
+  }
+
+  static int _getKeywordIndex(List<Keyword> keywords, Keyword keyword) {
+    final int keywordIndex = keywords.indexWhere((k) {
+      return k.name == keyword.name;
+    });
+    return keywordIndex;
   }
 
   @override
@@ -102,14 +112,15 @@ class MainScreenModel extends IMainScreenModel {
     Login login = keyword.getLogin(enteredLogin);
     login.deleteWebsite(enteredWebsite);
 
-    // Удаление при пустом списке сайтов.
+    // Удаление логина при пустом списке сайтов.
     if (login.websites.isEmpty) {
       await deleteLogin(
         enteredLogin: enteredLogin,
         enteredKeyword: enteredKeyword,
       );
+    } else {
+      await _updateBox(websites, keywords, keyword);
     }
-    await _updateBox(websites, keywords, keyword);
   }
 
   @override
@@ -124,6 +135,22 @@ class MainScreenModel extends IMainScreenModel {
 
     keyword.deleteLogin(enteredLogin);
 
-    await _updateBox(websites, keywords, keyword);
+    // Удаление ключевого слова при пустом списке логинов.
+    if (keyword.logins.isEmpty) {
+      await deleteKeyword(enteredKeyword);
+    } else {
+      await _updateBox(websites, keywords, keyword);
+    }
+  }
+
+  @override
+  Future<void> deleteKeyword(String enteredKeyword) async {
+    final websites = Hive.box<Keyword>('websites');
+    final List<Keyword> keywords = websites.values.toList();
+
+    final int keywordIndex = keywords.indexWhere((k) {
+      return k.name == enteredKeyword;
+    });
+    await websites.deleteAt(keywordIndex);
   }
 }
