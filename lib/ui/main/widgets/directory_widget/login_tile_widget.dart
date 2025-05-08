@@ -23,12 +23,11 @@ class LoginTileWidget extends StatelessWidget {
     return InkWell(
       onLongPress: () => showDialog(
         context: context,
-        builder: (context) => ConfirmationDialog(
-          onConfirmTap: () =>
-              context.read<DirectoryFunctionsData>().onLoginLongPress(
-                    enteredLogin: login.username,
-                    enteredKeyword: parentKeyword.name,
-                  ),
+        builder: (_) => ConfirmationDialog(
+          onConfirmTap: () => context.read<DirectoryFunctionsData>().onLoginLongPress(
+              enteredLogin: login.username,
+              enteredKeyword: parentKeyword.name,
+            ),
         ),
       ),
       child: ExpansionTile(

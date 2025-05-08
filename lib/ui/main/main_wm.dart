@@ -326,6 +326,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       enteredKeyword: enteredKeyword,
     );
     await _initDrawer();
+    print(1111);
   }
 
   @override
