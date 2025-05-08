@@ -45,11 +45,13 @@ class DirectoryDrawerWidget extends StatelessWidget {
                         .toList(),
                   ),
           ),
-          TextButton(
-            onPressed: () => DirectFuncs.read(context)?.onClearAllTap(),
-            child: const Text(
-              'Удалить все',
-              style: TextStyle(color: Colors.red),
+          Center(
+            child: TextButton(
+              onPressed: () => DirectFuncs.read(context)?.onClearAllTap(),
+              child: const Text(
+                'Удалить все',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           ),
         ],
