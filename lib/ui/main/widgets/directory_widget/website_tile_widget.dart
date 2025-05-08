@@ -1,9 +1,8 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
-import 'package:code_generator_app/data/provider/directory_functions_data.dart';
+import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_widget/custom_dismissible_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class WebsiteTileWidget extends StatelessWidget {
   const WebsiteTileWidget({
@@ -21,18 +20,18 @@ class WebsiteTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomDismissibleWidget(
       onDismissed: (_) =>
-          context.read<DirectoryFunctionsData>().onDeleteWebsite(
-                enteredWebsite: website,
-                enteredLogin: parentLogin.username,
-                enteredKeyword: parentKeyword.name,
-              ),
+          DirectoryFunctionsInherited.read(context)?.onDeleteWebsite(
+        enteredWebsite: website,
+        enteredLogin: parentLogin.username,
+        enteredKeyword: parentKeyword.name,
+      ),
       child: InkWell(
         onLongPress: () {},
-        onTap: () => context.read<DirectoryFunctionsData>().onWebsiteTap(
-              enteredKeyword: parentKeyword.name,
-              enteredLogin: parentLogin.username,
-              enteredWebsite: website,
-            ),
+        onTap: () => DirectoryFunctionsInherited.read(context)?.onWebsiteTap(
+          enteredKeyword: parentKeyword.name,
+          enteredLogin: parentLogin.username,
+          enteredWebsite: website,
+        ),
         child: ListTile(
           title: Text(
             website,

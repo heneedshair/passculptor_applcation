@@ -73,6 +73,8 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   void onSettingsTap();
 
   ValueNotifier<EntityState<String>> get encryptionAlgorithmListenable;
+
+  Future<void> onKeywordLongPress(String enteredKeyword);
 }
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
@@ -326,7 +328,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       enteredKeyword: enteredKeyword,
     );
     await _initDrawer();
-    print(1111);
   }
 
   @override
@@ -341,4 +342,10 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   @override
   ValueNotifier<EntityState<String>> get encryptionAlgorithmListenable =>
       _encryptionAlgorithmEntity;
+
+  @override
+  Future<void> onKeywordLongPress(String enteredKeyword) async {
+    await model.deleteKeyword(enteredKeyword);
+    await _initDrawer();
+  }
 }

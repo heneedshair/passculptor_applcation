@@ -1,6 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:code_generator_app/data/provider/directory_functions_data.dart';
+import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
 import 'package:code_generator_app/ui/main/main_wm.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_widget/directory_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/enter_button.dart';
@@ -14,7 +14,6 @@ import 'package:code_generator_app/ui/main/widgets/themed_text_field/themed_text
 import 'package:code_generator_app/ui/widgets/decorations/logo.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 @RoutePage()
 class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
@@ -87,15 +86,14 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
       drawerEdgeDragWidth: MediaQuery.of(wm.context).size.width,
       onEndDrawerChanged: (isDrawerOpened) =>
           wm.onDrawerChanged(isDrawerOpened),
-      //TODO заменить на inherited
       //TODO удалить провайдер из зависимостей
-      endDrawer: Provider<DirectoryFunctionsData>.value(
-        value: DirectoryFunctionsData(
-          onClearAllTap: () => wm.onClearAllTap(),
-          onDeleteWebsite: wm.onDeleteWebsite,
-          onWebsiteTap: wm.onWebsiteTap,
-          onLoginLongPress: wm.onLoginLongPress,
-        ),
+      //TODO мб есть смысл просто сделать из DirectoryDrawerWidget Inherited
+      endDrawer: DirectoryFunctionsInherited(
+        onClearAllTap: () => wm.onClearAllTap(),
+        onDeleteWebsite: wm.onDeleteWebsite,
+        onWebsiteTap: wm.onWebsiteTap,
+        onLoginLongPress: wm.onLoginLongPress,
+        onKeywordLongPress: wm.onKeywordLongPress,
         child: DirectoryDrawerWidget(
           listenableEntityState: wm.savedKeywordsListenable,
         ),

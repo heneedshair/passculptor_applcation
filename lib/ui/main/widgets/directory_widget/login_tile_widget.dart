@@ -1,11 +1,10 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
-import 'package:code_generator_app/data/provider/directory_functions_data.dart';
+import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
 import 'package:code_generator_app/ui/main/widgets/confirmation_dialog.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_widget/website_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 //TODO объединить два шаблона в один с keywordWidget
 class LoginTileWidget extends StatelessWidget {
@@ -24,10 +23,11 @@ class LoginTileWidget extends StatelessWidget {
       onLongPress: () => showDialog(
         context: context,
         builder: (_) => ConfirmationDialog(
-          onConfirmTap: () => context.read<DirectoryFunctionsData>().onLoginLongPress(
-              enteredLogin: login.username,
-              enteredKeyword: parentKeyword.name,
-            ),
+          onConfirmTap: () =>
+              DirectoryFunctionsInherited.read(context)?.onLoginLongPress(
+            enteredLogin: login.username,
+            enteredKeyword: parentKeyword.name,
+          ),
         ),
       ),
       child: ExpansionTile(

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class DirectoryFunctionsData {
+class DirectoryFunctionsInherited extends InheritedWidget {
   final VoidCallback onClearAllTap;
 
   final Function({
@@ -20,10 +20,24 @@ class DirectoryFunctionsData {
     required String enteredKeyword,
   }) onLoginLongPress;
 
-  DirectoryFunctionsData({
+  final Function(String enteredKeyword) onKeywordLongPress;
+
+  const DirectoryFunctionsInherited({
+    super.key,
+    required super.child,
     required this.onClearAllTap,
     required this.onDeleteWebsite,
     required this.onWebsiteTap,
     required this.onLoginLongPress,
+    required this.onKeywordLongPress,
   });
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
+
+  static DirectoryFunctionsInherited? read(BuildContext context) {
+    return context
+        .getElementForInheritedWidgetOfExactType<DirectoryFunctionsInherited>()
+        ?.widget as DirectoryFunctionsInherited?;
+  }
 }
