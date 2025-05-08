@@ -10,12 +10,14 @@ class KeyTextField extends StatelessWidget {
     required this.keyController,
     required this.onObscureKeyTap,
     this.focusNode,
+    required this.onTapOutside,
   });
 
   final ValueNotifier<EntityState<bool>> isKeyObscuredListenable;
   final TextEditingController keyController;
   final FocusNode? focusNode;
   final VoidCallback onObscureKeyTap;
+  final VoidCallback onTapOutside;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,9 @@ class KeyTextField extends StatelessWidget {
               controller: keyController,
               focusNode: focusNode,
               obscureText: isKeyObscured,
+              textInputAction: TextInputAction.done,
               onObscureTap: () => onObscureKeyTap(),
+              onTapOutside: () => onTapOutside(),
             ),
     );
   }

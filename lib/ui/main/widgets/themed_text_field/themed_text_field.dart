@@ -11,6 +11,9 @@ class ThemedTextField extends StatelessWidget {
     this.obscureText = false,
     this.onObscureTap,
     this.focusNode,
+    this.textInputAction = TextInputAction.next,
+    this.keyboardType = TextInputType.text,
+    required this.onTapOutside,
   });
 
   final String labelText;
@@ -20,6 +23,9 @@ class ThemedTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final bool obscureText;
   final VoidCallback? onObscureTap;
+  final TextInputAction textInputAction;
+  final TextInputType keyboardType;
+  final VoidCallback onTapOutside;
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +33,19 @@ class ThemedTextField extends StatelessWidget {
       controller: controller,
       focusNode: focusNode,
       obscureText: obscureText,
+      textInputAction: textInputAction,
+      keyboardType: keyboardType,
+      onTapOutside: (_) => onTapOutside(),
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: SizedBox.square(
           dimension: 55,
           child: prefixIcon,
         ),
-        //? мб надо убирать, если нет возможности скрывать
+        //TODO? мб надо убирать, если нет возможности скрывать
         suffixIcon: SizedBox.square(
           dimension: 55,
-          //? мб надо использовать не его
+          //TODO? мб надо использовать не его
           child: IconButton(
             onPressed: onObscureTap,
             icon: suffixIcon ?? const SizedBox.shrink(),

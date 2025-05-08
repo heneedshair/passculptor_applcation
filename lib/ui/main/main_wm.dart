@@ -39,7 +39,13 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onDrawerTap(BuildContext context);
 
+  FocusNode get loginFocusNode;
+
+  FocusNode get websiteFocusNode;
+
   FocusNode get keywordFocusNode;
+
+  void onTapOutsideField();
 
   BuildContext get context;
 
@@ -348,4 +354,17 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     await model.deleteKeyword(enteredKeyword);
     await _initDrawer();
   }
+
+  final _loginFocusNode = FocusNode();
+
+  @override
+  FocusNode get loginFocusNode => _loginFocusNode;
+
+  final _websiteFocusNode = FocusNode();
+
+  @override
+  FocusNode get websiteFocusNode => _websiteFocusNode;
+
+  @override
+  void onTapOutsideField() => FocusManager.instance.primaryFocus?.unfocus();
 }

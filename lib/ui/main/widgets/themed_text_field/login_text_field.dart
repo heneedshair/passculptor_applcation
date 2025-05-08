@@ -9,11 +9,13 @@ class LoginTextField extends StatelessWidget {
     required this.isLoginObscuredListenable,
     required this.loginController,
     required this.onObscureLoginTap,
+    required this.onTapOutside,
   });
 
   final ValueNotifier<EntityState<bool>> isLoginObscuredListenable;
   final TextEditingController loginController;
   final VoidCallback onObscureLoginTap;
+  final VoidCallback onTapOutside;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class LoginTextField extends StatelessWidget {
               controller: loginController,
               obscureText: isLoginObscured,
               onObscureTap: () => onObscureLoginTap(),
+              onTapOutside: () => onTapOutside(),
             ),
     );
   }

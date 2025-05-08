@@ -20,6 +20,7 @@ class LoginTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      //TODO инкапсулировать в wm
       onLongPress: () => showDialog(
         context: context,
         builder: (_) => ConfirmationDialog(

@@ -45,12 +45,15 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                       isLoginObscuredListenable: wm.isLoginObscuredListenable,
                       loginController: wm.loginController,
                       onObscureLoginTap: () => wm.onObscureLoginTap(),
+                      onTapOutside: wm.onTapOutsideField,
                     ),
                     const SizedBox(height: 15),
                     ThemedTextField(
                       labelText: 'Название сайта',
                       prefixIcon: const Icon(Icons.web_asset),
                       controller: wm.wordController,
+                      focusNode: wm.websiteFocusNode,
+                      onTapOutside: wm.onTapOutsideField,
                     ),
                     const SizedBox(height: 15),
                     KeyTextField(
@@ -58,6 +61,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                       keyController: wm.keyController,
                       focusNode: wm.keywordFocusNode,
                       onObscureKeyTap: () => wm.onObscureKeyTap(),
+                      onTapOutside: wm.onTapOutsideField,
                     ),
                     const SizedBox(height: 5),
                     MiddleBarWidget(
