@@ -72,7 +72,6 @@ class MainScreenModel extends IMainScreenModel {
     Keyword keyword,
   ) async {
     int keywordIndex = _getKeywordIndex(keywords, keyword);
-    print('index --- $keywordIndex');
     if (keywordIndex != -1) {
       await websites.putAt(keywordIndex, keyword); // Обновляем существующее
     } else {

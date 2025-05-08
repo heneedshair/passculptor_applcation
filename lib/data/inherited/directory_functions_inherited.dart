@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
+typedef DirectFuncs = DirectoryFunctionsInherited;
+
 class DirectoryFunctionsInherited extends InheritedWidget {
   final VoidCallback onClearAllTap;
 

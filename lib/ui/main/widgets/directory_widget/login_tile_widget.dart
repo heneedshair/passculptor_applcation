@@ -24,7 +24,7 @@ class LoginTileWidget extends StatelessWidget {
         context: context,
         builder: (_) => ConfirmationDialog(
           onConfirmTap: () =>
-              DirectoryFunctionsInherited.read(context)?.onLoginLongPress(
+              DirectFuncs.read(context)?.onLoginLongPress(
             enteredLogin: login.username,
             enteredKeyword: parentKeyword.name,
           ),

@@ -3,7 +3,6 @@ import 'package:code_generator_app/data/inherited/directory_functions_inherited.
 import 'package:code_generator_app/ui/main/widgets/directory_widget/keyword_tile_widget.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DirectoryDrawerWidget extends StatelessWidget {
   const DirectoryDrawerWidget({
@@ -47,8 +46,7 @@ class DirectoryDrawerWidget extends StatelessWidget {
                   ),
           ),
           TextButton(
-            onPressed: () =>
-                context.read<DirectoryFunctionsInherited>().onClearAllTap(),
+            onPressed: () => DirectFuncs.read(context)?.onClearAllTap(),
             child: const Text(
               'Удалить все',
               style: TextStyle(color: Colors.red),

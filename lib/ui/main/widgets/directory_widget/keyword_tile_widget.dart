@@ -19,7 +19,7 @@ class KeywordTileWidget extends StatelessWidget {
       onLongPress: () => showDialog(
         context: context,
         builder: (_) => ConfirmationDialog(
-          onConfirmTap: () => DirectoryFunctionsInherited.read(context)
+          onConfirmTap: () => DirectFuncs.read(context)
               ?.onKeywordLongPress(keyword.name),
         ),
       ),

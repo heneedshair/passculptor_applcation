@@ -20,14 +20,14 @@ class WebsiteTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomDismissibleWidget(
       onDismissed: (_) =>
-          DirectoryFunctionsInherited.read(context)?.onDeleteWebsite(
+          DirectFuncs.read(context)?.onDeleteWebsite(
         enteredWebsite: website,
         enteredLogin: parentLogin.username,
         enteredKeyword: parentKeyword.name,
       ),
       child: InkWell(
         onLongPress: () {},
-        onTap: () => DirectoryFunctionsInherited.read(context)?.onWebsiteTap(
+        onTap: () => DirectFuncs.read(context)?.onWebsiteTap(
           enteredKeyword: parentKeyword.name,
           enteredLogin: parentLogin.username,
           enteredWebsite: website,

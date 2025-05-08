@@ -27,11 +27,20 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
         minimum: const EdgeInsets.symmetric(horizontal: 25),
         child: ListView(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(18),
-              child: Text(
-                'Алгоритм создания пароля:',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            Padding(
+              padding: const EdgeInsets.all(18),
+              child: RichText(
+                text: const TextSpan(
+                  text: 'Алгоритм ',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  children: [
+                    TextSpan(
+                      text: 'создания',
+                      style: TextStyle(color: AppColors.lightPrimaryColor),
+                    ),
+                    TextSpan(text: ' пароля:'),
+                  ],
+                ),
               ),
             ),
             AlgorithmDropdownWidget(

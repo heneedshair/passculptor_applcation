@@ -86,9 +86,8 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
       drawerEdgeDragWidth: MediaQuery.of(wm.context).size.width,
       onEndDrawerChanged: (isDrawerOpened) =>
           wm.onDrawerChanged(isDrawerOpened),
-      //TODO удалить провайдер из зависимостей
       //TODO мб есть смысл просто сделать из DirectoryDrawerWidget Inherited
-      endDrawer: DirectoryFunctionsInherited(
+      endDrawer: DirectFuncs(
         onClearAllTap: () => wm.onClearAllTap(),
         onDeleteWebsite: wm.onDeleteWebsite,
         onWebsiteTap: wm.onWebsiteTap,

@@ -119,7 +119,12 @@ class AppTheme {
     listTileTheme: const ListTileThemeData(
       iconColor: AppColors.grayColor,
     ),
-    dialogTheme: const DialogThemeData(backgroundColor: AppColors.appBarColor),
+    /*
+        DIALOG
+    */
+    dialogTheme: const DialogThemeData(
+      backgroundColor: AppColors.appBarColor,
+    ),
   );
 }
 
