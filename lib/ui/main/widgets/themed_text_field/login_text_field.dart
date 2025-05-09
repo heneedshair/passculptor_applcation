@@ -1,15 +1,16 @@
+import 'package:code_generator_app/data/inherited/text_fields_functions_inherited.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:code_generator_app/ui/widgets/decorations/themed_input_decoration.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
+//TODO объединить с keytextfield
 class LoginTextField extends StatelessWidget {
   const LoginTextField({
     super.key,
     required this.isLoginObscuredListenable,
     required this.loginController,
     required this.onObscureLoginTap,
-    required this.onTapOutside,
     required this.focusNode,
     required this.onFieldSubmitted,
   });
@@ -18,7 +19,6 @@ class LoginTextField extends StatelessWidget {
   final TextEditingController loginController;
   final FocusNode focusNode;
   final VoidCallback onObscureLoginTap;
-  final VoidCallback onTapOutside;
   final VoidCallback onFieldSubmitted;
 
   @override
@@ -43,7 +43,8 @@ class LoginTextField extends StatelessWidget {
               focusNode: focusNode,
               obscureText: isLoginObscured,
               textInputAction: TextInputAction.next,
-              onTapOutside: (_) => onTapOutside(),
+              onTapOutside: (_) =>
+                  FieldsFuncs.read(context)?.onTapOutsideField(),
               onFieldSubmitted: (_) => onFieldSubmitted(),
             ),
     );

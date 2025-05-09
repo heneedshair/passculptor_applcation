@@ -82,7 +82,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   Future<void> onKeywordLongPress(String enteredKeyword);
 
-  void onNextTapFronLogin();
+  void onNextTapFromLogin();
 }
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
@@ -321,7 +321,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       _showSnackBar('Введите ключевое слово');
     } else {
       onEnterTap();
-      _showSnackBar('Пароль успешно создан!');
     }
     _scaffoldKey.currentState?.closeEndDrawer();
   }
@@ -371,5 +370,5 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   void onTapOutsideField() => FocusManager.instance.primaryFocus?.unfocus();
 
   @override
-  void onNextTapFronLogin() => _websiteFocusNode.requestFocus();
+  void onNextTapFromLogin() => _websiteFocusNode.requestFocus();
 }

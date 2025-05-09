@@ -51,8 +51,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                         loginController: wm.loginController,
                         focusNode: wm.loginFocusNode,
                         onObscureLoginTap: () => wm.onObscureLoginTap(),
-                        onTapOutside: () => wm.onTapOutsideField(),
-                        onFieldSubmitted: () => wm.onNextTapFronLogin(),
+                        onFieldSubmitted: () => wm.onNextTapFromLogin(),
                       ),
                       const SizedBox(height: 15),
                       TextFormField(
@@ -71,7 +70,6 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                         keyController: wm.keyController,
                         focusNode: wm.keywordFocusNode,
                         onObscureKeyTap: () => wm.onObscureKeyTap(),
-                        onTapOutside: () => wm.onTapOutsideField(),
                         onFieldSubmitted: () => wm.onEnterTap(),
                       ),
                       const SizedBox(height: 5),

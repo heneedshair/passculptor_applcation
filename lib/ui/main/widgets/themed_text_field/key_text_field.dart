@@ -1,3 +1,4 @@
+import 'package:code_generator_app/data/inherited/text_fields_functions_inherited.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:code_generator_app/ui/widgets/decorations/themed_input_decoration.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -10,7 +11,6 @@ class KeyTextField extends StatelessWidget {
     required this.keyController,
     required this.onObscureKeyTap,
     required this.focusNode,
-    required this.onTapOutside,
     required this.onFieldSubmitted,
   });
 
@@ -18,7 +18,6 @@ class KeyTextField extends StatelessWidget {
   final TextEditingController keyController;
   final FocusNode focusNode;
   final VoidCallback onObscureKeyTap;
-  final VoidCallback onTapOutside;
   final VoidCallback onFieldSubmitted;
 
   @override
@@ -43,7 +42,8 @@ class KeyTextField extends StatelessWidget {
               focusNode: focusNode,
               obscureText: isKeyObscured,
               textInputAction: TextInputAction.done,
-              onTapOutside: (_) => onTapOutside(),
+              onTapOutside: (_) =>
+                  FieldsFuncs.read(context)?.onTapOutsideField(),
               onFieldSubmitted: (_) => onFieldSubmitted(),
             ),
     );
