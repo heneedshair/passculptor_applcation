@@ -5,14 +5,13 @@ import 'package:code_generator_app/data/inherited/text_fields_functions_inherite
 import 'package:code_generator_app/ui/main/main_wm.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_widget/directory_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/enter_button.dart';
-import 'package:code_generator_app/ui/main/widgets/themed_text_field/key_text_field.dart';
-import 'package:code_generator_app/ui/main/widgets/themed_text_field/login_text_field.dart';
+import 'package:code_generator_app/ui/main/widgets/themed_text_field/obscurable_text_field.dart';
+import 'package:code_generator_app/ui/main/widgets/themed_text_field/themed_text_field.dart';
 import 'package:code_generator_app/ui/main/widgets/top_buttons_bar_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/middle_bar_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/password_field.dart';
 import 'package:code_generator_app/ui/main/widgets/text_large_title_widget.dart';
 import 'package:code_generator_app/ui/widgets/decorations/logo.dart';
-import 'package:code_generator_app/ui/widgets/decorations/themed_input_decoration.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +34,6 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
             Center(
               child: SingleChildScrollView(
                 reverse: true,
-                //TODO прокидывать методы через inherited
                 child: FieldsFuncs(
                   onTapOutsideField: () => wm.onTapOutsideField(),
                   child: Column(
@@ -46,31 +44,33 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                       SizedBox(
                         height: MediaQuery.of(wm.context).size.height / 10,
                       ),
-                      LoginTextField(
-                        isLoginObscuredListenable: wm.isLoginObscuredListenable,
-                        loginController: wm.loginController,
+                      ObscurableTextField(
+                        listenableEntityState: wm.isLoginObscuredListenable,
+                        controller: wm.loginController,
                         focusNode: wm.loginFocusNode,
-                        onObscureLoginTap: () => wm.onObscureLoginTap(),
+                        onObscureTap: () => wm.onObscureLoginTap(),
                         onFieldSubmitted: () => wm.onNextTapFromLogin(),
+                        labelText: 'Логин (необязательно)',
+                        prefixIcon: const Icon(Icons.account_circle_rounded),
                       ),
                       const SizedBox(height: 15),
-                      TextFormField(
-                        decoration: const ThemedInputDecoration(
-                          labelText: 'Название сайта',
-                          prefixIcon: Icon(Icons.web_asset),
-                        ),
+                      ThemedTextField(
                         controller: wm.wordController,
                         focusNode: wm.websiteFocusNode,
                         textInputAction: TextInputAction.next,
-                        onTapOutside: (_) => wm.onTapOutsideField(),
+                        labelText: 'Сайт/приложение',
+                        prefixIcon: const Icon(Icons.web_asset_rounded),
                       ),
                       const SizedBox(height: 15),
-                      KeyTextField(
-                        isKeyObscuredListenable: wm.isKeyObscuredListenable,
-                        keyController: wm.keyController,
+                      ObscurableTextField(
+                        listenableEntityState: wm.isKeywordObscuredListenable,
+                        controller: wm.keywordController,
                         focusNode: wm.keywordFocusNode,
-                        onObscureKeyTap: () => wm.onObscureKeyTap(),
+                        onObscureTap: () => wm.onObscureKeywordTap(),
                         onFieldSubmitted: () => wm.onEnterTap(),
+                        labelText: 'Ключевое слово',
+                        prefixIcon: const Icon(Icons.key_rounded),
+                        textInputAction: TextInputAction.done,
                       ),
                       const SizedBox(height: 5),
                       MiddleBarWidget(

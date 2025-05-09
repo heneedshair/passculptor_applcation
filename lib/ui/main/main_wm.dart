@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   TextEditingController get wordController;
 
-  TextEditingController get keyController;
+  TextEditingController get keywordController;
 
   TextEditingController get loginController;
 
@@ -27,13 +27,13 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onObscureLoginTap();
 
-  void onObscureKeyTap();
+  void onObscureKeywordTap();
 
   void onSaveCheckTap();
 
   ValueNotifier<EntityState<bool>> get isLoginObscuredListenable;
 
-  ValueNotifier<EntityState<bool>> get isKeyObscuredListenable;
+  ValueNotifier<EntityState<bool>> get isKeywordObscuredListenable;
 
   ValueNotifier<EntityState<bool>> get doSaveListenable;
 
@@ -144,7 +144,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   final _keyController = TextEditingController();
 
   @override
-  TextEditingController get keyController => _keyController;
+  TextEditingController get keywordController => _keyController;
 
   final _loginController = TextEditingController();
 
@@ -201,7 +201,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }
 
   @override
-  void onObscureKeyTap() {
+  void onObscureKeywordTap() {
     _isKeyObscuredEntity.content(!_isKeyObscuredEntity.value.data!);
     _prefs.setBool('isKeyObscured', _isKeyObscuredEntity.value.data!);
   }
@@ -215,7 +215,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   final _isKeyObscuredEntity = EntityStateNotifier<bool>();
 
   @override
-  ValueNotifier<EntityState<bool>> get isKeyObscuredListenable =>
+  ValueNotifier<EntityState<bool>> get isKeywordObscuredListenable =>
       _isKeyObscuredEntity;
 
   @override
