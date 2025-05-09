@@ -43,7 +43,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                       const Logo(),
                       const TextLargeTitleWidget(),
                       SizedBox(
-                        height: MediaQuery.of(wm.context).size.height / 11,
+                        height: MediaQuery.of(wm.context).size.height / 10,
                       ),
                       ObscurableTextField(
                         listenableEntityState: wm.isLoginObscuredListenable,
