@@ -19,8 +19,7 @@ class WebsiteTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomDismissibleWidget(
-      onDismissed: (_) =>
-          DirectFuncs.read(context)?.onDeleteWebsite(
+      onDismissed: (_) => DirectFuncs.read(context)?.onDeleteWebsite(
         enteredWebsite: website,
         enteredLogin: parentLogin.username,
         enteredKeyword: parentKeyword.name,
@@ -33,10 +32,7 @@ class WebsiteTileWidget extends StatelessWidget {
           enteredWebsite: website,
         ),
         child: ListTile(
-          title: Text(
-            website,
-            style: const TextStyle(fontWeight: FontWeight.w500),
-          ),
+          title: Text(website),
           leading: const Icon(Icons.web_asset_rounded, size: 20),
           minLeadingWidth: 0,
         ),

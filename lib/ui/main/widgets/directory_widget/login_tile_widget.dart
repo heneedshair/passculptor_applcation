@@ -5,7 +5,6 @@ import 'package:code_generator_app/ui/main/widgets/directory_widget/website_tile
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-//TODO объединить два шаблона в один с keywordWidget
 class LoginTileWidget extends StatelessWidget {
   const LoginTileWidget({
     super.key,
