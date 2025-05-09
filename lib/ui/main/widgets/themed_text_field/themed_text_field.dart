@@ -52,11 +52,6 @@ class ThemedTextField extends StatelessWidget {
           ),
         ),
       ),
-      style: const TextStyle(
-        color: AppColors.white,
-        fontSize: 17,
-        fontWeight: FontWeight.w500,
-      ),
     );
   }
 }

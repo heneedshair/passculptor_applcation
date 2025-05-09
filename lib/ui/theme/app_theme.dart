@@ -20,6 +20,16 @@ class AppTheme {
       foregroundColor: AppColors.white,
     ),
     /*
+        TEXT
+    */
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(
+        color: AppColors.white,
+        fontSize: 17,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+    /*
         INPUT DECORATION
     */
     inputDecorationTheme: InputDecorationTheme(
