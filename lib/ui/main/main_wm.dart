@@ -84,6 +84,14 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   Future<void> onKeywordLongPress(String enteredKeyword);
 
   void onNextTapFromLogin();
+
+  GlobalKey<FormState> get formKey;
+
+  String? loginValidator(String? value);
+
+  String? websiteValidator(String? value);
+
+  String? keywordValidator(String? value);
 }
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
@@ -159,6 +167,10 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
   @override
   void onEnterTap() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
     result.value = _codeGenerator.generate(
       _wordController.text,
       _keyController.text,
@@ -388,4 +400,40 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
   @override
   void onNextTapFromLogin() => _websiteFocusNode.requestFocus();
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  GlobalKey<FormState> get formKey => _formKey;
+
+  @override
+  String? loginValidator(String? value) {
+    if (value!.isNotEmpty && value.length < 4) {
+      return 'Логин короче 4 символов (и не пуст)';
+    }
+
+    return null;
+  }
+
+  @override
+  String? websiteValidator(String? value) {
+    if (value!.isEmpty) return 'Поле не должно быть пустым';
+
+    if (value.length < 4) return 'Сайт должен быть не менее 4 символов';
+
+    return null;
+  }
+
+  @override
+  String? keywordValidator(String? value) {
+    if (value!.isEmpty) return 'Поле не должно быть пустым';
+
+    if (value.length < 8) return 'Слово должно быть не менее 8 символов';
+
+    if (model.containsSameKeyword(value)) {
+      return 'Уже есть слово, начинающееся на эту букву';
+    }
+
+    return null;
+  }
 }

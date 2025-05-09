@@ -22,12 +22,17 @@ abstract interface class IMainScreenModel extends ElementaryModel {
   });
 
   Future<void> deleteKeyword(String enteredKeyword);
+
+  /// Проверяет, содержится ли список слово, которое начинается с такой же буквы, 
+  /// но имеет другую длину.
+  bool containsSameKeyword(String enteredKeyword);
 }
 
 class MainScreenModel extends IMainScreenModel {
   MainScreenModel();
 
   //TODO мб стоит заинитить список и box
+  //TODO заменить случай, когда вместо '' кранится 'Без логина'
 
   @override
   Future<void> addWebsite(
@@ -151,5 +156,17 @@ class MainScreenModel extends IMainScreenModel {
       return k.name == enteredKeyword;
     });
     await websites.deleteAt(keywordIndex);
+  }
+
+  @override
+  bool containsSameKeyword(String enteredKeyword) {
+    final websites = Hive.box<Keyword>('websites');
+    final List<Keyword> keywords = websites.values.toList();
+
+    return keywords.any(
+      (keyword) =>
+          keyword.name[0] == enteredKeyword[0] &&
+          keyword.name.length != enteredKeyword.length,
+    );
   }
 }

@@ -14,6 +14,7 @@ class ThemedTextField extends StatelessWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.isObscured = false,
+    required this.validator,
   });
 
   final String? labelText;
@@ -24,6 +25,7 @@ class ThemedTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final VoidCallback? onFieldSubmitted;
   final bool isObscured;
+  final Function(String? value) validator;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +42,12 @@ class ThemedTextField extends StatelessWidget {
       onTapOutside: (_) => FieldsFuncs.read(context)?.onTapOutsideField(),
       onFieldSubmitted: (_) =>
           onFieldSubmitted == null ? {} : onFieldSubmitted!(),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp(r'[a-z]')),
       ],
+      validator: (value) => validator(value),
+      //TODO добавить errorText при вводе некорректных символов
     );
   }
 }
