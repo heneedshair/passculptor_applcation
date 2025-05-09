@@ -1,5 +1,5 @@
-import 'package:code_generator_app/ui/main/widgets/themed_text_field/themed_text_field.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/widgets/decorations/themed_input_decoration.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -9,15 +9,17 @@ class KeyTextField extends StatelessWidget {
     required this.isKeyObscuredListenable,
     required this.keyController,
     required this.onObscureKeyTap,
-    this.focusNode,
+    required this.focusNode,
     required this.onTapOutside,
+    required this.onFieldSubmitted,
   });
 
   final ValueNotifier<EntityState<bool>> isKeyObscuredListenable;
   final TextEditingController keyController;
-  final FocusNode? focusNode;
+  final FocusNode focusNode;
   final VoidCallback onObscureKeyTap;
   final VoidCallback onTapOutside;
+  final VoidCallback onFieldSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +27,24 @@ class KeyTextField extends StatelessWidget {
       listenableEntityState: isKeyObscuredListenable,
       builder: (_, isKeyObscured) => isKeyObscured == null
           ? const SizedBox.shrink()
-          : ThemedTextField(
-              labelText: 'Ключевое слово',
-              prefixIcon: const Icon(Icons.key_rounded),
-              suffixIcon: Icon(
-                Icons.remove_red_eye_rounded,
-                color: isKeyObscured ? null : AppColors.white,
+          : TextFormField(
+              decoration: ThemedInputDecoration(
+                labelText: 'Ключевое слово',
+                prefixIcon: const Icon(Icons.key_rounded),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.remove_red_eye_rounded,
+                    color: isKeyObscured ? null : AppColors.white,
+                  ),
+                  onPressed: () => onObscureKeyTap(),
+                ),
               ),
               controller: keyController,
               focusNode: focusNode,
               obscureText: isKeyObscured,
               textInputAction: TextInputAction.done,
-              onObscureTap: () => onObscureKeyTap(),
-              onTapOutside: () => onTapOutside(),
+              onTapOutside: (_) => onTapOutside(),
+              onFieldSubmitted: (_) => onFieldSubmitted(),
             ),
     );
   }

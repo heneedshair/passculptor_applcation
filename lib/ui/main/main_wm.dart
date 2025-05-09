@@ -81,6 +81,8 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   ValueNotifier<EntityState<String>> get encryptionAlgorithmListenable;
 
   Future<void> onKeywordLongPress(String enteredKeyword);
+
+  void onNextTapFronLogin();
 }
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
@@ -367,4 +369,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
   @override
   void onTapOutsideField() => FocusManager.instance.primaryFocus?.unfocus();
+
+  @override
+  void onNextTapFronLogin() => _websiteFocusNode.requestFocus();
 }

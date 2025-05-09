@@ -10,8 +10,8 @@ import 'package:code_generator_app/ui/main/widgets/top_buttons_bar_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/middle_bar_widget.dart';
 import 'package:code_generator_app/ui/main/widgets/password_field.dart';
 import 'package:code_generator_app/ui/main/widgets/text_large_title_widget.dart';
-import 'package:code_generator_app/ui/main/widgets/themed_text_field/themed_text_field.dart';
 import 'package:code_generator_app/ui/widgets/decorations/logo.dart';
+import 'package:code_generator_app/ui/widgets/decorations/themed_input_decoration.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +33,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
             ),
             Center(
               child: SingleChildScrollView(
+                //TODO прокидывать методы через inherited
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -44,16 +45,21 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                     LoginTextField(
                       isLoginObscuredListenable: wm.isLoginObscuredListenable,
                       loginController: wm.loginController,
+                      focusNode: wm.loginFocusNode,
                       onObscureLoginTap: () => wm.onObscureLoginTap(),
-                      onTapOutside: wm.onTapOutsideField,
+                      onTapOutside: () => wm.onTapOutsideField(),
+                      onFieldSubmitted: () => wm.onNextTapFronLogin(),
                     ),
                     const SizedBox(height: 15),
-                    ThemedTextField(
-                      labelText: 'Название сайта',
-                      prefixIcon: const Icon(Icons.web_asset),
+                    TextFormField(
+                      decoration: const ThemedInputDecoration(
+                        labelText: 'Название сайта',
+                        prefixIcon: Icon(Icons.web_asset),
+                      ),
                       controller: wm.wordController,
                       focusNode: wm.websiteFocusNode,
-                      onTapOutside: wm.onTapOutsideField,
+                      textInputAction: TextInputAction.next,
+                      onTapOutside: (_) => wm.onTapOutsideField(),
                     ),
                     const SizedBox(height: 15),
                     KeyTextField(
@@ -61,7 +67,8 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                       keyController: wm.keyController,
                       focusNode: wm.keywordFocusNode,
                       onObscureKeyTap: () => wm.onObscureKeyTap(),
-                      onTapOutside: wm.onTapOutsideField,
+                      onTapOutside: () => wm.onTapOutsideField(),
+                      onFieldSubmitted: () => wm.onEnterTap(),
                     ),
                     const SizedBox(height: 5),
                     MiddleBarWidget(
