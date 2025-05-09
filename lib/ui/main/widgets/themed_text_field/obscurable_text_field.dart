@@ -17,13 +17,13 @@ class ObscurableTextField extends StatelessWidget {
   });
 
   final ValueNotifier<EntityState<bool>> listenableEntityState;
-  final TextEditingController controller;
-  final FocusNode focusNode;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
   final VoidCallback onObscureTap;
-  final VoidCallback onFieldSubmitted;
-  final String labelText;
-  final Widget prefixIcon;
-  final TextInputAction textInputAction;
+  final VoidCallback? onFieldSubmitted;
+  final String? labelText;
+  final Widget? prefixIcon;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
