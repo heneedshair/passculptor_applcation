@@ -1,7 +1,6 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
 import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
-import 'package:code_generator_app/ui/main/widgets/confirmation_dialog.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_widget/website_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -20,16 +19,9 @@ class LoginTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      //TODO инкапсулировать в wm
-      onLongPress: () => showDialog(
-        context: context,
-        builder: (_) => ConfirmationDialog(
-          onConfirmTap: () =>
-              DirectFuncs.read(context)?.onLoginLongPress(
-            enteredLogin: login.username,
-            enteredKeyword: parentKeyword.name,
-          ),
-        ),
+      onLongPress: () => DirectFuncs.read(context)?.onLoginLongPress(
+        enteredLogin: login.username,
+        enteredKeyword: parentKeyword.name,
       ),
       child: ExpansionTile(
         initiallyExpanded: true,

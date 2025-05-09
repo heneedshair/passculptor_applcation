@@ -1,10 +1,10 @@
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class ConfirmationDialog extends StatelessWidget {
-  const ConfirmationDialog({
+class ConfirmDialog extends StatelessWidget {
+  const ConfirmDialog({
     super.key,
-    this.content = 'Вы уверены, что хотите удалить этот элемент?',
+    required this.content,
     required this.onConfirmTap,
     this.icon = Icons.question_mark_rounded,
   });

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:code_generator_app/common/notifications/app_notification.dart/app_notification.dart';
 import 'package:code_generator_app/common/objects/code_generator/hmac_code_generator.dart';
 import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
@@ -276,8 +277,14 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
   @override
   Future<void> onClearAllTap() async {
-    await model.clearAll();
-    await _initDrawer();
+    await AppNotification.showConfirmDialog(
+      context: context,
+      content: 'Вы уверены что хотите очистить список?',
+      onConfirmTap: () async {
+        await model.clearAll();
+        await _initDrawer();
+      },
+    );
   }
 
   @override
@@ -330,11 +337,16 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     required String enteredLogin,
     required String enteredKeyword,
   }) async {
-    await model.deleteLogin(
-      enteredLogin: enteredLogin,
-      enteredKeyword: enteredKeyword,
+    await AppNotification.showConfirmDialog(
+      context: context,
+      onConfirmTap: () async {
+        await model.deleteLogin(
+          enteredLogin: enteredLogin,
+          enteredKeyword: enteredKeyword,
+        );
+        await _initDrawer();
+      },
     );
-    await _initDrawer();
   }
 
   @override
@@ -352,8 +364,13 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
   @override
   Future<void> onKeywordLongPress(String enteredKeyword) async {
-    await model.deleteKeyword(enteredKeyword);
-    await _initDrawer();
+    await AppNotification.showConfirmDialog(
+      context: context,
+      onConfirmTap: () async {
+        await model.deleteKeyword(enteredKeyword);
+        await _initDrawer();
+      },
+    );
   }
 
   final _loginFocusNode = FocusNode();

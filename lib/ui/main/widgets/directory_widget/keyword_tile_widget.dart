@@ -1,6 +1,5 @@
 import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
-import 'package:code_generator_app/ui/main/widgets/confirmation_dialog.dart';
 import 'package:code_generator_app/ui/main/widgets/directory_widget/login_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +15,8 @@ class KeywordTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      //TODO инкапсулировать в wm
-      onLongPress: () => showDialog(
-        context: context,
-        builder: (_) => ConfirmationDialog(
-          onConfirmTap: () => DirectFuncs.read(context)
-              ?.onKeywordLongPress(keyword.name),
-        ),
-      ),
+      onLongPress: () =>
+          DirectFuncs.read(context)?.onKeywordLongPress(keyword.name),
       child: ExpansionTile(
         initiallyExpanded: true,
         title: Text(
