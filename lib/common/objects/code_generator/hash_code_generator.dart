@@ -12,7 +12,7 @@ class HashCodeGenerator implements ICodeGenerator {
   static const _allChars = _upper + _lower + _digits + _specials;
 
   @override
-  EncryptionType get encryptionType => EncryptionType.hashMethod;
+  EncryptionType get type => EncryptionType.hashMethod;
 
   @override
   String generate(

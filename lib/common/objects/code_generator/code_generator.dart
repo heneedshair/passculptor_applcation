@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class CodeGenerator implements ICodeGenerator {
   @override
-  EncryptionType get encryptionType => EncryptionType.builtIn;
+  EncryptionType get type => EncryptionType.builtIn;
 
   @override
   String generate(

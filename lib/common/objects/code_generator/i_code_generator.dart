@@ -9,7 +9,7 @@ abstract interface class ICodeGenerator {
     String enteredLogin,
   );
 
-  EncryptionType get encryptionType;
+  EncryptionType get type;
 
   factory ICodeGenerator(String? encryptionType) {
     switch (encryptionType) {
@@ -23,5 +23,5 @@ abstract interface class ICodeGenerator {
   }
 
   @override
-  String toString() => encryptionType.name;
+  String toString() => type.name;
 }
