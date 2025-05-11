@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/ui/settings/settings_wm.dart';
 import 'package:code_generator_app/ui/settings/widgets/algorithm_dropdown_widget.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
@@ -7,8 +8,12 @@ import 'package:flutter/material.dart';
 
 @RoutePage()
 class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
-  const SettingsScreen({super.key})
-      : super(defaultSettingsScreenWidgetModelFactory);
+  final EncryptionType initialEncryptionType;
+
+  const SettingsScreen({
+    super.key,
+    required this.initialEncryptionType,
+  }) : super(defaultSettingsScreenWidgetModelFactory);
 
   @override
   Widget build(ISettingsScreenWidgetModel wm) {
@@ -46,7 +51,7 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
             AlgorithmDropdownWidget(
               encryptionAlgorithmList: wm.encryptionAlgorithmList,
               onEncryptionAlgorithmChanged: wm.onEncryptionAlgorithmChanged,
-              encryptionAlgorithmListenable: wm.encryptionAlgorithmListenable,
+              encryptionAlgorithmListenable: wm.encryptionTypeListenable,
             ),
             const SizedBox(height: 18),
             const Divider(color: AppColors.grayColor),

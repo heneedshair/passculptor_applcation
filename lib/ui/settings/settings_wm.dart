@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/ui/settings/settings_model.dart';
 import 'package:code_generator_app/ui/settings/settings_screen.dart';
 import 'package:elementary/elementary.dart';
@@ -11,7 +12,7 @@ abstract interface class ISettingsScreenWidgetModel implements IWidgetModel {
 
   void onEncryptionAlgorithmChanged(String? selectedValue);
 
-  ValueNotifier<EntityState<String>> get encryptionAlgorithmListenable;
+  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable;
 
   void onBackTap();
 }
@@ -35,15 +36,14 @@ class SettingsScreenWidgetModel
   Future<void> initWidgetModel() async {
     _prefs = await SharedPreferences.getInstance();
 
-    _initEntityStates();
+    _encryptionTypeEntity.content(widget.initialEncryptionType);
 
     super.initWidgetModel();
   }
 
-  static const _encryptionAlgorithmList = ['Встроенный', 'Hash-метод'];
-
   @override
-  List<String> get encryptionAlgorithmList => _encryptionAlgorithmList;
+  List<String> get encryptionAlgorithmList =>
+      EncryptionType.values.map((value) => value.name).toList();
 
   @override
   void onEncryptionAlgorithmChanged(String? selectedValue) {
@@ -51,23 +51,16 @@ class SettingsScreenWidgetModel
       'encryptionAlgorithm',
       selectedValue!,
     );
-    _encryptionAlgorithmEntity.content(selectedValue);
+
+    _encryptionTypeEntity.content(EncryptionType.create(selectedValue));
   }
 
-  final _encryptionAlgorithmEntity = EntityStateNotifier<String>();
+  final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
 
   @override
-  ValueNotifier<EntityState<String>> get encryptionAlgorithmListenable =>
-      _encryptionAlgorithmEntity;
-
-  void _initEntityStates() {
-    _encryptionAlgorithmEntity.loading();
-
-    _encryptionAlgorithmEntity
-        .content(_prefs.getString('encryptionAlgorithm') ?? 'Встроенный');
-  }
+  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable =>
+      _encryptionTypeEntity;
 
   @override
-  void onBackTap() =>
-      AutoRouter.of(context).maybePop(_encryptionAlgorithmEntity.value.data);
+  void onBackTap() => AutoRouter.of(context).maybePop();
 }

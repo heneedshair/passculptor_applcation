@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/ui/main/main_screen.dart';
 import 'package:code_generator_app/ui/settings/settings_screen.dart';
+import 'package:flutter/rendering.dart';
 
 part 'app_router.gr.dart';
 

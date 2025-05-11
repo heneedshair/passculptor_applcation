@@ -350,7 +350,9 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
 
   @override
   Future<void> onSettingsTap() async {
-    await AutoRouter.of(context).push(const SettingsRoute());
+    await AutoRouter.of(context).push(SettingsRoute(
+      initialEncryptionType: _encryptionTypeEntity.value.data!,
+    ));
 
     _initEncryptionAlgorithm();
   }
