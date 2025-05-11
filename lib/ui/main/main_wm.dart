@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/notifications/app_notification.dart/app_notification.dart';
-import 'package:code_generator_app/common/objects/code_generator/hmac_code_generator.dart';
+import 'package:code_generator_app/common/objects/code_generator/hash_code_generator.dart';
 import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
@@ -138,7 +138,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     //TODO Заменить на enum
     switch (_encryptionAlgorithmEntity.value.data) {
       case 'Hash-метод':
-        _codeGenerator = _codeGenerator = HmacCodeGenerator();
+        _codeGenerator = _codeGenerator = HashCodeGenerator();
       case 'Встроенный':
       default:
         _codeGenerator = _codeGenerator = CodeGenerator();

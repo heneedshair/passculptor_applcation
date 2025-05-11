@@ -143,12 +143,4 @@ class CodeGenerator implements ICodeGenerator {
 
     return totalCoast == 0 ? 10 : totalCoast;
   }
-
-  @override
-  void test(String word) {
-    for (String keyWord in AppData.testList) {
-      generate(word, keyWord, '');
-      debugPrint('');
-    }
-  }
 }

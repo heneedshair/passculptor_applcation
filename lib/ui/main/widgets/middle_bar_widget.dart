@@ -26,6 +26,7 @@ class MiddleBarWidget extends StatelessWidget {
             builder: (_, doSave) => doSave == null
                 ? const SizedBox.shrink()
                 : Row(
+                  mainAxisSize: MainAxisSize.min,
                     children: [
                       //TODO Заменить чекер на свой виджет, сделать все элегантнее
                       SizedBox.square(
