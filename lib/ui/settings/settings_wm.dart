@@ -29,7 +29,6 @@ class SettingsScreenWidgetModel
     implements ISettingsScreenWidgetModel {
   SettingsScreenWidgetModel(super.model);
 
-  //TODO обойтись тут без вызова sharedprefs, а только входными параметрами
   late final SharedPreferences _prefs;
 
   @override
