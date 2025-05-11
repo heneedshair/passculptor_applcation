@@ -1,10 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/notifications/app_notification.dart/app_notification.dart';
-import 'package:code_generator_app/common/objects/code_generator/hash_code_generator.dart';
+import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
-import 'package:code_generator_app/common/objects/code_generator/code_generator.dart';
 import 'package:code_generator_app/ui/main/main_model.dart';
 import 'package:code_generator_app/ui/main/main_screen.dart';
 import 'package:elementary/elementary.dart';
@@ -79,7 +78,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onSettingsTap();
 
-  ValueNotifier<EntityState<String>> get encryptionTypeListenable;
+  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable;
 
   Future<void> onKeywordLongPress(String enteredKeyword);
 
@@ -126,23 +125,11 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   void _initEncryptionAlgorithm() {
     _encryptionTypeEntity.loading();
 
-    final String result =
-        _prefs.getString('encryptionAlgorithm') ?? 'Встроенный';
+    //TODO переименовать encryptionAlgorithm => encryptionType
+    final String? encryptionType = _prefs.getString('encryptionAlgorithm');
+    _codeGenerator = ICodeGenerator(encryptionType);
 
-    _encryptionTypeEntity.content(result);
-
-    _initCodeGenerator();
-  }
-
-  void _initCodeGenerator() {
-    //TODO Заменить на enum
-    switch (_encryptionTypeEntity.value.data) {
-      case 'Hash-метод':
-        _codeGenerator = _codeGenerator = HashCodeGenerator();
-      case 'Встроенный':
-      default:
-        _codeGenerator = _codeGenerator = CodeGenerator();
-    }
+    _encryptionTypeEntity.content(_codeGenerator.type);
   }
 
   final _wordController = TextEditingController();
@@ -368,10 +355,10 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     _initEncryptionAlgorithm();
   }
 
-  final _encryptionTypeEntity = EntityStateNotifier<String>();
+  final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
 
   @override
-  ValueNotifier<EntityState<String>> get encryptionTypeListenable =>
+  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable =>
       _encryptionTypeEntity;
 
   @override
