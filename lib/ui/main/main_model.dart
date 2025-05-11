@@ -32,15 +32,12 @@ class MainScreenModel extends IMainScreenModel {
   MainScreenModel();
 
   //TODO мб стоит заинитить список и box
-  //TODO заменить случай, когда вместо '' кранится 'Без логина'
-
   @override
   Future<void> addWebsite(
     String enteredLogin,
     String enteredWebsite,
     String enteredKeyword,
   ) async {
-    if (enteredLogin == '') enteredLogin = 'Без логина';
     enteredKeyword = _maskString(enteredKeyword);
 
     final websites = Hive.box<Keyword>('websites');

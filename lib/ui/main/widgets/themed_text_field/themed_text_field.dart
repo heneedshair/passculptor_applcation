@@ -42,7 +42,7 @@ class ThemedTextField extends StatelessWidget {
       onTapOutside: (_) => FieldsFuncs.read(context)?.onTapOutsideField(),
       onFieldSubmitted: (_) =>
           onFieldSubmitted == null ? {} : onFieldSubmitted!(),
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      // autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp(r'[a-z]')),
       ],

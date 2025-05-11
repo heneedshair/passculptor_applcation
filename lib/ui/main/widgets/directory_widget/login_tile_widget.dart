@@ -26,7 +26,7 @@ class LoginTileWidget extends StatelessWidget {
         initiallyExpanded: true,
         childrenPadding: const EdgeInsets.only(left: 10),
         title: Text(
-          login.username,
+          login.username.isEmpty ? 'Без логина' : login.username,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
