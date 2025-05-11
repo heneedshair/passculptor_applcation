@@ -92,7 +92,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                         const SizedBox(height: 15),
                         EnterButton(
                           listenableEntityState:
-                              wm.encryptionAlgorithmListenable,
+                              wm.encryptionTypeListenable,
                           onEnterTap: () => wm.onEnterTap(),
                         ),
                         const SizedBox(height: 25),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
 import 'package:crypto/crypto.dart';
 
@@ -9,6 +10,9 @@ class HashCodeGenerator implements ICodeGenerator {
   static const _specials = '!@#\$%^&*()';
 
   static const _allChars = _upper + _lower + _digits + _specials;
+
+  @override
+  EncryptionType get encryptionType => EncryptionType.hashMethod;
 
   @override
   String generate(

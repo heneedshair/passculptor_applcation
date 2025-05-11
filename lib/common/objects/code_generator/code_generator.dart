@@ -1,11 +1,15 @@
 import 'dart:math';
 
 import 'package:code_generator_app/common/objects/code_generator/app_data.dart';
+import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/objects/code_generator/over_word.dart';
 import 'package:flutter/material.dart';
 
 class CodeGenerator implements ICodeGenerator {
+  @override
+  EncryptionType get encryptionType => EncryptionType.builtIn;
+
   @override
   String generate(
     String enteredWord,

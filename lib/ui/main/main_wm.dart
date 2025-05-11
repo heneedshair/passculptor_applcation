@@ -79,7 +79,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onSettingsTap();
 
-  ValueNotifier<EntityState<String>> get encryptionAlgorithmListenable;
+  ValueNotifier<EntityState<String>> get encryptionTypeListenable;
 
   Future<void> onKeywordLongPress(String enteredKeyword);
 
@@ -124,19 +124,19 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }
 
   void _initEncryptionAlgorithm() {
-    _encryptionAlgorithmEntity.loading();
+    _encryptionTypeEntity.loading();
 
     final String result =
         _prefs.getString('encryptionAlgorithm') ?? 'Встроенный';
 
-    _encryptionAlgorithmEntity.content(result);
+    _encryptionTypeEntity.content(result);
 
     _initCodeGenerator();
   }
 
   void _initCodeGenerator() {
     //TODO Заменить на enum
-    switch (_encryptionAlgorithmEntity.value.data) {
+    switch (_encryptionTypeEntity.value.data) {
       case 'Hash-метод':
         _codeGenerator = _codeGenerator = HashCodeGenerator();
       case 'Встроенный':
@@ -368,11 +368,11 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     _initEncryptionAlgorithm();
   }
 
-  final _encryptionAlgorithmEntity = EntityStateNotifier<String>();
+  final _encryptionTypeEntity = EntityStateNotifier<String>();
 
   @override
-  ValueNotifier<EntityState<String>> get encryptionAlgorithmListenable =>
-      _encryptionAlgorithmEntity;
+  ValueNotifier<EntityState<String>> get encryptionTypeListenable =>
+      _encryptionTypeEntity;
 
   @override
   Future<void> onKeywordLongPress(String enteredKeyword) async {
