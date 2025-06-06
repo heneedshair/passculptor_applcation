@@ -1,4 +1,4 @@
-import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/main/widgets/check_position_wirdget.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -29,27 +29,10 @@ class MiddleBarWidget extends StatelessWidget {
               listenableEntityState: doSaveListenable,
               builder: (_, doSave) => doSave == null
                   ? const SizedBox.shrink()
-                  : Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        //TODO Заменить чекер на свой виджет, сделать все элегантнее
-                        SizedBox.square(
-                          dimension: 24,
-                          child: Checkbox(
-                            value: doSave,
-                            onChanged: (_) => onSaveCheckTap(),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Сохранять',
-                          style: TextStyle(
-                            color:
-                                doSave ? AppColors.white : AppColors.grayColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                  : CheckPositionWirdget(
+                      label: 'Сохранять',
+                      onSaveCheckTap: onSaveCheckTap,
+                      doSave: doSave,
                     ),
             ),
           ),

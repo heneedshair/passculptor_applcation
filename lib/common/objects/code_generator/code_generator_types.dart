@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 enum EncryptionType {
-  builtIn('Встроенный'),
+  builtIn('Упрощенный'),
   hashMethod('Hash-метод');
 
   final String name;

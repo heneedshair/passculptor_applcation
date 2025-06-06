@@ -21,7 +21,7 @@ class ConfirmDialog extends StatelessWidget {
           Icon(
             icon,
             size: 38,
-            color: AppColors.backgroundColor,
+            color: AppColors.white,
           ),
           const SizedBox(width: 15),
           Expanded(

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
+import 'package:code_generator_app/ui/main/widgets/check_position_wirdget.dart';
 import 'package:code_generator_app/ui/settings/settings_wm.dart';
 import 'package:code_generator_app/ui/settings/widgets/algorithm_dropdown_widget.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
@@ -52,6 +53,22 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
               encryptionAlgorithmList: wm.encryptionAlgorithmList,
               onEncryptionAlgorithmChanged: wm.onEncryptionAlgorithmChanged,
               encryptionAlgorithmListenable: wm.encryptionTypeListenable,
+            ),
+            const SizedBox(height: 18),
+            const Divider(color: AppColors.grayColor),
+            const SizedBox(height: 18),
+            const Padding(
+              padding: EdgeInsets.only(left: 18),
+              child: Text(
+                'Функциональные параметры:',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+              ),
+            ),
+            const SizedBox(height: 18),
+            CheckPositionWirdget(
+              label: 'Копировать пароль автоматически',
+              onSaveCheckTap: () => {},
+              doSave: true,
             ),
             const SizedBox(height: 18),
             const Divider(color: AppColors.grayColor),
