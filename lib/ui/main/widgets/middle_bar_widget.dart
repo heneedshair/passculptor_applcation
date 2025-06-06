@@ -19,33 +19,39 @@ class MiddleBarWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        TextButton(
-          onPressed: () => onSaveCheckTap(),
-          child: EntityStateNotifierBuilder(
-            listenableEntityState: doSaveListenable,
-            builder: (_, doSave) => doSave == null
-                ? const SizedBox.shrink()
-                : Row(
-                  mainAxisSize: MainAxisSize.min,
-                    children: [
-                      //TODO Заменить чекер на свой виджет, сделать все элегантнее
-                      SizedBox.square(
-                        dimension: 24,
-                        child: Checkbox(
-                          value: doSave,
-                          onChanged: (_) => onSaveCheckTap(),
+        Tooltip(
+          preferBelow: false,
+          message:
+              'Включает/выключает сохранение вводимых данных после нажатия "Создать пароль" в боковой список',
+          child: TextButton(
+            onPressed: () => onSaveCheckTap(),
+            child: EntityStateNotifierBuilder(
+              listenableEntityState: doSaveListenable,
+              builder: (_, doSave) => doSave == null
+                  ? const SizedBox.shrink()
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //TODO Заменить чекер на свой виджет, сделать все элегантнее
+                        SizedBox.square(
+                          dimension: 24,
+                          child: Checkbox(
+                            value: doSave,
+                            onChanged: (_) => onSaveCheckTap(),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Сохранять',
-                        style: TextStyle(
-                          color: doSave ? AppColors.white : AppColors.grayColor,
-                          fontWeight: FontWeight.w500,
+                        const SizedBox(width: 8),
+                        Text(
+                          'Сохранять',
+                          style: TextStyle(
+                            color:
+                                doSave ? AppColors.white : AppColors.grayColor,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+            ),
           ),
         ),
         TextButton(
