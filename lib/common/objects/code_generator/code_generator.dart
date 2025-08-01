@@ -1,12 +1,21 @@
 import 'dart:math';
 
-import 'package:code_generator_app/app_data/app_data.dart';
-import 'package:code_generator_app/objects/over_word.dart';
+import 'package:code_generator_app/common/objects/code_generator/app_data.dart';
+import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
+import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
+import 'package:code_generator_app/common/objects/code_generator/over_word.dart';
 import 'package:flutter/material.dart';
 
-class CodeGenerator {
-  static String generate(
-      String enteredWord, String enteredKeyWord, String enteredLogin) {
+class CodeGenerator implements ICodeGenerator {
+  @override
+  EncryptionType get type => EncryptionType.builtIn;
+
+  @override
+  String generate(
+    String enteredWord,
+    String enteredKeyWord,
+    String enteredLogin,
+  ) {
     final OverWord word = OverWord(enteredWord.toLowerCase());
     final OverWord key = OverWord(
       '$enteredLogin${enteredKeyWord.toLowerCase()}',
@@ -137,13 +146,5 @@ class CodeGenerator {
     totalCoast = totalCoast % 10;
 
     return totalCoast == 0 ? 10 : totalCoast;
-  }
-
-  /// Протестировать слово на ключевые слова через консоль
-  static void test(String word) {
-    for (String keyWord in AppData.testList) {
-      generate(word, keyWord, '');
-      debugPrint('');
-    }
   }
 }

@@ -20,6 +20,16 @@ class AppTheme {
       foregroundColor: AppColors.white,
     ),
     /*
+        TEXT
+    */
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(
+        color: AppColors.white,
+        fontSize: 17,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+    /*
         INPUT DECORATION
     */
     inputDecorationTheme: InputDecorationTheme(
@@ -83,11 +93,16 @@ class AppTheme {
         SNACK BAR
     */
     snackBarTheme: const SnackBarThemeData(
-      backgroundColor: AppColors.appBarColor,
+      backgroundColor: AppColors.lightPrimaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),
+      ),
+      contentTextStyle: TextStyle(
+        fontSize: 14.5,
+        fontWeight: FontWeight.w500,
+        color: AppColors.backgroundColor,
       ),
     ),
     /*
@@ -102,7 +117,24 @@ class AppTheme {
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       circularTrackColor: AppColors.backgroundColor,
       color: AppColors.primaryColor,
-    )
+    ),
+    /*
+        EXPANSION TILE
+    */
+    expansionTileTheme: const ExpansionTileThemeData(),
+    dividerColor: AppColors.backgroundColor,
+    /*
+        LIST TILE
+    */
+    listTileTheme: const ListTileThemeData(
+      iconColor: AppColors.grayColor,
+    ),
+    /*
+        DIALOG
+    */
+    dialogTheme: const DialogThemeData(
+      backgroundColor: AppColors.appBarColor,
+    ),
   );
 }
 

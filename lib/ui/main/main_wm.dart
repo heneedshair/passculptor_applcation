@@ -1,17 +1,21 @@
-import 'package:code_generator_app/objects/code_generator.dart';
-import 'package:code_generator_app/objects/saved_json.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:code_generator_app/common/notifications/app_notification.dart/app_notification.dart';
+import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
+import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
+import 'package:code_generator_app/common/utils/navigation/app_router.dart';
+import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/ui/main/main_model.dart';
 import 'package:code_generator_app/ui/main/main_screen.dart';
-import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   TextEditingController get wordController;
 
-  TextEditingController get keyController;
+  TextEditingController get keywordController;
 
   TextEditingController get loginController;
 
@@ -21,28 +25,72 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onPasswordTap();
 
-  void onObscureKeyTap();
-
   void onObscureLoginTap();
 
-  ValueNotifier<bool> get isLoginObscured;
-
-  ValueNotifier<bool> get isKeyObscured;
-
-  void onDrawerTap(BuildContext context);
-
-  BuildContext get context;
-
-  ValueNotifier<bool> get doSave;
+  void onObscureKeywordTap();
 
   void onSaveCheckTap();
 
+  ValueNotifier<EntityState<bool>> get isLoginObscuredListenable;
+
+  ValueNotifier<EntityState<bool>> get isKeywordObscuredListenable;
+
+  ValueNotifier<EntityState<bool>> get doSaveListenable;
+
+  void onDrawerTap(BuildContext context);
+
+  FocusNode get loginFocusNode;
+
+  FocusNode get websiteFocusNode;
+
+  FocusNode get keywordFocusNode;
+
+  void onTapOutsideField();
+
+  BuildContext get context;
+
   void onGuideTap();
 
-  ValueNotifier<EntityState<Map<String, Set<String>>>>
-      get savedWebsitesListenable;
+  ValueNotifier<EntityState<List<Keyword>>> get savedKeywordsListenable;
 
   void onDrawerChanged(bool isDrawerOpened);
+
+  void onClearAllTap();
+
+  Future<void> onDeleteWebsite({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  });
+
+  void onWebsiteTap({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  });
+
+  Future<void> onLoginLongPress({
+    required String enteredLogin,
+    required String enteredKeyword,
+  });
+
+  GlobalKey<ScaffoldState> get scaffoldKey;
+
+  void onSettingsTap();
+
+  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable;
+
+  Future<void> onKeywordLongPress(String enteredKeyword);
+
+  void onNextTapFromLogin();
+
+  GlobalKey<FormState> get formKey;
+
+  String? loginValidator(String? value);
+
+  String? websiteValidator(String? value);
+
+  String? keywordValidator(String? value);
 }
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
@@ -56,6 +104,34 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     implements IMainScreenWidgetModel {
   MainScreenWidgetModel(super.model);
 
+  //TODO сделать через репозиторий в model
+  late final SharedPreferences _prefs;
+
+  late ICodeGenerator _codeGenerator;
+
+  @override
+  Future<void> initWidgetModel() async {
+    _savedKeywordsEntity.loading();
+
+    _prefs = await SharedPreferences.getInstance();
+
+    _initEntityStates();
+
+    _initEncryptionAlgorithm();
+
+    super.initWidgetModel();
+  }
+
+  void _initEncryptionAlgorithm() {
+    _encryptionTypeEntity.loading();
+
+    //TODO переименовать encryptionAlgorithm => encryptionType
+    final String? encryptionType = _prefs.getString('encryptionAlgorithm');
+    _codeGenerator = ICodeGenerator(encryptionType);
+
+    _encryptionTypeEntity.content(_codeGenerator.type);
+  }
+
   final _wordController = TextEditingController();
 
   @override
@@ -64,7 +140,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   final _keyController = TextEditingController();
 
   @override
-  TextEditingController get keyController => _keyController;
+  TextEditingController get keywordController => _keyController;
 
   final _loginController = TextEditingController();
 
@@ -77,75 +153,96 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   ValueNotifier<String> get result => _result;
 
   @override
-  Future<void> initWidgetModel() async {
-    _jsonWebsites = await SavedJSon.create('saved_passwords');
+  void onEnterTap() {
+    if (!_formKey.currentState!.validate()) {
+      result.value = 'Не удалось создать пароль';
+      return;
+    }
 
-    super.initWidgetModel();
-  }
-
-  @override
-  Future<void> onEnterTap() async {
-    result.value = CodeGenerator.generate(
+    result.value = _codeGenerator.generate(
       _wordController.text,
       _keyController.text,
       _loginController.text,
     );
 
-    if (doSave.value) {
-      _jsonWebsites.addPairToJson(
-        _keyController.text,
+    if (doSaveListenable.value.data!) {
+      model.addWebsite(
+        _loginController.text,
         _wordController.text,
+        _keyController.text,
       );
 
       needsDrawerUpdate = true;
     }
+
+    _setPasswordToClipboard();
+    _showSnackBar('Пароль успешно создан и скопирован!');
   }
 
   @override
-  void onPasswordTap() {
+  Future<void> onPasswordTap() async {
+    await _setPasswordToClipboard();
+    _showSnackBar('Пароль успешно скопирован!');
+  }
+
+  Future<void> _setPasswordToClipboard() async =>
+      await Clipboard.setData(ClipboardData(text: _result.value));
+
+  void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
-    Clipboard.setData(
-      ClipboardData(text: _result.value),
-    ).then(
-      (_) => ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Пароль успешно скопирован!',
-            style: TextStyle(color: AppColors.white),
-          ),
-        ),
-      ),
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
     );
   }
 
   @override
-  void onObscureKeyTap() => _isKeyObscured.value = !_isKeyObscured.value;
-
-  @override
-  void onObscureLoginTap() => _isLoginObscured.value = !_isLoginObscured.value;
-
-  final _isLoginObscured = ValueNotifier<bool>(true);
-
-  @override
-  ValueNotifier<bool> get isLoginObscured => _isLoginObscured;
-
-  final _isKeyObscured = ValueNotifier<bool>(true);
-
-  @override
-  ValueNotifier<bool> get isKeyObscured => _isKeyObscured;
-
-  @override
-  void onDrawerTap(BuildContext context) {
-    Scaffold.of(context).openEndDrawer();
+  void onObscureLoginTap() {
+    _isLoginObscuredEntity.content(!_isLoginObscuredEntity.value.data!);
+    _prefs.setBool('isLoginObscured', _isLoginObscuredEntity.value.data!);
   }
 
-  final _doSave = ValueNotifier<bool>(false);
+  @override
+  void onObscureKeywordTap() {
+    _isKeyObscuredEntity.content(!_isKeyObscuredEntity.value.data!);
+    _prefs.setBool('isKeyObscured', _isKeyObscuredEntity.value.data!);
+  }
+
+  final _isLoginObscuredEntity = EntityStateNotifier<bool>();
 
   @override
-  ValueNotifier<bool> get doSave => _doSave;
+  ValueNotifier<EntityState<bool>> get isLoginObscuredListenable =>
+      _isLoginObscuredEntity;
+
+  final _isKeyObscuredEntity = EntityStateNotifier<bool>();
 
   @override
-  void onSaveCheckTap() => _doSave.value = !_doSave.value;
+  ValueNotifier<EntityState<bool>> get isKeywordObscuredListenable =>
+      _isKeyObscuredEntity;
+
+  @override
+  void onDrawerTap(BuildContext context) =>
+      Scaffold.of(context).openEndDrawer();
+
+  final _doSaveEntity = EntityStateNotifier<bool>();
+
+  @override
+  ValueNotifier<EntityState<bool>> get doSaveListenable => _doSaveEntity;
+
+  @override
+  void onSaveCheckTap() {
+    _doSaveEntity.content(!_doSaveEntity.value.data!);
+    _prefs.setBool('doSave', _doSaveEntity.value.data!);
+  }
+
+  void _initEntityStates() {
+    _isLoginObscuredEntity.loading();
+    _isKeyObscuredEntity.loading();
+    _doSaveEntity.loading();
+
+    _isLoginObscuredEntity.content(_prefs.getBool('isLoginObscured') ?? false);
+    _isKeyObscuredEntity.content(_prefs.getBool('isKeyObscured') ?? true);
+    _doSaveEntity.content(_prefs.getBool('doSave') ?? true);
+  }
 
   @override
   void onGuideTap() {
@@ -160,25 +257,173 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }
 
   Future<void> _initDrawer() async {
-    _savedWebsitesEntity.loading();
-    await Future.delayed(const Duration(seconds: 2));
+    _savedKeywordsEntity.loading();
+    // await Future.delayed(const Duration(seconds: 1));
 
     try {
-      _savedWebsitesEntity.content(_jsonWebsites.jsonMap);
+      _savedKeywordsEntity.content(await model.keywordsList);
     } on Exception {
-      _savedWebsitesEntity.error();
+      _savedKeywordsEntity.error();
     }
-
-    needsDrawerUpdate = false;
   }
-
-  late final SavedJSon _jsonWebsites;
 
   bool needsDrawerUpdate = true;
 
-  final _savedWebsitesEntity = EntityStateNotifier<Map<String, Set<String>>>();
+  final _savedKeywordsEntity = EntityStateNotifier<List<Keyword>>();
 
   @override
-  ValueNotifier<EntityState<Map<String, Set<String>>>>
-      get savedWebsitesListenable => _savedWebsitesEntity;
+  ValueNotifier<EntityState<List<Keyword>>> get savedKeywordsListenable =>
+      _savedKeywordsEntity;
+
+  @override
+  Future<void> onClearAllTap() async {
+    await AppNotification.showConfirmDialog(
+      context: context,
+      content: 'Вы уверены что хотите очистить список?',
+      onConfirmTap: () async {
+        await model.clearAll();
+        await _initDrawer();
+      },
+    );
+  }
+
+  @override
+  Future<void> onDeleteWebsite({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) async {
+    await model.deleteWebsite(
+      enteredWebsite: enteredWebsite,
+      enteredLogin: enteredLogin,
+      enteredKeyword: enteredKeyword,
+    );
+    await _initDrawer();
+  }
+
+  final FocusNode _keywordFocusNode = FocusNode();
+
+  @override
+  FocusNode get keywordFocusNode => _keywordFocusNode;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
+
+  @override
+  Future<void> onWebsiteTap({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) async {
+    _loginController.text = enteredLogin;
+    _wordController.text = enteredWebsite;
+
+    if (_keyController.text.length != enteredKeyword.length ||
+        _keyController.text[0] != enteredKeyword[0]) {
+      _keyController.text = '';
+      _result.value = 'Здесь появится пароль';
+      _keywordFocusNode.requestFocus();
+      _showSnackBar('Введите ключевое слово');
+    } else {
+      onEnterTap();
+    }
+    _scaffoldKey.currentState?.closeEndDrawer();
+  }
+
+  @override
+  Future<void> onLoginLongPress({
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) async {
+    await AppNotification.showConfirmDialog(
+      context: context,
+      onConfirmTap: () async {
+        await model.deleteLogin(
+          enteredLogin: enteredLogin,
+          enteredKeyword: enteredKeyword,
+        );
+        await _initDrawer();
+      },
+    );
+  }
+
+  @override
+  Future<void> onSettingsTap() async {
+    await AutoRouter.of(context).push(SettingsRoute(
+      initialEncryptionType: _encryptionTypeEntity.value.data!,
+    ));
+
+    _initEncryptionAlgorithm();
+  }
+
+  final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
+
+  @override
+  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable =>
+      _encryptionTypeEntity;
+
+  @override
+  Future<void> onKeywordLongPress(String enteredKeyword) async {
+    await AppNotification.showConfirmDialog(
+      context: context,
+      onConfirmTap: () async {
+        await model.deleteKeyword(enteredKeyword);
+        await _initDrawer();
+      },
+    );
+  }
+
+  final _loginFocusNode = FocusNode();
+
+  @override
+  FocusNode get loginFocusNode => _loginFocusNode;
+
+  final _websiteFocusNode = FocusNode();
+
+  @override
+  FocusNode get websiteFocusNode => _websiteFocusNode;
+
+  @override
+  void onTapOutsideField() => FocusManager.instance.primaryFocus?.unfocus();
+
+  @override
+  void onNextTapFromLogin() => _websiteFocusNode.requestFocus();
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  GlobalKey<FormState> get formKey => _formKey;
+
+  @override
+  String? loginValidator(String? value) {
+    if (value!.isNotEmpty && value.length < 4) {
+      return 'Логин короче 4 символов (и не пуст)';
+    }
+
+    return null;
+  }
+
+  @override
+  String? websiteValidator(String? value) {
+    if (value!.isEmpty) return 'Поле не должно быть пустым';
+
+    if (value.length < 4) return 'Сайт должен быть не менее 4 символов';
+
+    return null;
+  }
+
+  @override
+  String? keywordValidator(String? value) {
+    if (value!.isEmpty) return 'Поле не должно быть пустым';
+
+    if (value.length < 8) return 'Слово должно быть не менее 8 символов';
+
+    if (model.containsSameKeyword(value)) {
+      return 'Уже есть слово, начинающееся на эту букву';
+    }
+
+    return null;
+  }
 }

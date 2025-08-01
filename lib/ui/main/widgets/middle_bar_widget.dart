@@ -1,4 +1,5 @@
-import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/main/widgets/check_position_wirdget.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
 class MiddleBarWidget extends StatelessWidget {
@@ -6,10 +7,10 @@ class MiddleBarWidget extends StatelessWidget {
     super.key,
     required this.onSaveCheckTap,
     required this.onGuideTap,
-    required this.doSave,
+    required this.doSaveListenable,
   });
 
-  final ValueNotifier<bool> doSave;
+  final ValueNotifier<EntityState<bool>> doSaveListenable;
   final VoidCallback onSaveCheckTap;
   final VoidCallback onGuideTap;
 
@@ -18,33 +19,22 @@ class MiddleBarWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        TextButton(
-          onPressed: () => onSaveCheckTap(),
-          child: Row(
-            children: [
-              //TODO Заменить чекер на свой виджет, сделать все элегантнее
-              ValueListenableBuilder(
-                valueListenable: doSave,
-                builder: (_, doSave, __) => SizedBox.square(
-                  dimension: 24,
-                  child: Checkbox(
-                    value: doSave,
-                    onChanged: (_) => onSaveCheckTap(),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              ValueListenableBuilder(
-                valueListenable: doSave,
-                builder: (_, doSave, __) => Text(
-                  'Сохранять',
-                  style: TextStyle(
-                    color: doSave ? AppColors.white : AppColors.grayColor,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
+        Tooltip(
+          preferBelow: false,
+          message:
+              'Включает/выключает сохранение вводимых данных после нажатия "Создать пароль" в боковой список',
+          child: TextButton(
+            onPressed: () => onSaveCheckTap(),
+            child: EntityStateNotifierBuilder(
+              listenableEntityState: doSaveListenable,
+              builder: (_, doSave) => doSave == null
+                  ? const SizedBox.shrink()
+                  : CheckPositionWirdget(
+                      label: 'Сохранять',
+                      onSaveCheckTap: onSaveCheckTap,
+                      doSave: doSave,
+                    ),
+            ),
           ),
         ),
         TextButton(
