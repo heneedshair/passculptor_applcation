@@ -155,6 +155,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   @override
   void onEnterTap() {
     if (!_formKey.currentState!.validate()) {
+      result.value = 'Не удалось создать пароль';
       return;
     }
 

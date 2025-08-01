@@ -13,7 +13,7 @@ abstract interface class ICodeGenerator {
 
   factory ICodeGenerator(String? encryptionType) {
     switch (encryptionType) {
-      case 'Встроенный':
+      case 'Упрощенный':
         return CodeGenerator();
       case 'Hash-метод':
       case null:
