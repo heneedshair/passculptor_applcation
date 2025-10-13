@@ -92,8 +92,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                         ),
                         const SizedBox(height: 15),
                         EnterButton(
-                          listenableEntityState:
-                              wm.encryptionTypeListenable,
+                          listenableEntityState: wm.encryptionTypeListenable,
                           onEnterTap: () => wm.onEnterTap(),
                         ),
                         const SizedBox(height: 25),
@@ -107,9 +106,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
         ),
       ),
       drawerEdgeDragWidth: MediaQuery.of(wm.context).size.width,
-      onEndDrawerChanged: (isDrawerOpened) =>
-          wm.onDrawerChanged(isDrawerOpened),
-      //TODO мб есть смысл просто сделать из DirectoryDrawerWidget Inherited
+      onEndDrawerChanged: (isDrawerOpened) => wm.onDrawerChanged(isDrawerOpened),
       endDrawer: DirectFuncs(
         onClearAllTap: () => wm.onClearAllTap(),
         onDeleteWebsite: wm.onDeleteWebsite,
