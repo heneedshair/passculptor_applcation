@@ -3,8 +3,8 @@ import 'package:code_generator_app/ui/widgets/decorations/themed_input_decoratio
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ThemedTextField extends StatelessWidget {
-  const ThemedTextField({
+class AppTextField extends StatelessWidget {
+  const AppTextField({
     super.key,
     this.labelText,
     this.prefixIcon,

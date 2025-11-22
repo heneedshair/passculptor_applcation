@@ -33,7 +33,10 @@ class WebsiteTileWidget extends StatelessWidget {
         ),
         child: ListTile(
           title: Text(website),
-          leading: const Icon(Icons.web_asset_rounded, size: 20),
+          leading: const Icon(
+            Icons.web_asset_rounded,
+            size: 20,
+          ),
           minLeadingWidth: 0,
         ),
       ),
