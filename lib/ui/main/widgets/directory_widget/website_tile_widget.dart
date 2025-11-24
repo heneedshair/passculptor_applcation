@@ -32,6 +32,7 @@ class WebsiteTileWidget extends StatelessWidget {
           enteredWebsite: website,
         ),
         child: ListTile(
+          contentPadding: const EdgeInsets.only(left: 16 + 20 + 10),
           title: Text(website),
           leading: const Icon(
             Icons.web_asset_rounded,

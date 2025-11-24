@@ -40,6 +40,10 @@ class DirectoryDrawerWidget extends StatelessWidget {
                 onPressed: () {},
               ),
               IconButton(
+                icon: const Icon(Icons.info_outline_rounded),
+                onPressed: () {},
+              ),
+              IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: DirectFuncs.read(context)?.onClearAllTap,
               ),
@@ -47,7 +51,7 @@ class DirectoryDrawerWidget extends StatelessWidget {
             title: const Text('Сайты'),
           ),
           const SliverToBoxAdapter(
-            child: SizedBox(height: 10),
+            child: SizedBox(height: 15),
           ),
           EntityStateNotifierBuilder(
             listenableEntityState: listenableEntityState,
@@ -68,12 +72,15 @@ class DirectoryDrawerWidget extends StatelessWidget {
                     padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
                     sliver: SliverList.separated(
                       itemCount: keywords.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 10),
+                      separatorBuilder: (context, index) => const SizedBox(height: 15),
                       itemBuilder: (_, index) => KeywordTileWidget(
                         keyword: keywords[index],
                       ),
                     ),
                   ),
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 25),
           ),
         ],
       ),

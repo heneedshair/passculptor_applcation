@@ -12,6 +12,10 @@ class KeywordTileWidget extends StatelessWidget {
 
   final Keyword keyword;
 
+  static final defaultShape = RoundedRectangleBorder(
+    borderRadius: BorderRadiusGeometry.circular(20),
+  );
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -20,12 +24,8 @@ class KeywordTileWidget extends StatelessWidget {
       child: ExpansionTile(
         backgroundColor: AppColors.appBarColor,
         collapsedBackgroundColor: AppColors.appBarColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(20),
-        ),
-        collapsedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(20),
-        ),
+        shape: defaultShape,
+        collapsedShape: defaultShape,
         initiallyExpanded: true,
         title: Text(
           keyword.name,
@@ -34,23 +34,48 @@ class KeywordTileWidget extends StatelessWidget {
             fontWeight: FontWeight.w800,
           ),
         ),
-        subtitle: const Text('Ключевое слово'),
         trailing: const Icon(Icons.key_rounded),
+        subtitle: const Text('Ключевое слово'),
         children: [
           Container(
-            padding: const EdgeInsets.only(left: 30),
             color: AppColors.backgroundColor,
             child: Column(
-              children: keyword.logins
-                  .map((login) => LoginTileWidget(
-                        login: login,
-                        parentKeyword: keyword,
-                      ))
-                  .toList(),
+              children: _generateLogins(),
             ),
           ),
         ],
       ),
     );
+  }
+
+  List<Widget> _generateLogins() {
+    final widgets = <Widget>[];
+
+    for (int i = 0; i < keyword.logins.length; i++) {
+      widgets.add(
+        LoginTileWidget(
+          login: keyword.logins[i],
+          parentKeyword: keyword,
+        ),
+      );
+      
+      final isLast = i == keyword.logins.length - 1;
+      
+      widgets.add(
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLast ? 9 : 30,
+          ),
+          child: Divider(
+            thickness: isLast ? 5 : 2,
+            height: isLast ? 5 : 2,
+            color: AppColors.appBarColor,
+            radius: BorderRadius.circular(20),
+          ),
+        ),
+      );
+    }
+
+    return widgets;
   }
 }

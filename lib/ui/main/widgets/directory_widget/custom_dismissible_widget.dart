@@ -14,16 +14,22 @@ class CustomDismissibleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dismissible(
       background: Container(
-        color: Colors.red,
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(20),
+        ),
         alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 25),
-        child: const Icon(Icons.delete_forever_rounded),
+        padding: const EdgeInsets.only(right: 24),
+        child: const Icon(Icons.delete_rounded),
       ),
       //TODO мб надо поменять на другой ключ
       key: UniqueKey(),
       direction: DismissDirection.endToStart,
       onDismissed: onDismissed,
-      child: child,
+      child: ClipPath(
+        clipper: const ShapeBorderClipper(shape: StadiumBorder()),
+        child: child,
+      ),
     );
   }
 }
