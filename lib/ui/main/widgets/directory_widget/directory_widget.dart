@@ -48,7 +48,10 @@ class DirectoryDrawerWidget extends StatelessWidget {
                 onPressed: DirectFuncs.read(context)?.onClearAllTap,
               ),
             ],
-            title: const Text('Сайты'),
+            title: const Text(
+              'Сайты',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
           ),
           const SliverToBoxAdapter(
             child: SizedBox(height: 15),
