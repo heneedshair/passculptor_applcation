@@ -19,7 +19,7 @@ class LoginTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onLongPress: () => DirectFuncs.read(context)?.onLoginLongPress(
-        enteredLogin: login.username,
+        enteredLogin: login.username.isEmpty ? 'Без логина' : login.username,
         enteredKeyword: parentKeyword.name,
       ),
       child: ExpansionTile(

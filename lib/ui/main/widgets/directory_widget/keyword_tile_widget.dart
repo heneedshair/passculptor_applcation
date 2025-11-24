@@ -15,9 +15,17 @@ class KeywordTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onLongPress: () =>
-          DirectFuncs.read(context)?.onKeywordLongPress(keyword.name),
+      borderRadius: BorderRadius.circular(20),
+      onLongPress: () => DirectFuncs.read(context)?.onKeywordLongPress(keyword.name),
       child: ExpansionTile(
+        backgroundColor: AppColors.appBarColor,
+        collapsedBackgroundColor: AppColors.appBarColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(20),
+        ),
+        collapsedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(20),
+        ),
         initiallyExpanded: true,
         title: Text(
           keyword.name,
