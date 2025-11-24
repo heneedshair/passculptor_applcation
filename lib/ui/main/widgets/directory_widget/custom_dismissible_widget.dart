@@ -26,10 +26,7 @@ class CustomDismissibleWidget extends StatelessWidget {
       key: UniqueKey(),
       direction: DismissDirection.endToStart,
       onDismissed: onDismissed,
-      child: ClipPath(
-        clipper: const ShapeBorderClipper(shape: StadiumBorder()),
-        child: child,
-      ),
+      child: child,
     );
   }
 }
