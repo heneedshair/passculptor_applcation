@@ -1,4 +1,4 @@
-import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmDialog extends StatelessWidget {
@@ -21,7 +21,7 @@ class ConfirmDialog extends StatelessWidget {
           Icon(
             icon,
             size: 38,
-            color: AppColors.white,
+            color: context.colors.onPrimaryContainer,
           ),
           const SizedBox(width: 15),
           Expanded(
@@ -44,8 +44,8 @@ class ConfirmDialog extends StatelessWidget {
       ),
       actionsPadding: const EdgeInsets.symmetric(vertical: 0),
       actions: [
-        const Divider(
-          color: AppColors.backgroundColor,
+        Divider(
+          color: context.colors.surface,
           thickness: 1.2,
           height: 1.2,
         ),
@@ -58,9 +58,9 @@ class ConfirmDialog extends StatelessWidget {
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
-              const VerticalDivider(
+              VerticalDivider(
                 thickness: 1,
-                color: AppColors.backgroundColor,
+                color: context.colors.surface,
                 width: 1,
               ),
               Expanded(

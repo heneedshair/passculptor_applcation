@@ -1,4 +1,4 @@
-import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class CheckPositionWirdget extends StatelessWidget {
@@ -30,7 +30,7 @@ class CheckPositionWirdget extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: doSave ? AppColors.white : AppColors.grayColor,
+            color: doSave ? context.colors.secondary : context.colors.secondaryFixedDim,
             fontWeight: FontWeight.w500,
           ),
         ),

@@ -1,4 +1,4 @@
-import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class Logo extends StatelessWidget {
@@ -8,14 +8,15 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
+    return Stack(
       alignment: AlignmentDirectional.topStart,
       children: [
-        Icon(Icons.lock,
-        color: AppColors.lightPrimaryColor,
-        size: 130,
+        Icon(
+          Icons.lock,
+          color: context.colors.primary,
+          size: 130,
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.only(left: 73, top: 83),
           child: Icon(
             Icons.restart_alt_rounded,

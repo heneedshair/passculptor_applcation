@@ -1,5 +1,5 @@
 import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
-import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -23,16 +23,16 @@ class AlgorithmDropdownWidget extends StatelessWidget {
           ? const SizedBox.shrink()
           : DropdownButtonHideUnderline(
               child: Container(
-                decoration: const ShapeDecoration(
-                  color: AppColors.appBarColor,
-                  shape: StadiumBorder(),
+                decoration: ShapeDecoration(
+                  color: context.colors.primaryContainer,
+                  shape: const StadiumBorder(),
                 ),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 5,
                 ),
                 child: DropdownButton<String>(
-                  dropdownColor: AppColors.appBarColor,
+                  dropdownColor: context.colors.primaryContainer,
                   isExpanded: true,
                   value: encryptionType.name,
                   items: encryptionAlgorithmList

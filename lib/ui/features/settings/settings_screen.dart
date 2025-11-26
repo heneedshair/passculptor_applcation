@@ -1,9 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
-import 'package:code_generator_app/ui/main/widgets/check_position_wirdget.dart';
-import 'package:code_generator_app/ui/settings/settings_wm.dart';
-import 'package:code_generator_app/ui/settings/widgets/algorithm_dropdown_widget.dart';
-import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/features/main/widgets/check_position_wirdget.dart';
+import 'package:code_generator_app/ui/features/settings/settings_wm.dart';
+import 'package:code_generator_app/ui/features/settings/widgets/algorithm_dropdown_widget.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 
@@ -36,18 +35,18 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
             Padding(
               padding: const EdgeInsets.all(18),
               child: RichText(
-                text: const TextSpan(
+                text: TextSpan(
                   text: 'Алгоритм ',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                   ),
                   children: [
                     TextSpan(
                       text: 'создания',
-                      style: TextStyle(color: AppColors.lightPrimaryColor),
+                      style: TextStyle(color: wm.colors.primary),
                     ),
-                    TextSpan(text: ' пароля:'),
+                    const TextSpan(text: ' пароля:'),
                   ],
                 ),
               ),
@@ -58,7 +57,7 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
               encryptionAlgorithmListenable: wm.encryptionTypeListenable,
             ),
             const SizedBox(height: 18),
-            const Divider(color: AppColors.grayColor),
+            Divider(color: wm.colors.secondaryFixedDim),
             const SizedBox(height: 18),
             const Padding(
               padding: EdgeInsets.only(left: 18),
@@ -77,13 +76,13 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
               doSave: true,
             ),
             const SizedBox(height: 18),
-            const Divider(color: AppColors.grayColor),
+            Divider(color: wm.colors.secondaryFixedDim),
             const SizedBox(height: 18),
-            const Center(
+            Center(
               child: Text(
                 'В будущем появится больше настроек...',
                 style: TextStyle(
-                  color: AppColors.grayColor,
+                  color: wm.colors.secondaryFixedDim,
                   fontSize: 15,
                 ),
               ),

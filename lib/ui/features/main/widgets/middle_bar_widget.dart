@@ -1,4 +1,4 @@
-import 'package:code_generator_app/ui/main/widgets/check_position_wirdget.dart';
+import 'package:code_generator_app/ui/features/main/widgets/check_position_wirdget.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 

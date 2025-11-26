@@ -1,7 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
-import 'package:code_generator_app/ui/settings/settings_model.dart';
-import 'package:code_generator_app/ui/settings/settings_screen.dart';
+import 'package:code_generator_app/ui/features/settings/settings_model.dart';
+import 'package:code_generator_app/ui/features/settings/settings_screen.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -15,17 +16,17 @@ abstract interface class ISettingsScreenWidgetModel implements IWidgetModel {
   ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable;
 
   void onBackTap();
+
+  ColorScheme get colors;
 }
 
-SettingsScreenWidgetModel defaultSettingsScreenWidgetModelFactory(
-    BuildContext context) {
+SettingsScreenWidgetModel defaultSettingsScreenWidgetModelFactory(BuildContext context) {
   return SettingsScreenWidgetModel(
     SettingsScreenModel(),
   );
 }
 
-class SettingsScreenWidgetModel
-    extends WidgetModel<SettingsScreen, ISettingsScreenModel>
+class SettingsScreenWidgetModel extends WidgetModel<SettingsScreen, ISettingsScreenModel>
     implements ISettingsScreenWidgetModel {
   SettingsScreenWidgetModel(super.model);
 
@@ -41,8 +42,7 @@ class SettingsScreenWidgetModel
   }
 
   @override
-  List<String> get encryptionAlgorithmList =>
-      EncryptionType.values.map((value) => value.name).toList();
+  List<String> get encryptionAlgorithmList => EncryptionType.values.map((value) => value.name).toList();
 
   @override
   void onEncryptionAlgorithmChanged(String? selectedValue) {
@@ -57,9 +57,11 @@ class SettingsScreenWidgetModel
   final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
 
   @override
-  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable =>
-      _encryptionTypeEntity;
+  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable => _encryptionTypeEntity;
 
   @override
   void onBackTap() => AutoRouter.of(context).maybePop();
+
+  @override
+  ColorScheme get colors => context.colors;
 }

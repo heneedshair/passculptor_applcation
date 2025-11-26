@@ -61,7 +61,11 @@ dev_dependencies:
 
 flutter_icons:
   android: true
-  ios: false
+  ios: true
+  windows:
+    generate: true
+  linux: true
+  macos: true
   image_path: "assets/icon.png"
 
 # For information on the generic Dart part of this file, see the
