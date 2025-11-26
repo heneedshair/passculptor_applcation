@@ -25,7 +25,7 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
         leading: IconButton(
-          onPressed: () => wm.onBackTap(),
+          onPressed: wm.onBackTap,
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
       ),
@@ -38,7 +38,10 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
               child: RichText(
                 text: const TextSpan(
                   text: 'Алгоритм ',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
                   children: [
                     TextSpan(
                       text: 'создания',
@@ -61,13 +64,16 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
               padding: EdgeInsets.only(left: 18),
               child: Text(
                 'Функциональные параметры:',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             const SizedBox(height: 18),
             CheckPositionWirdget(
               label: 'Копировать пароль автоматически',
-              onSaveCheckTap: () => {},
+              onSaveCheckTap: () {},
               doSave: true,
             ),
             const SizedBox(height: 18),
@@ -76,7 +82,10 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
             const Center(
               child: Text(
                 'В будущем появится больше настроек...',
-                style: TextStyle(color: AppColors.grayColor, fontSize: 15),
+                style: TextStyle(
+                  color: AppColors.grayColor,
+                  fontSize: 15,
+                ),
               ),
             ),
           ],

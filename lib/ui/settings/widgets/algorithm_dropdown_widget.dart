@@ -13,39 +13,39 @@ class AlgorithmDropdownWidget extends StatelessWidget {
 
   final Function(String? selectedValue) onEncryptionAlgorithmChanged;
   final List<String> encryptionAlgorithmList;
-  final ValueNotifier<EntityState<EncryptionType>>
-      encryptionAlgorithmListenable;
+  final ValueNotifier<EntityState<EncryptionType>> encryptionAlgorithmListenable;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.appBarColor,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 5,
-      ),
-      child: EntityStateNotifierBuilder(
-        listenableEntityState: encryptionAlgorithmListenable,
-        builder: (_, encryptionType) => encryptionType == null
-            ? const SizedBox.shrink()
-            : DropdownButtonHideUnderline(
+    return EntityStateNotifierBuilder(
+      listenableEntityState: encryptionAlgorithmListenable,
+      builder: (_, encryptionType) => encryptionType == null
+          ? const SizedBox.shrink()
+          : DropdownButtonHideUnderline(
+              child: Container(
+                decoration: const ShapeDecoration(
+                  color: AppColors.appBarColor,
+                  shape: StadiumBorder(),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 5,
+                ),
                 child: DropdownButton<String>(
+                  dropdownColor: AppColors.appBarColor,
                   isExpanded: true,
                   value: encryptionType.name,
-                  items: encryptionAlgorithmList.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                  items: encryptionAlgorithmList
+                      .map((value) => DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          ))
+                      .toList(),
                   onChanged: onEncryptionAlgorithmChanged,
-                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                  borderRadius: const BorderRadius.all(Radius.circular(25)),
                 ),
               ),
-      ),
+            ),
     );
   }
 }

@@ -19,12 +19,14 @@ class LoginTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onLongPress: () => DirectFuncs.read(context)?.onLoginLongPress(
-        enteredLogin: login.username,
+        enteredLogin: login.username.isEmpty ? 'Без логина' : login.username,
         enteredKeyword: parentKeyword.name,
       ),
       child: ExpansionTile(
+        backgroundColor: AppColors.backgroundColor,
+        collapsedBackgroundColor: AppColors.backgroundColor,
+        tilePadding: const EdgeInsets.only(left: 16 + 20, right: 24),
         initiallyExpanded: true,
-        childrenPadding: const EdgeInsets.only(left: 10),
         title: Text(
           login.username.isEmpty ? 'Без логина' : login.username,
           style: const TextStyle(

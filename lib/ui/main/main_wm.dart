@@ -51,7 +51,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onGuideTap();
 
-  ValueNotifier<EntityState<List<Keyword>>> get savedKeywordsListenable;
+  EntityValueListenable<List<Keyword>> get savedKeywordsListenable;
 
   void onDrawerChanged(bool isDrawerOpened);
 
@@ -272,7 +272,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   final _savedKeywordsEntity = EntityStateNotifier<List<Keyword>>();
 
   @override
-  ValueNotifier<EntityState<List<Keyword>>> get savedKeywordsListenable =>
+  EntityValueListenable<List<Keyword>> get savedKeywordsListenable =>
       _savedKeywordsEntity;
 
   @override
@@ -339,6 +339,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }) async {
     await AppNotification.showConfirmDialog(
       context: context,
+      content: 'Вы уверены что хотите удалить логин $enteredLogin?',
       onConfirmTap: () async {
         await model.deleteLogin(
           enteredLogin: enteredLogin,
@@ -368,6 +369,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   Future<void> onKeywordLongPress(String enteredKeyword) async {
     await AppNotification.showConfirmDialog(
       context: context,
+      content: 'Вы уверены что хотите удалить слово $enteredKeyword?',
       onConfirmTap: () async {
         await model.deleteKeyword(enteredKeyword);
         await _initDrawer();
