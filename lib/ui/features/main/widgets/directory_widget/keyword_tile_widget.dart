@@ -1,7 +1,7 @@
 import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/login_tile_widget.dart';
-import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class KeywordTileWidget extends StatelessWidget {
@@ -22,8 +22,8 @@ class KeywordTileWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       onLongPress: () => DirectFuncs.read(context)?.onKeywordLongPress(keyword.name),
       child: ExpansionTile(
-        backgroundColor: AppColors.appBarColor,
-        collapsedBackgroundColor: AppColors.appBarColor,
+        backgroundColor: context.colors.primaryContainer,
+        collapsedBackgroundColor: context.colors.primaryContainer,
         shape: defaultShape,
         collapsedShape: defaultShape,
         initiallyExpanded: true,
@@ -39,9 +39,9 @@ class KeywordTileWidget extends StatelessWidget {
         children: [
           // TODO убрать контейнер
           Container(
-            color: AppColors.surface,
+            color: context.colors.surface,
             child: Column(
-              children: _generateLogins(),
+              children: _generateLogins(context),
             ),
           ),
         ],
@@ -49,7 +49,7 @@ class KeywordTileWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _generateLogins() {
+  List<Widget> _generateLogins(BuildContext context) {
     final widgets = <Widget>[];
 
     for (int i = 0; i < keyword.logins.length; i++) {
@@ -70,7 +70,7 @@ class KeywordTileWidget extends StatelessWidget {
           child: Divider(
             thickness: isLast ? 5 : 2,
             height: isLast ? 5 : 2,
-            color: AppColors.appBarColor,
+            color: context.colors.primaryContainer,
             radius: BorderRadius.circular(20),
           ),
         ),

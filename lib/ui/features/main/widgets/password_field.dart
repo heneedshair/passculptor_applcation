@@ -1,3 +1,4 @@
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatelessWidget {
@@ -15,13 +16,13 @@ class PasswordField extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: result,
       builder: (_, result, __) => Material(
+        color: context.colors.primaryFixedDim,
         shape: const StadiumBorder(),
         clipBehavior: Clip.hardEdge,
         child: InkWell(
-          onTap: () => onTap(),
+          onTap: onTap,
           child: Container(
             width: double.maxFinite,
-            // alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 15),
             child: Center(
               child: Text(

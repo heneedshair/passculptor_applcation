@@ -25,7 +25,7 @@ class AppThemeData {
           error: colors.error,
           onError: colors.onError,
 
-          surface: colors.primary,
+          surface: colors.surface,
           onSurface: colors.onSurface,
         ),
 
@@ -128,7 +128,12 @@ class AppThemeData {
         ),
 
         /// EXPANSION TILE
-        expansionTileTheme: const ExpansionTileThemeData(),
+        expansionTileTheme: ExpansionTileThemeData(
+          backgroundColor: colors.surface,
+          collapsedBackgroundColor: colors.surface,
+          iconColor: colors.primaryFixedDim,
+          collapsedIconColor: colors.secondary,
+        ),
         dividerColor: colors.surface,
 
         /// LIST TILE

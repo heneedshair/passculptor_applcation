@@ -2,7 +2,7 @@ import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
 import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/website_tile_widget.dart';
-import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class LoginTileWidget extends StatelessWidget {
@@ -23,8 +23,6 @@ class LoginTileWidget extends StatelessWidget {
         enteredKeyword: parentKeyword.name,
       ),
       child: ExpansionTile(
-        backgroundColor: AppColors.surface,
-        collapsedBackgroundColor: AppColors.surface,
         tilePadding: const EdgeInsets.only(left: 16 + 20, right: 24),
         initiallyExpanded: true,
         title: Text(
@@ -34,9 +32,9 @@ class LoginTileWidget extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        subtitle: const Text(
+        subtitle: Text(
           'Логин',
-          style: TextStyle(color: AppColors.grayColor),
+          style: TextStyle(color: context.colors.secondaryFixedDim),
         ),
         trailing: const Icon(Icons.account_circle_rounded),
         children: login.websites

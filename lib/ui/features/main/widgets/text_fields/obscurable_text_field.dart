@@ -1,5 +1,5 @@
 import 'package:code_generator_app/ui/features/main/widgets/text_fields/app_text_field.dart';
-import 'package:code_generator_app/ui/theme/app_colors.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -39,11 +39,11 @@ class ObscurableTextField extends StatelessWidget {
               suffixIcon: IconButton(
                 icon: Icon(
                   Icons.remove_red_eye_rounded,
-                  color: isObscured ? null : AppColors.white,
+                  color: isObscured ? null : context.colors.secondary,
                 ),
 
-                /// TODO поменять на логтап, добавить уведомление для пользователя, почему так надо.
-                /// Сделать пункт в настройках + перенаправление к этому пункту из уведомления.
+                // TODO поменять на логтап, добавить уведомление для пользователя, почему так надо.
+                // TODO Сделать пункт в настройках + перенаправление к этому пункту из уведомления.
                 onPressed: onObscureTap,
               ),
               controller: controller,
