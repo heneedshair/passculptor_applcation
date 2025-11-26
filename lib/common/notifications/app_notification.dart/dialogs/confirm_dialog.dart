@@ -45,7 +45,7 @@ class ConfirmDialog extends StatelessWidget {
       actionsPadding: const EdgeInsets.symmetric(vertical: 0),
       actions: [
         const Divider(
-          color: AppColors.backgroundColor,
+          color: AppColors.surface,
           thickness: 1.2,
           height: 1.2,
         ),
@@ -60,7 +60,7 @@ class ConfirmDialog extends StatelessWidget {
               ),
               const VerticalDivider(
                 thickness: 1,
-                color: AppColors.backgroundColor,
+                color: AppColors.surface,
                 width: 1,
               ),
               Expanded(

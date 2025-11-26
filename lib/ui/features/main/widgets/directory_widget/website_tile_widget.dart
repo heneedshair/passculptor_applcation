@@ -26,7 +26,7 @@ class WebsiteTileWidget extends StatelessWidget {
         enteredKeyword: parentKeyword.name,
       ),
       child: Material(
-        color: AppColors.backgroundColor,
+        color: AppColors.surface,
         child: InkWell(
           onLongPress: () {},
           onTap: () => DirectFuncs.read(context)?.onWebsiteTap(

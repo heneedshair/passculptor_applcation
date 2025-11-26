@@ -23,8 +23,8 @@ class LoginTileWidget extends StatelessWidget {
         enteredKeyword: parentKeyword.name,
       ),
       child: ExpansionTile(
-        backgroundColor: AppColors.backgroundColor,
-        collapsedBackgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.surface,
+        collapsedBackgroundColor: AppColors.surface,
         tilePadding: const EdgeInsets.only(left: 16 + 20, right: 24),
         initiallyExpanded: true,
         title: Text(

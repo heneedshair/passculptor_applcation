@@ -39,7 +39,7 @@ class KeywordTileWidget extends StatelessWidget {
         children: [
           // TODO убрать контейнер
           Container(
-            color: AppColors.backgroundColor,
+            color: AppColors.surface,
             child: Column(
               children: _generateLogins(),
             ),

@@ -1,141 +1,146 @@
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class AppTheme {
-  static final ThemeData themeData = ThemeData(
-    colorScheme: const ColorScheme(
-      brightness: Brightness.dark,
-      primary: AppColors.primaryColor,
-      onPrimary: AppColors.white,
-      secondary: AppColors.backgroundColor,
-      onSecondary: AppColors.backgroundColor,
-      error: Colors.redAccent,
-      onError: Colors.redAccent,
-      surface: AppColors.primaryColor,
-      onSurface: AppColors.white,
-    ),
-    scaffoldBackgroundColor: AppColors.backgroundColor,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.appBarColor,
-      foregroundColor: AppColors.white,
-    ),
-    /*
-        TEXT
-    */
-    textTheme: const TextTheme(
-      bodyLarge: TextStyle(
-        color: AppColors.white,
-        fontSize: 17,
-        fontWeight: FontWeight.w500,
-      ),
-    ),
-    /*
-        INPUT DECORATION
-    */
-    inputDecorationTheme: InputDecorationTheme(
-      labelStyle: const TextStyle(
-        color: AppColors.grayColor,
-      ),
-      floatingLabelStyle: const TextStyle(
-        color: AppColors.lightPrimaryColor,
-      ),
-      prefixIconColor: AppColors.grayColor,
-      suffixIconColor: AppColors.grayColor,
-      floatingLabelAlignment: FloatingLabelAlignment.start,
-      floatingLabelBehavior: FloatingLabelBehavior.auto,
-      filled: true,
-      fillColor: AppColors.appBarColor,
-      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(1000),
-        borderSide: BorderSide.none,
-      ),
-    ),
-    /*
-        ELEVATED BUTTON
-    */
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        //TODO Изменить цвет нажатия
-        padding: const WidgetStatePropertyAll(
-          EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+class AppThemeData {
+  static final ThemeData dark = _getThemeData(const AppColors.dark(), Brightness.dark);
+
+  static ThemeData _getThemeData(AppColors colors, Brightness brightness) => ThemeData(
+        colorScheme: ColorScheme(
+          brightness: brightness,
+
+          /// PRIMARY COLORS
+          primary: colors.primary,
+          onPrimary: colors.onPrimary,
+
+          primaryContainer: colors.primaryContainer,
+          onPrimaryContainer: colors.onPrimaryContainer,
+
+          primaryFixedDim: colors.primaryFixedDim,
+
+          /// SECONDARY COLORS
+          secondary: colors.secondary,
+          onSecondary: colors.onSecondary,
+          secondaryFixedDim: colors.secondaryFixedDim,
+
+          error: colors.error,
+          onError: colors.onError,
+
+          surface: colors.primary,
+          onSurface: colors.onSurface,
         ),
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(1000),
-          ),
+
+        /// SCAFFOLD & APP BAR
+        scaffoldBackgroundColor: colors.surface,
+        appBarTheme: AppBarTheme(
+          backgroundColor: colors.surface,
+          foregroundColor: colors.onSurface,
         ),
-        backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
-          if (states.contains(WidgetState.disabled)) {
-            return AppColors.lightPrimaryColor.withAlpha(50);
-          }
-          return AppColors.lightPrimaryColor;
-        }),
-        foregroundColor:
-            const WidgetStatePropertyAll(AppColors.backgroundColor),
-        textStyle: const WidgetStatePropertyAll(
-          TextStyle(
+
+        /// TEXT
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(
+            color: colors.onSurface,
             fontSize: 17,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
           ),
         ),
-      ),
-    ),
-    /*
-        TEXT BUTTON
-    */
-    textButtonTheme: const TextButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: WidgetStatePropertyAll(AppColors.grayColor),
-      ),
-    ),
-    /*
-        SNACK BAR
-    */
-    snackBarTheme: const SnackBarThemeData(
-      backgroundColor: AppColors.lightPrimaryColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
+
+        /// INPUT DECORATION
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(
+            color: colors.onPrimaryContainer,
+          ),
+          floatingLabelStyle: TextStyle(
+            color: colors.primary,
+          ),
+          prefixIconColor: colors.onPrimaryContainer,
+          suffixIconColor: colors.onPrimaryContainer,
+          floatingLabelAlignment: FloatingLabelAlignment.start,
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
+          filled: true,
+          fillColor: colors.primaryContainer,
+          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(1000),
+            borderSide: BorderSide.none,
+          ),
         ),
-      ),
-      contentTextStyle: TextStyle(
-        fontSize: 14.5,
-        fontWeight: FontWeight.w500,
-        color: AppColors.backgroundColor,
-      ),
-    ),
-    /*
-        DRAWER
-    */
-    drawerTheme: const DrawerThemeData(
-      backgroundColor: AppColors.appBarColor,
-    ),
-    /*
-        PROGRESS INDICATOR
-    */
-    progressIndicatorTheme: const ProgressIndicatorThemeData(
-      circularTrackColor: AppColors.backgroundColor,
-      color: AppColors.primaryColor,
-    ),
-    /*
-        EXPANSION TILE
-    */
-    expansionTileTheme: const ExpansionTileThemeData(),
-    dividerColor: AppColors.backgroundColor,
-    /*
-        LIST TILE
-    */
-    listTileTheme: const ListTileThemeData(
-      iconColor: AppColors.grayColor,
-    ),
-    /*
-        DIALOG
-    */
-    dialogTheme: const DialogThemeData(
-      backgroundColor: AppColors.appBarColor,
-    ),
-  );
+
+        /// ELEVATED BUTTON
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            //TODO Изменить цвет нажатия
+            padding: const WidgetStatePropertyAll(
+              EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            ),
+            shape: WidgetStatePropertyAll(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(1000),
+              ),
+            ),
+            backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+              if (states.contains(WidgetState.disabled)) {
+                return colors.primary.withAlpha(50);
+              }
+              return colors.primary;
+            }),
+            foregroundColor: WidgetStatePropertyAll(colors.surface),
+            textStyle: const WidgetStatePropertyAll(
+              TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+
+        /// TEXT BUTTON
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: WidgetStatePropertyAll(colors.secondaryFixedDim),
+          ),
+        ),
+
+        /// SNACK BAR
+        snackBarTheme: SnackBarThemeData(
+          backgroundColor: colors.primary,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
+          ),
+          contentTextStyle: TextStyle(
+            fontSize: 14.5,
+            fontWeight: FontWeight.w500,
+            color: colors.surface,
+          ),
+        ),
+
+        /// DRAWER
+        drawerTheme: DrawerThemeData(
+          backgroundColor: colors.surface,
+        ),
+
+        /// PROGRESS INDICATOR
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          circularTrackColor: colors.primaryContainer,
+          color: colors.primaryFixedDim,
+        ),
+
+        /// EXPANSION TILE
+        expansionTileTheme: const ExpansionTileThemeData(),
+        dividerColor: colors.surface,
+
+        /// LIST TILE
+        listTileTheme: ListTileThemeData(
+          iconColor: colors.secondaryFixedDim,
+        ),
+
+        /// DIALOG
+        dialogTheme: DialogThemeData(
+          backgroundColor: colors.primaryContainer,
+        ),
+      );
 }
 
 extension ThemeExtension on BuildContext {
