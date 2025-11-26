@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
-import 'package:code_generator_app/ui/settings/settings_model.dart';
-import 'package:code_generator_app/ui/settings/settings_screen.dart';
+import 'package:code_generator_app/ui/features/settings/settings_model.dart';
+import 'package:code_generator_app/ui/features/settings/settings_screen.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';

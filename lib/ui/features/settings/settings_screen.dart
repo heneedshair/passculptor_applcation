@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
-import 'package:code_generator_app/ui/main/widgets/check_position_wirdget.dart';
-import 'package:code_generator_app/ui/settings/settings_wm.dart';
-import 'package:code_generator_app/ui/settings/widgets/algorithm_dropdown_widget.dart';
+import 'package:code_generator_app/ui/features/main/widgets/check_position_wirdget.dart';
+import 'package:code_generator_app/ui/features/settings/settings_wm.dart';
+import 'package:code_generator_app/ui/features/settings/widgets/algorithm_dropdown_widget.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';

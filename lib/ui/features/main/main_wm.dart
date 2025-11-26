@@ -4,8 +4,8 @@ import 'package:code_generator_app/common/objects/code_generator/code_generator_
 import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
-import 'package:code_generator_app/ui/main/main_model.dart';
-import 'package:code_generator_app/ui/main/main_screen.dart';
+import 'package:code_generator_app/ui/features/main/main_model.dart';
+import 'package:code_generator_app/ui/features/main/main_screen.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
