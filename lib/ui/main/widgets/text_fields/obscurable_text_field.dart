@@ -1,4 +1,4 @@
-import 'package:code_generator_app/ui/main/widgets/themed_text_field/themed_text_field.dart';
+import 'package:code_generator_app/ui/main/widgets/text_fields/app_text_field.dart';
 import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,7 @@ class ObscurableTextField extends StatelessWidget {
       listenableEntityState: listenableEntityState,
       builder: (_, isObscured) => isObscured == null
           ? const SizedBox.shrink()
-          : ThemedTextField(
+          : AppTextField(
               labelText: labelText,
               prefixIcon: prefixIcon,
               suffixIcon: IconButton(
@@ -41,7 +41,10 @@ class ObscurableTextField extends StatelessWidget {
                   Icons.remove_red_eye_rounded,
                   color: isObscured ? null : AppColors.white,
                 ),
-                onPressed: () => onObscureTap(),
+
+                /// TODO поменять на логтап, добавить уведомление для пользователя, почему так надо.
+                /// Сделать пункт в настройках + перенаправление к этому пункту из уведомления.
+                onPressed: onObscureTap,
               ),
               controller: controller,
               focusNode: focusNode,
