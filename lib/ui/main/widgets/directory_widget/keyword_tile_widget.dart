@@ -59,9 +59,9 @@ class KeywordTileWidget extends StatelessWidget {
           parentKeyword: keyword,
         ),
       );
-      
+
       final isLast = i == keyword.logins.length - 1;
-      
+
       widgets.add(
         Padding(
           padding: EdgeInsets.symmetric(
