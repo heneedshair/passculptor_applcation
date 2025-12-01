@@ -15,6 +15,7 @@ class ObscurableTextField extends StatelessWidget {
     this.textInputAction = TextInputAction.next,
     required this.prefixIcon,
     required this.validator,
+    this.onChanged,
   });
 
   final ValueNotifier<EntityState<bool>> listenableEntityState;
@@ -26,6 +27,7 @@ class ObscurableTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final TextInputAction? textInputAction;
   final Function(String? value) validator;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class ObscurableTextField extends StatelessWidget {
               focusNode: focusNode,
               textInputAction: textInputAction,
               onFieldSubmitted: onFieldSubmitted,
+              onChanged: onChanged,
               isObscured: isObscured,
               validator: validator,
             ),
