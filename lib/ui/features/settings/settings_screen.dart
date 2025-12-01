@@ -19,6 +19,12 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
   Widget build(ISettingsScreenWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
         title: const Text(
           'Настройки',
           style: TextStyle(fontWeight: FontWeight.w600),

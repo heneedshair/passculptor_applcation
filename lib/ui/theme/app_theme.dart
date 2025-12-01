@@ -32,7 +32,7 @@ class AppThemeData {
         /// SCAFFOLD & APP BAR
         scaffoldBackgroundColor: colors.surface,
         appBarTheme: AppBarTheme(
-          backgroundColor: colors.surface,
+          backgroundColor: colors.primaryContainer,
           foregroundColor: colors.onSurface,
         ),
 

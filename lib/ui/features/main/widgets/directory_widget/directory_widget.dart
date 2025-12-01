@@ -1,6 +1,7 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/keyword_tile_widget.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class DirectoryDrawerWidget extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: Colors.transparent,
+            surfaceTintColor: context.colors.primaryFixedDim,
             pinned: true,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadiusGeometry.circular(20),
