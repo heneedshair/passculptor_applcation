@@ -34,6 +34,7 @@ class AppThemeData {
         appBarTheme: AppBarTheme(
           backgroundColor: colors.primaryContainer,
           foregroundColor: colors.onSurface,
+          surfaceTintColor: colors.primaryFixedDim,
         ),
 
         /// TEXT
