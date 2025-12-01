@@ -34,11 +34,11 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onSaveCheckTap();
 
-  ValueNotifier<EntityState<bool>> get isLoginObscuredListenable;
+  EntityValueListenable<bool> get isLoginObscuredListenable;
 
-  ValueNotifier<EntityState<bool>> get isKeywordObscuredListenable;
+  EntityValueListenable<bool> get isKeywordObscuredListenable;
 
-  ValueNotifier<EntityState<bool>> get doSaveListenable;
+  EntityValueListenable<bool> get doSaveListenable;
 
   void onDrawerTap(BuildContext context);
 
@@ -81,7 +81,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onSettingsTap();
 
-  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable;
+  EntityValueListenable<EncryptionType> get encryptionTypeListenable;
 
   Future<void> onKeywordLongPress(String enteredKeyword);
 
@@ -219,12 +219,12 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   final _isLoginObscuredEntity = EntityStateNotifier<bool>();
 
   @override
-  ValueNotifier<EntityState<bool>> get isLoginObscuredListenable => _isLoginObscuredEntity;
+  EntityValueListenable<bool> get isLoginObscuredListenable => _isLoginObscuredEntity;
 
   final _isKeyObscuredEntity = EntityStateNotifier<bool>();
 
   @override
-  ValueNotifier<EntityState<bool>> get isKeywordObscuredListenable => _isKeyObscuredEntity;
+  EntityValueListenable<bool> get isKeywordObscuredListenable => _isKeyObscuredEntity;
 
   @override
   void onDrawerTap(BuildContext context) => Scaffold.of(context).openEndDrawer();
@@ -232,7 +232,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   final _doSaveEntity = EntityStateNotifier<bool>();
 
   @override
-  ValueNotifier<EntityState<bool>> get doSaveListenable => _doSaveEntity;
+  EntityValueListenable<bool> get doSaveListenable => _doSaveEntity;
 
   @override
   void onSaveCheckTap() {
@@ -370,7 +370,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
 
   @override
-  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable => _encryptionTypeEntity;
+  EntityValueListenable<EncryptionType> get encryptionTypeListenable => _encryptionTypeEntity;
 
   @override
   Future<void> onKeywordLongPress(String enteredKeyword) async {

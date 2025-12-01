@@ -18,7 +18,7 @@ class ObscurableTextField extends StatelessWidget {
     this.onChanged,
   });
 
-  final ValueNotifier<EntityState<bool>> listenableEntityState;
+  final EntityValueListenable<bool> listenableEntityState;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final VoidCallback onObscureTap;

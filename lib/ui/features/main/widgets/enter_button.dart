@@ -10,7 +10,7 @@ class EnterButton extends StatelessWidget {
     required this.onEnterTap,
   });
 
-  final ValueNotifier<EntityState<EncryptionType>> listenableEntityState;
+  final EntityValueListenable<EncryptionType> listenableEntityState;
   final VoidCallback onEnterTap;
 
   @override

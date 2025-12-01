@@ -10,7 +10,7 @@ class MiddleBarWidget extends StatelessWidget {
     required this.doSaveListenable,
   });
 
-  final ValueNotifier<EntityState<bool>> doSaveListenable;
+  final EntityValueListenable<bool> doSaveListenable;
   final VoidCallback onSaveCheckTap;
   final VoidCallback onGuideTap;
 
