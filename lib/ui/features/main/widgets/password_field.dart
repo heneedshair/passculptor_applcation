@@ -25,7 +25,7 @@ class PasswordField extends StatelessWidget {
           ? const SizedBox.shrink()
           : ValueListenableBuilder(
               valueListenable: password,
-              builder: (_, password, __) => AppElevatedButton.primaryfixedDim(
+              builder: (_, passwordValue, __) => AppElevatedButton.primaryfixedDim(
                 padding: EdgeInsets.zero,
                 onPressed: onTap,
                 child: Row(
@@ -35,7 +35,25 @@ class PasswordField extends StatelessWidget {
                       dimension: AppElevatedButton.defaultHeight,
                       child: Icon(Icons.lock_rounded),
                     ),
-                    Text(_buttonLabel),
+
+                    /// Animation of text change
+                    Expanded(
+                      child: AnimatedSwitcher(
+                        duration: const Duration(
+                          milliseconds: 200,
+                        ),
+                        transitionBuilder: (child, animation) => FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        ),
+                        child: Text(
+                          _buttonLabel,
+                          key: ValueKey(_buttonLabel),
+                          // overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+
                     SizedBox.square(
                       dimension: AppElevatedButton.defaultHeight,
                       child: Tooltip(
@@ -56,7 +74,7 @@ class PasswordField extends StatelessWidget {
   }
 
   String get _buttonLabel {
-    /// [isObscured.value.data] can't be null here, because of the check in the builder
+    /// [isObscured.value.data] can't be null here because of the check in the builder
     if (password.value.value == null || !isObscured.value.data!) {
       return password.value.label;
     } else {
