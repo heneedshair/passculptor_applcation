@@ -1,6 +1,6 @@
 part of 'app_elevated_button.dart';
 
-enum AppButtonStyle {
+enum AppButtonType {
   primary,
   primaryFixedDim,
   secondary,
@@ -10,10 +10,10 @@ enum AppButtonStyle {
     final colors = context.colors;
 
     return switch (this) {
-      AppButtonStyle.primary => colors.primary,
-      AppButtonStyle.secondary => colors.secondary,
-      AppButtonStyle.primaryFixedDim => colors.primaryFixedDim,
-      AppButtonStyle.warning => colors.error,
+      AppButtonType.primary => colors.primary,
+      AppButtonType.secondary => colors.secondary,
+      AppButtonType.primaryFixedDim => colors.primaryFixedDim,
+      AppButtonType.warning => colors.error,
     };
   }
 
@@ -21,10 +21,10 @@ enum AppButtonStyle {
     final colors = context.colors;
 
     return switch (this) {
-      AppButtonStyle.primary => colors.onPrimary,
-      AppButtonStyle.secondary => colors.onSecondary,
-      AppButtonStyle.primaryFixedDim => colors.secondary,
-      AppButtonStyle.warning => colors.onError,
+      AppButtonType.primary => colors.onPrimary,
+      AppButtonType.secondary => colors.onSecondary,
+      AppButtonType.primaryFixedDim => colors.secondary,
+      AppButtonType.warning => colors.onError,
     };
   }
 }

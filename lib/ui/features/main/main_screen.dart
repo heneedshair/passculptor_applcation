@@ -85,6 +85,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                         PasswordField(
                           result: wm.password,
                           onTap: wm.onPasswordTap,
+                          onObscureTap: wm.onObscurePasswordTap,
                         ),
                         const SizedBox(height: 15),
                         EnterButton(

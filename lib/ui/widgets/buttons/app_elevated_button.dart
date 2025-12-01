@@ -12,7 +12,7 @@ class AppElevatedButton extends StatelessWidget {
 
   final String? label;
 
-  final AppButtonStyle type;
+  final AppButtonType type;
 
   final double? height;
 
@@ -23,6 +23,8 @@ class AppElevatedButton extends StatelessWidget {
   final double? iconSize;
 
   final TextStyle? textStyle;
+
+  final EdgeInsetsGeometry? padding;
 
   /// Default height of button
   static const double defaultHeight = 54;
@@ -38,7 +40,8 @@ class AppElevatedButton extends StatelessWidget {
     this.shape,
     this.iconSize,
     this.textStyle,
-  })  : type = AppButtonStyle.primary,
+    this.padding,
+  })  : type = AppButtonType.primary,
         assert(label != null || child != null, '[label] or [child] must not be null');
 
   const AppElevatedButton.primaryfixedDim({
@@ -52,7 +55,8 @@ class AppElevatedButton extends StatelessWidget {
     this.shape,
     this.iconSize,
     this.textStyle,
-  })  : type = AppButtonStyle.primaryFixedDim,
+    this.padding,
+  })  : type = AppButtonType.primaryFixedDim,
         assert(label != null || child != null, '[label] or [child] must not be null');
 
   const AppElevatedButton.secondary({
@@ -66,7 +70,8 @@ class AppElevatedButton extends StatelessWidget {
     this.shape,
     this.iconSize,
     this.textStyle,
-  })  : type = AppButtonStyle.secondary,
+    this.padding,
+  })  : type = AppButtonType.secondary,
         assert(label != null || child != null, '[label] or [child] must not be null');
 
   const AppElevatedButton.warning({
@@ -80,7 +85,8 @@ class AppElevatedButton extends StatelessWidget {
     this.shape,
     this.iconSize,
     this.textStyle,
-  })  : type = AppButtonStyle.warning,
+    this.padding,
+  })  : type = AppButtonType.warning,
         assert(label != null || child != null, '[label] or [child] must not be null');
 
   /// Use this constructor if you want to pass a button type parameter
@@ -96,6 +102,7 @@ class AppElevatedButton extends StatelessWidget {
     this.shape,
     this.iconSize,
     this.textStyle,
+    this.padding,
   }) : assert(label != null || child != null, '[label] or [child] must not be null');
 
   @override
@@ -111,6 +118,7 @@ class AppElevatedButton extends StatelessWidget {
             shape: shape,
             iconSize: iconSize,
             textStyle: textStyle,
+            padding: padding
           ),
           child: child ?? Text(label!, textAlign: TextAlign.center),
         ),
@@ -123,6 +131,7 @@ class AppElevatedButton extends StatelessWidget {
     TextStyle? textStyle,
     OutlinedBorder? shape,
     double? iconSize,
+    EdgeInsetsGeometry? padding,
   }) =>
       ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
@@ -130,5 +139,6 @@ class AppElevatedButton extends StatelessWidget {
         textStyle: textStyle,
         shape: shape ?? const StadiumBorder(),
         iconSize: iconSize ?? 24,
+        padding: padding,
       );
 }

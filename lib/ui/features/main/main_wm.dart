@@ -30,6 +30,8 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onObscureKeywordTap();
 
+  void onObscurePasswordTap();
+
   void onSaveCheckTap();
 
   ValueNotifier<EntityState<bool>> get isLoginObscuredListenable;
@@ -432,5 +434,10 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
     if (value.length < 8) return 'Слово должно быть не менее 8 символов';
 
     return null;
+  }
+  
+  @override
+  void onObscurePasswordTap() {
+
   }
 }
