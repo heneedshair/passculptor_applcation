@@ -4,6 +4,7 @@ import 'package:code_generator_app/common/objects/code_generator/code_generator_
 import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
+import 'package:code_generator_app/data/models/password/password.dart';
 import 'package:code_generator_app/ui/features/main/main_model.dart';
 import 'package:code_generator_app/ui/features/main/main_screen.dart';
 import 'package:elementary/elementary.dart';
@@ -19,7 +20,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   TextEditingController get loginController;
 
-  ValueNotifier<String> get result;
+  ValueNotifier<Password> get password;
 
   void onEnterTap();
 
@@ -29,13 +30,17 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onObscureKeywordTap();
 
+  void onObscurePasswordTap();
+
   void onSaveCheckTap();
 
-  ValueNotifier<EntityState<bool>> get isLoginObscuredListenable;
+  EntityValueListenable<bool> get isLoginObscuredListenable;
 
-  ValueNotifier<EntityState<bool>> get isKeywordObscuredListenable;
+  EntityValueListenable<bool> get isKeywordObscuredListenable;
 
-  ValueNotifier<EntityState<bool>> get doSaveListenable;
+  EntityValueListenable<bool> get isPasswordObscuredListenable;
+
+  EntityValueListenable<bool> get doSaveListenable;
 
   void onDrawerTap(BuildContext context);
 
@@ -45,7 +50,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   FocusNode get keywordFocusNode;
 
-  void onTapOutsideField();
+  void onAnyTexFieldChanged();
 
   BuildContext get context;
 
@@ -78,7 +83,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onSettingsTap();
 
-  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable;
+  EntityValueListenable<EncryptionType> get encryptionTypeListenable;
 
   Future<void> onKeywordLongPress(String enteredKeyword);
 
@@ -93,15 +98,13 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   String? keywordValidator(String? value);
 }
 
-MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
-    BuildContext context) {
+MainScreenWidgetModel defaultMainScreenWidgetModelFactory(BuildContext context) {
   return MainScreenWidgetModel(
     MainScreenModel(),
   );
 }
 
-class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
-    implements IMainScreenWidgetModel {
+class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> implements IMainScreenWidgetModel {
   MainScreenWidgetModel(super.model);
 
   //TODO сделать через репозиторий в model
@@ -147,23 +150,24 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   @override
   TextEditingController get loginController => _loginController;
 
-  final _result = ValueNotifier('Здесь появится пароль');
+  final _password = ValueNotifier(Password());
 
   @override
-  ValueNotifier<String> get result => _result;
+  ValueNotifier<Password> get password => _password;
 
   @override
   void onEnterTap() {
     if (!_formKey.currentState!.validate()) {
-      result.value = 'Не удалось создать пароль';
+      _password.value = Password(label: 'Не удалось создать пароль');
       return;
     }
 
-    result.value = _codeGenerator.generate(
+    final result = _codeGenerator.generate(
       _wordController.text,
       _keyController.text,
       _loginController.text,
     );
+    password.value = Password(label: result, value: result);
 
     if (doSaveListenable.value.data!) {
       model.addWebsite(
@@ -176,23 +180,30 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     }
 
     _setPasswordToClipboard();
-    _showSnackBar('Пароль успешно создан и скопирован!');
+    AppNotification.showSnackBar(
+      context: context,
+      message: 'Пароль успешно создан и скопирован!',
+    );
   }
 
   @override
   Future<void> onPasswordTap() async {
     await _setPasswordToClipboard();
-    _showSnackBar('Пароль успешно скопирован!');
+    AppNotification.showSnackBar(
+      // ignore: use_build_context_synchronously
+      context: context,
+      message: 'Пароль успешно скопирован!',
+      isSuccsess: _password.value.value != null,
+      unsuccessMessage: 'Пароль еще не создан',
+    );
   }
 
-  Future<void> _setPasswordToClipboard() async =>
-      await Clipboard.setData(ClipboardData(text: _result.value));
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+  Future<void> _setPasswordToClipboard() async {
+    if (_password.value.value != null) {
+      await Clipboard.setData(
+        ClipboardData(text: _password.value.value!),
+      );
+    }
   }
 
   @override
@@ -207,26 +218,34 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     _prefs.setBool('isKeyObscured', _isKeyObscuredEntity.value.data!);
   }
 
+  @override
+  void onObscurePasswordTap() {
+    _isPasswordObscuredEntity.content(!_isPasswordObscuredEntity.value.data!);
+    _prefs.setBool('isPasswordObscured', _isPasswordObscuredEntity.value.data!);
+  }
+
   final _isLoginObscuredEntity = EntityStateNotifier<bool>();
 
   @override
-  ValueNotifier<EntityState<bool>> get isLoginObscuredListenable =>
-      _isLoginObscuredEntity;
+  EntityValueListenable<bool> get isLoginObscuredListenable => _isLoginObscuredEntity;
 
   final _isKeyObscuredEntity = EntityStateNotifier<bool>();
 
   @override
-  ValueNotifier<EntityState<bool>> get isKeywordObscuredListenable =>
-      _isKeyObscuredEntity;
+  EntityValueListenable<bool> get isKeywordObscuredListenable => _isKeyObscuredEntity;
+
+  final _isPasswordObscuredEntity = EntityStateNotifier<bool>();
 
   @override
-  void onDrawerTap(BuildContext context) =>
-      Scaffold.of(context).openEndDrawer();
+  EntityValueListenable<bool> get isPasswordObscuredListenable => _isPasswordObscuredEntity;
+
+  @override
+  void onDrawerTap(BuildContext context) => Scaffold.of(context).openEndDrawer();
 
   final _doSaveEntity = EntityStateNotifier<bool>();
 
   @override
-  ValueNotifier<EntityState<bool>> get doSaveListenable => _doSaveEntity;
+  EntityValueListenable<bool> get doSaveListenable => _doSaveEntity;
 
   @override
   void onSaveCheckTap() {
@@ -237,10 +256,12 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   void _initEntityStates() {
     _isLoginObscuredEntity.loading();
     _isKeyObscuredEntity.loading();
+    _isPasswordObscuredEntity.loading();
     _doSaveEntity.loading();
 
     _isLoginObscuredEntity.content(_prefs.getBool('isLoginObscured') ?? false);
     _isKeyObscuredEntity.content(_prefs.getBool('isKeyObscured') ?? true);
+    _isPasswordObscuredEntity.content(_prefs.getBool('isPasswordObscured') ?? true);
     _doSaveEntity.content(_prefs.getBool('doSave') ?? true);
   }
 
@@ -272,8 +293,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   final _savedKeywordsEntity = EntityStateNotifier<List<Keyword>>();
 
   @override
-  EntityValueListenable<List<Keyword>> get savedKeywordsListenable =>
-      _savedKeywordsEntity;
+  EntityValueListenable<List<Keyword>> get savedKeywordsListenable => _savedKeywordsEntity;
 
   @override
   Future<void> onClearAllTap() async {
@@ -320,12 +340,15 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     _loginController.text = enteredLogin;
     _wordController.text = enteredWebsite;
 
-    if (_keyController.text.length != enteredKeyword.length ||
-        _keyController.text[0] != enteredKeyword[0]) {
+    if (_keyController.text.length != enteredKeyword.length || _keyController.text[0] != enteredKeyword[0]) {
       _keyController.text = '';
-      _result.value = 'Здесь появится пароль';
+      _password.value = Password();
       _keywordFocusNode.requestFocus();
-      _showSnackBar('Введите ключевое слово');
+
+      AppNotification.showSnackBar(
+        context: context,
+        message: 'Введите ключевое слово',
+      );
     } else {
       onEnterTap();
     }
@@ -362,8 +385,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
 
   @override
-  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable =>
-      _encryptionTypeEntity;
+  EntityValueListenable<EncryptionType> get encryptionTypeListenable => _encryptionTypeEntity;
 
   @override
   Future<void> onKeywordLongPress(String enteredKeyword) async {
@@ -388,7 +410,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   FocusNode get websiteFocusNode => _websiteFocusNode;
 
   @override
-  void onTapOutsideField() => FocusManager.instance.primaryFocus?.unfocus();
+  void onAnyTexFieldChanged() => _password.value = Password();
 
   @override
   void onNextTapFromLogin() => _websiteFocusNode.requestFocus();
@@ -420,11 +442,11 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   String? keywordValidator(String? value) {
     if (value!.isEmpty) return 'Поле не должно быть пустым';
 
-    if (value.length < 8) return 'Слово должно быть не менее 8 символов';
-
     if (model.containsSameKeyword(value)) {
-      return 'Уже есть слово, начинающееся на эту букву';
+      return 'Уже есть другое слово, начинающееся на эту букву';
     }
+
+    if (value.length < 8) return 'Слово должно быть не менее 8 символов';
 
     return null;
   }

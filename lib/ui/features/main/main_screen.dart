@@ -31,7 +31,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
               child: SingleChildScrollView(
                 reverse: true,
                 child: FieldsFuncs(
-                  onTapOutsideField: wm.onTapOutsideField,
+                  onAnyTexFieldChanged: wm.onAnyTexFieldChanged,
                   child: Form(
                     key: wm.formKey,
                     child: Column(
@@ -83,8 +83,10 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                         ),
                         const SizedBox(height: 5),
                         PasswordField(
-                          result: wm.result,
+                          password: wm.password,
+                          isObscured: wm.isPasswordObscuredListenable,
                           onTap: wm.onPasswordTap,
+                          onObscureTap: wm.onObscurePasswordTap,
                         ),
                         const SizedBox(height: 15),
                         EnterButton(
@@ -106,7 +108,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
         ),
       ),
       drawerEdgeDragWidth: MediaQuery.of(wm.context).size.width,
-      onEndDrawerChanged: (isDrawerOpened) => wm.onDrawerChanged(isDrawerOpened),
+      onEndDrawerChanged: wm.onDrawerChanged,
       endDrawer: DirectFuncs(
         onClearAllTap: wm.onClearAllTap,
         onDeleteWebsite: wm.onDeleteWebsite,

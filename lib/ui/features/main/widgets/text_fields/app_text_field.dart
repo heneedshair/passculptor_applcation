@@ -15,6 +15,7 @@ class AppTextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.isObscured = false,
     required this.validator,
+    this.onChanged,
   });
 
   final String? labelText;
@@ -26,6 +27,7 @@ class AppTextField extends StatelessWidget {
   final VoidCallback? onFieldSubmitted;
   final bool isObscured;
   final Function(String? value) validator;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +41,23 @@ class AppTextField extends StatelessWidget {
       focusNode: focusNode,
       obscureText: isObscured,
       textInputAction: textInputAction,
-      onTapOutside: (_) => FieldsFuncs.read(context)?.onTapOutsideField(),
-      onFieldSubmitted: (_) =>
-          onFieldSubmitted == null ? {} : onFieldSubmitted!(),
-      // autovalidateMode: AutovalidateMode.onUserInteraction,
+      onTapOutside: (_) => _onTapOutside(context),
+      onFieldSubmitted: (_) => onFieldSubmitted == null ? null : onFieldSubmitted!(),
+      onChanged: (value) => _onChanged(context, value: value),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp(r'[a-z]')),
       ],
       validator: (value) => validator(value),
       //TODO добавить errorText при вводе некорректных символов
     );
+  }
+
+  void _onTapOutside(BuildContext context) => FocusManager.instance.primaryFocus?.unfocus();
+  
+  void _onChanged(BuildContext context, {required String value}) {
+    FieldsFuncs.read(context)?.onAnyTexFieldChanged();
+    
+    onChanged?.call(value);
   }
 }
