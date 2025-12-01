@@ -49,7 +49,7 @@ class PasswordField extends StatelessWidget {
                         child: Text(
                           _buttonLabel,
                           key: ValueKey(_buttonLabel),
-                          // overflow: TextOverflow.ellipsis,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
