@@ -4,6 +4,7 @@ import 'package:code_generator_app/ui/features/main/widgets/directory_widget/key
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
+//TODO вынести в отдельный елементери
 class DirectoryDrawerWidget extends StatelessWidget {
   const DirectoryDrawerWidget({
     super.key,
