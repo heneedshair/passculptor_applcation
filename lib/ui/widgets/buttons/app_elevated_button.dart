@@ -29,6 +29,8 @@ class AppElevatedButton extends StatelessWidget {
   /// Default height of button
   static const double defaultHeight = 54;
 
+  final ButtonStyle? style;
+
   const AppElevatedButton.primary({
     super.key,
     this.onPressed,
@@ -41,6 +43,7 @@ class AppElevatedButton extends StatelessWidget {
     this.iconSize,
     this.textStyle,
     this.padding,
+    this.style,
   })  : type = AppButtonType.primary,
         assert(label != null || child != null, '[label] or [child] must not be null');
 
@@ -56,6 +59,7 @@ class AppElevatedButton extends StatelessWidget {
     this.iconSize,
     this.textStyle,
     this.padding,
+    this.style,
   })  : type = AppButtonType.primaryFixedDim,
         assert(label != null || child != null, '[label] or [child] must not be null');
 
@@ -71,6 +75,7 @@ class AppElevatedButton extends StatelessWidget {
     this.iconSize,
     this.textStyle,
     this.padding,
+    this.style,
   })  : type = AppButtonType.secondary,
         assert(label != null || child != null, '[label] or [child] must not be null');
 
@@ -86,6 +91,7 @@ class AppElevatedButton extends StatelessWidget {
     this.iconSize,
     this.textStyle,
     this.padding,
+    this.style,
   })  : type = AppButtonType.warning,
         assert(label != null || child != null, '[label] or [child] must not be null');
 
@@ -103,6 +109,7 @@ class AppElevatedButton extends StatelessWidget {
     this.iconSize,
     this.textStyle,
     this.padding,
+    this.style,
   }) : assert(label != null || child != null, '[label] or [child] must not be null');
 
   @override
@@ -112,14 +119,14 @@ class AppElevatedButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onPressed,
           onLongPress: onLongPress,
-          style: styleFrom(
-            backgroundColor: type.backgroundColor(context),
-            foregroundColor: type.foregroundColor(context),
-            shape: shape,
-            iconSize: iconSize,
-            textStyle: textStyle,
-            padding: padding
-          ),
+          style: style ??
+              styleFrom(
+                  backgroundColor: type.backgroundColor(context),
+                  foregroundColor: type.foregroundColor(context),
+                  shape: shape,
+                  iconSize: iconSize,
+                  textStyle: textStyle,
+                  padding: padding),
           child: child ?? Text(label!, textAlign: TextAlign.center),
         ),
       );

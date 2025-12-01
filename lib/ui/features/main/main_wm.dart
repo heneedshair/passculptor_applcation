@@ -38,6 +38,8 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   EntityValueListenable<bool> get isKeywordObscuredListenable;
 
+  EntityValueListenable<bool> get isPasswordObscuredListenable;
+
   EntityValueListenable<bool> get doSaveListenable;
 
   void onDrawerTap(BuildContext context);
@@ -216,6 +218,12 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
     _prefs.setBool('isKeyObscured', _isKeyObscuredEntity.value.data!);
   }
 
+  @override
+  void onObscurePasswordTap() {
+    _isPasswordObscuredEntity.content(!_isPasswordObscuredEntity.value.data!);
+    _prefs.setBool('isPasswordObscured', _isPasswordObscuredEntity.value.data!);
+  }
+
   final _isLoginObscuredEntity = EntityStateNotifier<bool>();
 
   @override
@@ -225,6 +233,11 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
 
   @override
   EntityValueListenable<bool> get isKeywordObscuredListenable => _isKeyObscuredEntity;
+
+  final _isPasswordObscuredEntity = EntityStateNotifier<bool>();
+
+  @override
+  EntityValueListenable<bool> get isPasswordObscuredListenable => _isPasswordObscuredEntity;
 
   @override
   void onDrawerTap(BuildContext context) => Scaffold.of(context).openEndDrawer();
@@ -243,10 +256,12 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   void _initEntityStates() {
     _isLoginObscuredEntity.loading();
     _isKeyObscuredEntity.loading();
+    _isPasswordObscuredEntity.loading();
     _doSaveEntity.loading();
 
     _isLoginObscuredEntity.content(_prefs.getBool('isLoginObscured') ?? false);
     _isKeyObscuredEntity.content(_prefs.getBool('isKeyObscured') ?? true);
+    _isPasswordObscuredEntity.content(_prefs.getBool('isPasswordObscured') ?? true);
     _doSaveEntity.content(_prefs.getBool('doSave') ?? true);
   }
 
@@ -434,10 +449,5 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
     if (value.length < 8) return 'Слово должно быть не менее 8 символов';
 
     return null;
-  }
-  
-  @override
-  void onObscurePasswordTap() {
-
   }
 }

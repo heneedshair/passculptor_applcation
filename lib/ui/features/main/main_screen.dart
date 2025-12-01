@@ -83,7 +83,8 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                         ),
                         const SizedBox(height: 5),
                         PasswordField(
-                          result: wm.password,
+                          password: wm.password,
+                          isObscured: wm.isPasswordObscuredListenable,
                           onTap: wm.onPasswordTap,
                           onObscureTap: wm.onObscurePasswordTap,
                         ),
@@ -107,7 +108,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
         ),
       ),
       drawerEdgeDragWidth: MediaQuery.of(wm.context).size.width,
-      onEndDrawerChanged: (isDrawerOpened) => wm.onDrawerChanged(isDrawerOpened),
+      onEndDrawerChanged: wm.onDrawerChanged,
       endDrawer: DirectFuncs(
         onClearAllTap: wm.onClearAllTap,
         onDeleteWebsite: wm.onDeleteWebsite,
