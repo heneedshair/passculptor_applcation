@@ -1,4 +1,4 @@
-import 'package:code_generator_app/ui/theme/app_theme.dart';
+﻿import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmDialog extends StatelessWidget {
@@ -16,63 +16,106 @@ class ConfirmDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: Row(
+      backgroundColor: context.colors.primaryContainer,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+      contentPadding: const EdgeInsets.only(
+        left: 22,
+        top: 20,
+        right: 22,
+        bottom: 10,
+      ),
+      actionsPadding: const EdgeInsets.only(
+        left: 16,
+        right: 16,
+        bottom: 16,
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            icon,
-            size: 38,
-            color: context.colors.onPrimaryContainer,
+          Row(
+            children: [
+              Container(
+                height: 42,
+                width: 42,
+                decoration: BoxDecoration(
+                  color: context.colors.primaryFixedDim.withAlpha(120),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  size: 22,
+                  color: context.colors.primary,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Подтверждение',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: context.colors.onSurface,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 15),
-          Expanded(
-            child: Text(
-              content,
-              textAlign: TextAlign.justify,
+          const SizedBox(height: 14),
+          Text(
+            content,
+            style: TextStyle(
+              fontSize: 15,
+              height: 1.45,
+              color: context.colors.onSurface,
             ),
           ),
         ],
       ),
-      contentTextStyle: const TextStyle(
-        fontSize: 15,
-        height: 1.5,
-      ),
-      contentPadding: const EdgeInsets.only(
-        top: 25,
-        right: 25,
-        left: 15,
-        bottom: 25,
-      ),
-      actionsPadding: const EdgeInsets.symmetric(vertical: 0),
       actions: [
-        Divider(
-          color: context.colors.surface,
-          thickness: 1.2,
-          height: 1.2,
-        ),
-        IntrinsicHeight(
+        SizedBox(
+          width: double.maxFinite,
           child: Row(
             children: [
               Expanded(
-                child: TextButton(
-                  child: const Text('Отмена'),
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(
+                      color: context.colors.primaryFixedDim.withAlpha(170),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    minimumSize: const Size(0, 44),
+                  ),
                   onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    'Отмена',
+                    style: TextStyle(
+                      color: context.colors.secondaryFixedDim,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
-              VerticalDivider(
-                thickness: 1,
-                color: context.colors.surface,
-                width: 1,
-              ),
+              const SizedBox(width: 10),
               Expanded(
-                child: TextButton(
-                  child: const Text(
-                    'Удалить',
-                    style: TextStyle(color: Colors.red),
+                child: FilledButton(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: context.colors.error.withAlpha(35),
+                    foregroundColor: context.colors.error,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    minimumSize: const Size(0, 44),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
                     onConfirmTap();
                   },
+                  child: const Text(
+                    'Удалить',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
                 ),
               ),
             ],
