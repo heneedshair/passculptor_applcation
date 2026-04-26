@@ -1,6 +1,7 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/keyword_tile_widget.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -19,15 +20,22 @@ class DirectoryDrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       width: MediaQuery.of(context).size.width * 5 / 6,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(20),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          bottomLeft: Radius.circular(30),
+        ),
       ),
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
+            backgroundColor: context.colors.surface,
             pinned: true,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadiusGeometry.circular(20),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+              ),
             ),
             leading: IconButton(
               onPressed: () => _onBackTap(context),
@@ -51,9 +59,6 @@ class DirectoryDrawerWidget extends StatelessWidget {
               'Сайты',
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 15),
           ),
           EntityStateNotifierBuilder(
             listenableEntityState: listenableEntityState,
@@ -81,9 +86,7 @@ class DirectoryDrawerWidget extends StatelessWidget {
                     ),
                   ),
           ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 25),
-          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 10)),
         ],
       ),
     );
