@@ -8,7 +8,6 @@ import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
-//TODO вынести в отдельный елементери
 class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel> {
   const DirectoryDrawerWidget({
     super.key,
@@ -29,11 +28,9 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
       ),
       child: CustomScrollView(
         slivers: [
-          EntityStateNotifierBuilder(
-            listenableEntityState: wm.isSearchModeListenable,
-            builder: (_, isSearchMode) {
-              final searchModeEnabled = isSearchMode ?? false;
-
+          ValueListenableBuilder(
+            valueListenable: wm.isSearchModeListenable,
+            builder: (_, isSearchMode, __) {
               return SliverAppBar(
                 backgroundColor: wm.context.colors.surface,
                 pinned: true,
@@ -49,7 +46,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                 ),
                 actions: [
                   IconButton(
-                    icon: Icon(searchModeEnabled ? Icons.close : Icons.search),
+                    icon: Icon(isSearchMode ? Icons.close : Icons.search),
                     onPressed: wm.onSearchTap,
                   ),
                   IconButton(
@@ -61,7 +58,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                     onPressed: DirectFuncs.read(wm.context)?.onClearAllTap,
                   ),
                 ],
-                title: searchModeEnabled
+                title: isSearchMode
                     ? TextField(
                         controller: wm.searchController,
                         autofocus: true,
@@ -88,9 +85,9 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
             builder: (_, keywords) {
               final source = keywords ?? const <Keyword>[];
 
-              return EntityStateNotifierBuilder(
-                listenableEntityState: wm.searchQueryListenable,
-                builder: (_, __) {
+              return ValueListenableBuilder(
+                valueListenable: wm.searchController,
+                builder: (_, __, ___) {
                   final filteredKeywords = wm.filterKeywords(source);
 
                   return filteredKeywords.isEmpty
@@ -117,7 +114,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
               );
             },
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 10)),
+          const SliverToBoxAdapter(child: SizedBox(height: 25)),
         ],
       ),
     );

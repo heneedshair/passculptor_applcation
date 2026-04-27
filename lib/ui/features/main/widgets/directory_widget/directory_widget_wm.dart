@@ -2,15 +2,13 @@ import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_widget.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_widget_model.dart';
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 abstract interface class IDirectoryDrawerWidgetModel implements IWidgetModel {
   TextEditingController get searchController;
 
-  EntityValueListenable<bool> get isSearchModeListenable;
-
-  EntityValueListenable<String> get searchQueryListenable;
+  ValueListenable<bool> get isSearchModeListenable;
 
   void onBackTap();
 
@@ -31,8 +29,7 @@ DirectoryDrawerWidgetModel defaultDirectoryDrawerWidgetModelFactory(
   );
 }
 
-class DirectoryDrawerWidgetModel
-    extends WidgetModel<DirectoryDrawerWidget, IDirectoryDrawerModel>
+class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDirectoryDrawerModel>
     implements IDirectoryDrawerWidgetModel {
   DirectoryDrawerWidgetModel(super.model);
 
@@ -41,20 +38,13 @@ class DirectoryDrawerWidgetModel
   @override
   TextEditingController get searchController => _searchController;
 
-  final _isSearchModeEntity = EntityStateNotifier<bool>();
+  final _isSearchModeEntity = ValueNotifier<bool>(false);
 
   @override
-  EntityValueListenable<bool> get isSearchModeListenable => _isSearchModeEntity;
-
-  final _searchQueryEntity = EntityStateNotifier<String>();
-
-  @override
-  EntityValueListenable<String> get searchQueryListenable => _searchQueryEntity;
+  ValueNotifier<bool> get isSearchModeListenable => _isSearchModeEntity;
 
   @override
   void initWidgetModel() {
-    _isSearchModeEntity.content(false);
-    _searchQueryEntity.content('');
     super.initWidgetModel();
   }
 
@@ -69,25 +59,19 @@ class DirectoryDrawerWidgetModel
 
   @override
   void onSearchTap() {
-    final isSearchMode = _isSearchModeEntity.value.data ?? false;
-    final isNextSearchMode = !isSearchMode;
+    _isSearchModeEntity.value = !_isSearchModeEntity.value;
 
-    _isSearchModeEntity.content(isNextSearchMode);
-
-    if (!isNextSearchMode) {
-      _searchController.clear();
-      _searchQueryEntity.content('');
-    }
+    if (!_isSearchModeEntity.value) _searchController.clear();
   }
 
   @override
-  void onSearchChanged(String value) => _searchQueryEntity.content(value);
+  void onSearchChanged(String value) => {};
 
   @override
   List<Keyword> filterKeywords(List<Keyword> source) {
     return model.filterKeywords(
       source: source,
-      query: _searchQueryEntity.value.data ?? '',
+      query: _searchController.text,
     );
   }
 }
