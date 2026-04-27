@@ -2,7 +2,7 @@ import 'package:code_generator_app/common/utils/code_generator/code_generator_ty
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
 import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
-import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,24 +11,25 @@ class DiskDataRepository implements IDiskDataRepository {
     required Box<Keyword> websitesBox,
     required SharedPreferences preferences,
   })  : _websitesBox = websitesBox,
-        _preferences = preferences {
-    _keywordsEntity.content(_keywords);
-    _isLoginObscuredEntity.content(_storedIsLoginObscured);
-    _isKeyObscuredEntity.content(_storedIsKeyObscured);
-    _isPasswordObscuredEntity.content(_storedIsPasswordObscured);
-    _doSaveEntity.content(_storedDoSave);
-    _encryptionTypeEntity.content(EncryptionType.fromString(_storedEncryptionAlgorithm));
-  }
+        _preferences = preferences,
+        _keywordsNotifier = ValueNotifier<List<Keyword>>(websitesBox.values.toList()),
+        _isLoginObscuredNotifier = ValueNotifier<bool>(preferences.getBool(_PrefsKeys.isLoginObscured) ?? false),
+        _isKeyObscuredNotifier = ValueNotifier<bool>(preferences.getBool(_PrefsKeys.isKeyObscured) ?? true),
+        _isPasswordObscuredNotifier = ValueNotifier<bool>(preferences.getBool(_PrefsKeys.isPasswordObscured) ?? true),
+        _doSaveNotifier = ValueNotifier<bool>(preferences.getBool(_PrefsKeys.doSave) ?? true),
+        _encryptionTypeNotifier = ValueNotifier<EncryptionType>(
+          EncryptionType.fromString(preferences.getString(_PrefsKeys.encryptionAlgorithm)),
+        );
 
-  late final Box<Keyword> _websitesBox;
-  late final SharedPreferences _preferences;
+  final Box<Keyword> _websitesBox;
+  final SharedPreferences _preferences;
 
-  final _keywordsEntity = EntityStateNotifier<List<Keyword>>();
-  final _isLoginObscuredEntity = EntityStateNotifier<bool>();
-  final _isKeyObscuredEntity = EntityStateNotifier<bool>();
-  final _isPasswordObscuredEntity = EntityStateNotifier<bool>();
-  final _doSaveEntity = EntityStateNotifier<bool>();
-  final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
+  final ValueNotifier<List<Keyword>> _keywordsNotifier;
+  final ValueNotifier<bool> _isLoginObscuredNotifier;
+  final ValueNotifier<bool> _isKeyObscuredNotifier;
+  final ValueNotifier<bool> _isPasswordObscuredNotifier;
+  final ValueNotifier<bool> _doSaveNotifier;
+  final ValueNotifier<EncryptionType> _encryptionTypeNotifier;
 
   static Future<IDiskDataRepository> create() async {
     final websitesBox = await Hive.openBox<Keyword>('websites');
@@ -38,7 +39,7 @@ class DiskDataRepository implements IDiskDataRepository {
   }
 
   @override
-  EntityValueListenable<List<Keyword>> get keywordsListenable => _keywordsEntity;
+  ValueListenable<List<Keyword>> get keywordsListenable => _keywordsNotifier;
 
   @override
   Future<void> addWebsite({
@@ -67,7 +68,7 @@ class DiskDataRepository implements IDiskDataRepository {
   @override
   Future<void> clearKeywords() async {
     await _websitesBox.clear();
-    _keywordsEntity.content(_keywords);
+    _keywordsNotifier.value = _keywords;
   }
 
   @override
@@ -109,80 +110,70 @@ class DiskDataRepository implements IDiskDataRepository {
     final keywordIndex = _keywords.indexWhere((savedKeyword) => savedKeyword.name == keyword);
 
     if (keywordIndex != -1) await _websitesBox.deleteAt(keywordIndex);
-    _keywordsEntity.content(_keywords);
+    _keywordsNotifier.value = _keywords;
   }
 
   @override
-  bool get isLoginObscured => isLoginObscuredListenable.value.data ?? _storedIsLoginObscured;
+  bool get isLoginObscured => isLoginObscuredListenable.value;
 
   @override
-  EntityValueListenable<bool> get isLoginObscuredListenable => _isLoginObscuredEntity;
+  ValueListenable<bool> get isLoginObscuredListenable => _isLoginObscuredNotifier;
 
   @override
   Future<void> setLoginObscured(bool value) async {
     await _preferences.setBool(_PrefsKeys.isLoginObscured, value);
-    _isLoginObscuredEntity.content(value);
+    _isLoginObscuredNotifier.value = value;
   }
 
   @override
-  bool get isKeyObscured => isKeyObscuredListenable.value.data ?? _storedIsKeyObscured;
+  bool get isKeyObscured => isKeyObscuredListenable.value;
 
   @override
-  EntityValueListenable<bool> get isKeyObscuredListenable => _isKeyObscuredEntity;
+  ValueListenable<bool> get isKeyObscuredListenable => _isKeyObscuredNotifier;
 
   @override
   Future<void> setKeyObscured(bool value) async {
     await _preferences.setBool(_PrefsKeys.isKeyObscured, value);
-    _isKeyObscuredEntity.content(value);
+    _isKeyObscuredNotifier.value = value;
   }
 
   @override
-  bool get isPasswordObscured => isPasswordObscuredListenable.value.data ?? _storedIsPasswordObscured;
+  bool get isPasswordObscured => isPasswordObscuredListenable.value;
 
   @override
-  EntityValueListenable<bool> get isPasswordObscuredListenable => _isPasswordObscuredEntity;
+  ValueListenable<bool> get isPasswordObscuredListenable => _isPasswordObscuredNotifier;
 
   @override
   Future<void> setPasswordObscured(bool value) async {
     await _preferences.setBool(_PrefsKeys.isPasswordObscured, value);
-    _isPasswordObscuredEntity.content(value);
+    _isPasswordObscuredNotifier.value = value;
   }
 
   @override
-  bool get doSave => doSaveListenable.value.data ?? _storedDoSave;
+  bool get doSave => doSaveListenable.value;
 
   @override
-  EntityValueListenable<bool> get doSaveListenable => _doSaveEntity;
+  ValueListenable<bool> get doSaveListenable => _doSaveNotifier;
 
   @override
   Future<void> setDoSave(bool value) async {
     await _preferences.setBool(_PrefsKeys.doSave, value);
-    _doSaveEntity.content(value);
+    _doSaveNotifier.value = value;
   }
 
   @override
-  String? get encryptionAlgorithm => encryptionTypeListenable.value.data?.name ?? _storedEncryptionAlgorithm;
+  String? get encryptionAlgorithm => encryptionTypeListenable.value.name;
 
   @override
-  EntityValueListenable<EncryptionType> get encryptionTypeListenable => _encryptionTypeEntity;
+  ValueListenable<EncryptionType> get encryptionTypeListenable => _encryptionTypeNotifier;
 
   @override
   Future<void> setEncryptionAlgorithm(String value) async {
     await _preferences.setString(_PrefsKeys.encryptionAlgorithm, value);
-    _encryptionTypeEntity.content(EncryptionType.fromString(value));
+    _encryptionTypeNotifier.value = EncryptionType.fromString(value);
   }
 
   List<Keyword> get _keywords => _websitesBox.values.toList();
-
-  bool get _storedIsLoginObscured => _preferences.getBool(_PrefsKeys.isLoginObscured) ?? false;
-
-  bool get _storedIsKeyObscured => _preferences.getBool(_PrefsKeys.isKeyObscured) ?? true;
-
-  bool get _storedIsPasswordObscured => _preferences.getBool(_PrefsKeys.isPasswordObscured) ?? true;
-
-  bool get _storedDoSave => _preferences.getBool(_PrefsKeys.doSave) ?? true;
-
-  String? get _storedEncryptionAlgorithm => _preferences.getString(_PrefsKeys.encryptionAlgorithm);
 
   static String _maskString(String input) {
     if (input.isEmpty) return input;
@@ -201,12 +192,12 @@ class DiskDataRepository implements IDiskDataRepository {
 
     if (keywordIndex == -1) {
       await _websitesBox.add(keyword);
-      _keywordsEntity.content(_keywords);
+      _keywordsNotifier.value = _keywords;
       return;
     }
 
     await _websitesBox.putAt(keywordIndex, keyword);
-    _keywordsEntity.content(_keywords);
+    _keywordsNotifier.value = _keywords;
   }
 }
 

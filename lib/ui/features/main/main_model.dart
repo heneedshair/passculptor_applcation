@@ -1,7 +1,7 @@
 import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 
 abstract interface class IMainScreenModel extends ElementaryModel {
   Future<void> addWebsite(String login, String website, String key);
@@ -10,31 +10,31 @@ abstract interface class IMainScreenModel extends ElementaryModel {
 
   bool get isLoginObscured;
 
-  EntityValueListenable<bool> get isLoginObscuredListenable;
+  ValueListenable<bool> get isLoginObscuredListenable;
 
   Future<void> setLoginObscured(bool value);
 
   bool get isKeyObscured;
 
-  EntityValueListenable<bool> get isKeyObscuredListenable;
+  ValueListenable<bool> get isKeyObscuredListenable;
 
   Future<void> setKeyObscured(bool value);
 
   bool get isPasswordObscured;
 
-  EntityValueListenable<bool> get isPasswordObscuredListenable;
+  ValueListenable<bool> get isPasswordObscuredListenable;
 
   Future<void> setPasswordObscured(bool value);
 
   bool get doSave;
 
-  EntityValueListenable<bool> get doSaveListenable;
+  ValueListenable<bool> get doSaveListenable;
 
   Future<void> setDoSave(bool value);
 
   EncryptionType get encryptionAlgorithm;
 
-  EntityValueListenable<EncryptionType> get encryptionTypeListenable;
+  ValueListenable<EncryptionType> get encryptionTypeListenable;
 }
 
 class MainScreenModel extends IMainScreenModel {
@@ -62,7 +62,7 @@ class MainScreenModel extends IMainScreenModel {
   bool get isLoginObscured => _repository.isLoginObscured;
 
   @override
-  EntityValueListenable<bool> get isLoginObscuredListenable =>
+  ValueListenable<bool> get isLoginObscuredListenable =>
       _repository.isLoginObscuredListenable;
 
   @override
@@ -73,7 +73,7 @@ class MainScreenModel extends IMainScreenModel {
   bool get isKeyObscured => _repository.isKeyObscured;
 
   @override
-  EntityValueListenable<bool> get isKeyObscuredListenable =>
+  ValueListenable<bool> get isKeyObscuredListenable =>
       _repository.isKeyObscuredListenable;
 
   @override
@@ -83,7 +83,7 @@ class MainScreenModel extends IMainScreenModel {
   bool get isPasswordObscured => _repository.isPasswordObscured;
 
   @override
-  EntityValueListenable<bool> get isPasswordObscuredListenable =>
+  ValueListenable<bool> get isPasswordObscuredListenable =>
       _repository.isPasswordObscuredListenable;
 
   @override
@@ -94,8 +94,7 @@ class MainScreenModel extends IMainScreenModel {
   bool get doSave => _repository.doSave;
 
   @override
-  EntityValueListenable<bool> get doSaveListenable =>
-      _repository.doSaveListenable;
+  ValueListenable<bool> get doSaveListenable => _repository.doSaveListenable;
 
   @override
   Future<void> setDoSave(bool value) => _repository.setDoSave(value);
@@ -105,6 +104,6 @@ class MainScreenModel extends IMainScreenModel {
       EncryptionType.fromString(_repository.encryptionAlgorithm);
 
   @override
-  EntityValueListenable<EncryptionType> get encryptionTypeListenable =>
+  ValueListenable<EncryptionType> get encryptionTypeListenable =>
       _repository.encryptionTypeListenable;
 }

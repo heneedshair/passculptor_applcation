@@ -10,7 +10,7 @@ import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart
 import 'package:code_generator_app/ui/features/main/main_model.dart';
 import 'package:code_generator_app/ui/features/main/main_screen.dart';
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -36,13 +36,13 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onSaveCheckTap();
 
-  EntityValueListenable<bool> get isLoginObscuredListenable;
+  ValueListenable<bool> get isLoginObscuredListenable;
 
-  EntityValueListenable<bool> get isKeywordObscuredListenable;
+  ValueListenable<bool> get isKeywordObscuredListenable;
 
-  EntityValueListenable<bool> get isPasswordObscuredListenable;
+  ValueListenable<bool> get isPasswordObscuredListenable;
 
-  EntityValueListenable<bool> get doSaveListenable;
+  ValueListenable<bool> get doSaveListenable;
 
   void onDrawerTap(BuildContext context);
 
@@ -68,7 +68,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onSettingsTap();
 
-  EntityValueListenable<EncryptionType> get encryptionTypeListenable;
+  ValueListenable<EncryptionType> get encryptionTypeListenable;
 
   void onNextTapFromLogin();
 
@@ -135,7 +135,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     );
     password.value = Password(label: result, value: result);
 
-    if (doSaveListenable.value.data!) {
+    if (doSaveListenable.value) {
       unawaited(
         model.addWebsite(
           _loginController.text,
@@ -188,15 +188,15 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }
 
   @override
-  EntityValueListenable<bool> get isLoginObscuredListenable =>
+  ValueListenable<bool> get isLoginObscuredListenable =>
       model.isLoginObscuredListenable;
 
   @override
-  EntityValueListenable<bool> get isKeywordObscuredListenable =>
+  ValueListenable<bool> get isKeywordObscuredListenable =>
       model.isKeyObscuredListenable;
 
   @override
-  EntityValueListenable<bool> get isPasswordObscuredListenable =>
+  ValueListenable<bool> get isPasswordObscuredListenable =>
       model.isPasswordObscuredListenable;
 
   @override
@@ -204,7 +204,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
       Scaffold.of(context).openEndDrawer();
 
   @override
-  EntityValueListenable<bool> get doSaveListenable => model.doSaveListenable;
+  ValueListenable<bool> get doSaveListenable => model.doSaveListenable;
 
   @override
   void onSaveCheckTap() {
@@ -258,7 +258,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }
 
   @override
-  EntityValueListenable<EncryptionType> get encryptionTypeListenable =>
+  ValueListenable<EncryptionType> get encryptionTypeListenable =>
       model.encryptionTypeListenable;
 
   final _loginFocusNode = FocusNode();

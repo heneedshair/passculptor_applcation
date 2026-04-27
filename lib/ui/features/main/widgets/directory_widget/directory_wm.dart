@@ -4,7 +4,6 @@ import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_widget.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_model.dart';
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +13,7 @@ abstract interface class IDirectoryDrawerWidgetModel implements IWidgetModel {
 
   ValueListenable<bool> get isSearchModeListenable;
 
-  EntityValueListenable<List<Keyword>> get keywordsListenable;
+  ValueListenable<List<Keyword>> get keywordsListenable;
 
   void onBackTap();
 
@@ -54,7 +53,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
 
   final _searchController = TextEditingController();
   final _isSearchModeEntity = ValueNotifier<bool>(false);
-  final _keywordsEntity = EntityStateNotifier<List<Keyword>>();
+  final _keywordsNotifier = ValueNotifier<List<Keyword>>(const []);
 
   List<Keyword> _keywords = const [];
 
@@ -65,7 +64,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
   ValueNotifier<bool> get isSearchModeListenable => _isSearchModeEntity;
 
   @override
-  EntityValueListenable<List<Keyword>> get keywordsListenable => _keywordsEntity;
+  ValueListenable<List<Keyword>> get keywordsListenable => _keywordsNotifier;
 
   @override
   void initWidgetModel() {
@@ -79,29 +78,24 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
     model.keywordsListenable.removeListener(_onKeywordsChanged);
     _searchController.dispose();
     _isSearchModeEntity.dispose();
-    _keywordsEntity.dispose();
+    _keywordsNotifier.dispose();
     super.dispose();
   }
 
   void _onKeywordsChanged() {
-    final keywords = model.keywordsListenable.value.data;
-    if (keywords == null) return;
-
-    _keywords = keywords;
+    _keywords = model.keywordsListenable.value;
     _applySearch();
   }
 
   void _initKeywords() {
-    _keywords = model.keywordsListenable.value.data ?? [];
+    _keywords = model.keywordsListenable.value;
     _applySearch();
   }
 
   void _applySearch() {
-    _keywordsEntity.content(
-      model.filterKeywords(
-        source: _keywords,
-        query: _searchController.text,
-      ),
+    _keywordsNotifier.value = model.filterKeywords(
+      source: _keywords,
+      query: _searchController.text,
     );
   }
 

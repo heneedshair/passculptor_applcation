@@ -2,10 +2,10 @@ import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
 import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 
 abstract interface class IDirectoryDrawerModel extends ElementaryModel {
-  EntityValueListenable<List<Keyword>> get keywordsListenable;
+  ValueListenable<List<Keyword>> get keywordsListenable;
 
   List<Keyword> filterKeywords({
     required List<Keyword> source,
@@ -34,7 +34,7 @@ class DirectoryDrawerModel extends IDirectoryDrawerModel {
   final IDiskDataRepository _repository;
 
   @override
-  EntityValueListenable<List<Keyword>> get keywordsListenable => _repository.keywordsListenable;
+  ValueListenable<List<Keyword>> get keywordsListenable => _repository.keywordsListenable;
 
   @override
   List<Keyword> filterKeywords({
