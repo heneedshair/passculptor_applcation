@@ -24,6 +24,17 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
           ValueListenableBuilder(
             valueListenable: wm.isSearchModeListenable,
             builder: (_, isSearchMode, __) {
+              Widget animatedAction(Widget child) {
+                return AnimatedSize(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  child: SizedBox(
+                    width: isSearchMode ? 0 : kToolbarHeight,
+                    child: child,
+                  ),
+                );
+              }
+
               return SliverAppBar(
                 backgroundColor: wm.context.colors.surface,
                 pinned: true,
@@ -42,13 +53,17 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                     icon: Icon(isSearchMode ? Icons.close : Icons.search),
                     onPressed: wm.onSearchTap,
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.info_outline_rounded),
-                    onPressed: () {},
+                  animatedAction(
+                    IconButton(
+                      icon: const Icon(Icons.info_outline_rounded),
+                      onPressed: () {},
+                    ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: wm.onClearAllTap,
+                  animatedAction(
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: wm.onClearAllTap,
+                    ),
                   ),
                 ],
                 title: isSearchMode
@@ -57,8 +72,10 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                         autofocus: true,
                         onChanged: wm.onSearchChanged,
                         decoration: const InputDecoration(
-                          hintText: 'сайт/логин/ключевое слово',
+                          hintText: 'Поиск',
                           border: InputBorder.none,
+                          contentPadding: EdgeInsets.zero,
+                          filled: false,
                           isDense: true,
                         ),
                       )
