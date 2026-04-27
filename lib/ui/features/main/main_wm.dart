@@ -70,6 +70,8 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   ValueListenable<EncryptionType> get encryptionTypeListenable;
 
+  ValueListenable<int> get passwordGenerationSuccessListenable;
+
   void onNextTapFromLogin();
 
   GlobalKey<FormState> get formKey;
@@ -99,6 +101,19 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
     super.initWidgetModel();
   }
 
+  @override
+  void dispose() {
+    _wordController.dispose();
+    _keyController.dispose();
+    _loginController.dispose();
+    _password.dispose();
+    _passwordGenerationSuccess.dispose();
+    _keywordFocusNode.dispose();
+    _loginFocusNode.dispose();
+    _websiteFocusNode.dispose();
+    super.dispose();
+  }
+
   final _wordController = TextEditingController();
 
   @override
@@ -119,6 +134,11 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   @override
   ValueNotifier<Password> get password => _password;
 
+  final _passwordGenerationSuccess = ValueNotifier(0);
+
+  @override
+  ValueListenable<int> get passwordGenerationSuccessListenable => _passwordGenerationSuccess;
+
   @override
   void onEnterTap() {
     if (!_formKey.currentState!.validate()) {
@@ -132,6 +152,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
       _loginController.text,
     );
     password.value = Password(label: result, value: result);
+    _passwordGenerationSuccess.value++;
 
     if (doSaveListenable.value) {
       unawaited(
