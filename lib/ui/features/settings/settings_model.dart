@@ -17,14 +17,11 @@ class SettingsScreenModel extends ISettingsScreenModel {
   final IDiskDataRepository _repository;
 
   @override
-  Future<void> setEncryptionAlgorithm(String value) =>
-      _repository.setEncryptionAlgorithm(value);
+  Future<void> setEncryptionAlgorithm(String value) => _repository.setEncryptionAlgorithm(value);
 
   @override
-  EncryptionType get encryptionType =>
-      EncryptionType.fromString(_repository.encryptionAlgorithm);
+  EncryptionType get encryptionType => EncryptionType.fromString(_repository.encryptionAlgorithm);
 
   @override
-  ValueListenable<EncryptionType> get encryptionTypeListenable =>
-      _repository.encryptionTypeListenable;
+  ValueListenable<EncryptionType> get encryptionTypeListenable => _repository.encryptionTypeListenable;
 }

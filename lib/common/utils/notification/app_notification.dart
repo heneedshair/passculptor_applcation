@@ -31,12 +31,10 @@ abstract class AppNotification {
         content: Text(
           isSuccsess ? message : unsuccessMessage,
           style: TextStyle(
-            color:
-                isSuccsess ? context.colors.onPrimary : context.colors.surface,
+            color: isSuccsess ? context.colors.onPrimary : context.colors.surface,
           ),
         ),
-        backgroundColor:
-            isSuccsess ? context.colors.primary : context.colors.error,
+        backgroundColor: isSuccsess ? context.colors.primary : context.colors.error,
       ),
     );
   }

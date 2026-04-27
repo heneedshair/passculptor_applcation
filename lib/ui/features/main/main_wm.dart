@@ -81,15 +81,13 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   String? keywordValidator(String? value);
 }
 
-MainScreenWidgetModel defaultMainScreenWidgetModelFactory(
-    BuildContext context) {
+MainScreenWidgetModel defaultMainScreenWidgetModelFactory(BuildContext context) {
   return MainScreenWidgetModel(
     MainScreenModel(context.read<IDiskDataRepository>()),
   );
 }
 
-class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
-    implements IMainScreenWidgetModel {
+class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> implements IMainScreenWidgetModel {
   MainScreenWidgetModel(super.model);
 
   late ICodeGenerator _codeGenerator;
@@ -188,20 +186,16 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }
 
   @override
-  ValueListenable<bool> get isLoginObscuredListenable =>
-      model.isLoginObscuredListenable;
+  ValueListenable<bool> get isLoginObscuredListenable => model.isLoginObscuredListenable;
 
   @override
-  ValueListenable<bool> get isKeywordObscuredListenable =>
-      model.isKeyObscuredListenable;
+  ValueListenable<bool> get isKeywordObscuredListenable => model.isKeyObscuredListenable;
 
   @override
-  ValueListenable<bool> get isPasswordObscuredListenable =>
-      model.isPasswordObscuredListenable;
+  ValueListenable<bool> get isPasswordObscuredListenable => model.isPasswordObscuredListenable;
 
   @override
-  void onDrawerTap(BuildContext context) =>
-      Scaffold.of(context).openEndDrawer();
+  void onDrawerTap(BuildContext context) => Scaffold.of(context).openEndDrawer();
 
   @override
   ValueListenable<bool> get doSaveListenable => model.doSaveListenable;
@@ -235,8 +229,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
     _loginController.text = enteredLogin;
     _wordController.text = enteredWebsite;
 
-    if (_keyController.text.length != enteredKeyword.length ||
-        _keyController.text[0] != enteredKeyword[0]) {
+    if (_keyController.text.length != enteredKeyword.length || _keyController.text[0] != enteredKeyword[0]) {
       _keyController.text = '';
       _password.value = Password();
       _keywordFocusNode.requestFocus();
@@ -258,8 +251,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel>
   }
 
   @override
-  ValueListenable<EncryptionType> get encryptionTypeListenable =>
-      model.encryptionTypeListenable;
+  ValueListenable<EncryptionType> get encryptionTypeListenable => model.encryptionTypeListenable;
 
   final _loginFocusNode = FocusNode();
 

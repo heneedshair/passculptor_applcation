@@ -86,10 +86,8 @@ class CodeGenerator implements ICodeGenerator {
     const abc = AppData.abc;
     StringBuffer buffer = StringBuffer();
 
-    final int shift = abc[word[i]]! +
-        abc[word[i + genLettersShift]]! +
-        abc[key[i]]! +
-        abc[key[i + genLettersShift + loginLength]]!;
+    final int shift =
+        abc[word[i]]! + abc[word[i + genLettersShift]]! + abc[key[i]]! + abc[key[i + genLettersShift + loginLength]]!;
     // Второй символ ключевого слова берем исключительно из ключа, не затрагивая логин
 
     // Сдвигаем букву по лафавиту

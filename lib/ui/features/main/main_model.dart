@@ -55,26 +55,22 @@ class MainScreenModel extends IMainScreenModel {
       );
 
   @override
-  bool containsSameKeyword(String enteredKeyword) =>
-      _repository.containsSameKeyword(enteredKeyword);
+  bool containsSameKeyword(String enteredKeyword) => _repository.containsSameKeyword(enteredKeyword);
 
   @override
   bool get isLoginObscured => _repository.isLoginObscured;
 
   @override
-  ValueListenable<bool> get isLoginObscuredListenable =>
-      _repository.isLoginObscuredListenable;
+  ValueListenable<bool> get isLoginObscuredListenable => _repository.isLoginObscuredListenable;
 
   @override
-  Future<void> setLoginObscured(bool value) =>
-      _repository.setLoginObscured(value);
+  Future<void> setLoginObscured(bool value) => _repository.setLoginObscured(value);
 
   @override
   bool get isKeyObscured => _repository.isKeyObscured;
 
   @override
-  ValueListenable<bool> get isKeyObscuredListenable =>
-      _repository.isKeyObscuredListenable;
+  ValueListenable<bool> get isKeyObscuredListenable => _repository.isKeyObscuredListenable;
 
   @override
   Future<void> setKeyObscured(bool value) => _repository.setKeyObscured(value);
@@ -83,12 +79,10 @@ class MainScreenModel extends IMainScreenModel {
   bool get isPasswordObscured => _repository.isPasswordObscured;
 
   @override
-  ValueListenable<bool> get isPasswordObscuredListenable =>
-      _repository.isPasswordObscuredListenable;
+  ValueListenable<bool> get isPasswordObscuredListenable => _repository.isPasswordObscuredListenable;
 
   @override
-  Future<void> setPasswordObscured(bool value) =>
-      _repository.setPasswordObscured(value);
+  Future<void> setPasswordObscured(bool value) => _repository.setPasswordObscured(value);
 
   @override
   bool get doSave => _repository.doSave;
@@ -100,10 +94,8 @@ class MainScreenModel extends IMainScreenModel {
   Future<void> setDoSave(bool value) => _repository.setDoSave(value);
 
   @override
-  EncryptionType get encryptionAlgorithm =>
-      EncryptionType.fromString(_repository.encryptionAlgorithm);
+  EncryptionType get encryptionAlgorithm => EncryptionType.fromString(_repository.encryptionAlgorithm);
 
   @override
-  ValueListenable<EncryptionType> get encryptionTypeListenable =>
-      _repository.encryptionTypeListenable;
+  ValueListenable<EncryptionType> get encryptionTypeListenable => _repository.encryptionTypeListenable;
 }

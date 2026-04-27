@@ -45,8 +45,7 @@ class AppElevatedButton extends StatelessWidget {
     this.padding,
     this.style,
   })  : type = AppButtonType.primary,
-        assert(label != null || child != null,
-            '[label] or [child] must not be null');
+        assert(label != null || child != null, '[label] or [child] must not be null');
 
   const AppElevatedButton.primaryfixedDim({
     super.key,
@@ -62,8 +61,7 @@ class AppElevatedButton extends StatelessWidget {
     this.padding,
     this.style,
   })  : type = AppButtonType.primaryFixedDim,
-        assert(label != null || child != null,
-            '[label] or [child] must not be null');
+        assert(label != null || child != null, '[label] or [child] must not be null');
 
   const AppElevatedButton.secondary({
     super.key,
@@ -79,8 +77,7 @@ class AppElevatedButton extends StatelessWidget {
     this.padding,
     this.style,
   })  : type = AppButtonType.secondary,
-        assert(label != null || child != null,
-            '[label] or [child] must not be null');
+        assert(label != null || child != null, '[label] or [child] must not be null');
 
   const AppElevatedButton.warning({
     super.key,
@@ -96,8 +93,7 @@ class AppElevatedButton extends StatelessWidget {
     this.padding,
     this.style,
   })  : type = AppButtonType.warning,
-        assert(label != null || child != null,
-            '[label] or [child] must not be null');
+        assert(label != null || child != null, '[label] or [child] must not be null');
 
   /// Use this constructor if you want to pass a button type parameter
   const AppElevatedButton({
@@ -114,8 +110,7 @@ class AppElevatedButton extends StatelessWidget {
     this.textStyle,
     this.padding,
     this.style,
-  }) : assert(label != null || child != null,
-            '[label] or [child] must not be null');
+  }) : assert(label != null || child != null, '[label] or [child] must not be null');
 
   @override
   Widget build(BuildContext context) => SizedBox(

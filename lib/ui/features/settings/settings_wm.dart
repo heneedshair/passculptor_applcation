@@ -21,21 +21,18 @@ abstract interface class ISettingsScreenWidgetModel implements IWidgetModel {
   ColorScheme get colors;
 }
 
-SettingsScreenWidgetModel defaultSettingsScreenWidgetModelFactory(
-    BuildContext context) {
+SettingsScreenWidgetModel defaultSettingsScreenWidgetModelFactory(BuildContext context) {
   return SettingsScreenWidgetModel(
     SettingsScreenModel(context.read<IDiskDataRepository>()),
   );
 }
 
-class SettingsScreenWidgetModel
-    extends WidgetModel<SettingsScreen, ISettingsScreenModel>
+class SettingsScreenWidgetModel extends WidgetModel<SettingsScreen, ISettingsScreenModel>
     implements ISettingsScreenWidgetModel {
   SettingsScreenWidgetModel(super.model);
 
   @override
-  List<String> get encryptionAlgorithmList =>
-      EncryptionType.values.map((value) => value.name).toList();
+  List<String> get encryptionAlgorithmList => EncryptionType.values.map((value) => value.name).toList();
 
   @override
   Future<void> onEncryptionAlgorithmChanged(String? selectedValue) async {
@@ -45,8 +42,7 @@ class SettingsScreenWidgetModel
   }
 
   @override
-  ValueListenable<EncryptionType> get encryptionTypeListenable =>
-      model.encryptionTypeListenable;
+  ValueListenable<EncryptionType> get encryptionTypeListenable => model.encryptionTypeListenable;
 
   @override
   void onBackTap() => AutoRouter.of(context).maybePop();

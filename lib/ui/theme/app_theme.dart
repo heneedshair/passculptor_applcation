@@ -2,11 +2,9 @@ import 'package:code_generator_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppThemeData {
-  static final ThemeData dark =
-      _getThemeData(const AppColors.dark(), Brightness.dark);
+  static final ThemeData dark = _getThemeData(const AppColors.dark(), Brightness.dark);
 
-  static ThemeData _getThemeData(AppColors colors, Brightness brightness) =>
-      ThemeData(
+  static ThemeData _getThemeData(AppColors colors, Brightness brightness) => ThemeData(
         colorScheme: ColorScheme(
           brightness: brightness,
 
@@ -62,8 +60,7 @@ class AppThemeData {
           floatingLabelBehavior: FloatingLabelBehavior.auto,
           filled: true,
           fillColor: colors.primaryContainer,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(1000),
             borderSide: BorderSide.none,
