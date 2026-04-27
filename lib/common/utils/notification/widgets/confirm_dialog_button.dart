@@ -36,6 +36,7 @@ class ConfirmDialogButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.zero,
           elevation: 0,
           shadowColor: Colors.transparent,
           backgroundColor: type.backgroundColor(context),
