@@ -23,42 +23,38 @@ abstract interface class ISettingsScreenWidgetModel implements IWidgetModel {
   ColorScheme get colors;
 }
 
-SettingsScreenWidgetModel defaultSettingsScreenWidgetModelFactory(
-    BuildContext context) {
+SettingsScreenWidgetModel defaultSettingsScreenWidgetModelFactory(BuildContext context) {
   return SettingsScreenWidgetModel(
     SettingsScreenModel(context.read<IDiskDataRepository>()),
   );
 }
 
-class SettingsScreenWidgetModel
-    extends WidgetModel<SettingsScreen, ISettingsScreenModel>
+class SettingsScreenWidgetModel extends WidgetModel<SettingsScreen, ISettingsScreenModel>
     implements ISettingsScreenWidgetModel {
   SettingsScreenWidgetModel(super.model);
 
   @override
   void initWidgetModel() {
-    _encryptionTypeEntity.content(widget.initialEncryptionType);
-
     super.initWidgetModel();
+    _encryptionTypeEntity.content(model.encryptionType);
   }
 
   @override
-  List<String> get encryptionAlgorithmList =>
-      EncryptionType.values.map((value) => value.name).toList();
+  List<String> get encryptionAlgorithmList => EncryptionType.values.map((value) => value.name).toList();
 
   @override
-  void onEncryptionAlgorithmChanged(String? selectedValue) {
+  Future<void> onEncryptionAlgorithmChanged(String? selectedValue) async {
     if (selectedValue == null) return;
 
-    unawaited(model.setEncryptionAlgorithm(selectedValue));
-    _encryptionTypeEntity.content(EncryptionType.create(selectedValue));
+    await model.setEncryptionAlgorithm(selectedValue);
+
+    _encryptionTypeEntity.content(EncryptionType.fromString(selectedValue));
   }
 
   final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
 
   @override
-  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable =>
-      _encryptionTypeEntity;
+  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable => _encryptionTypeEntity;
 
   @override
   void onBackTap() => AutoRouter.of(context).maybePop();

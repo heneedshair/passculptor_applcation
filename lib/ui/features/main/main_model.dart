@@ -1,3 +1,4 @@
+import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:elementary/elementary.dart';
 
@@ -22,7 +23,7 @@ abstract interface class IMainScreenModel extends ElementaryModel {
 
   Future<void> setDoSave(bool value);
 
-  String? get encryptionAlgorithm;
+  EncryptionType get encryptionAlgorithm;
 }
 
 class MainScreenModel extends IMainScreenModel {
@@ -35,13 +36,12 @@ class MainScreenModel extends IMainScreenModel {
     String enteredLogin,
     String enteredWebsite,
     String enteredKeyword,
-  ) async {
-    await _repository.addWebsite(
-      login: enteredLogin,
-      website: enteredWebsite,
-      keyword: enteredKeyword,
-    );
-  }
+  ) async =>
+      await _repository.addWebsite(
+        login: enteredLogin,
+        website: enteredWebsite,
+        keyword: enteredKeyword,
+      );
 
   @override
   bool containsSameKeyword(String enteredKeyword) => _repository.containsSameKeyword(enteredKeyword);
@@ -71,5 +71,5 @@ class MainScreenModel extends IMainScreenModel {
   Future<void> setDoSave(bool value) => _repository.setDoSave(value);
 
   @override
-  String? get encryptionAlgorithm => _repository.encryptionAlgorithm;
+  EncryptionType get encryptionAlgorithm => EncryptionType.fromString(_repository.encryptionAlgorithm);
 }

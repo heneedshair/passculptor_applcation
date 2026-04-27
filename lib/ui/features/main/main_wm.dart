@@ -103,10 +103,10 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   void _initEncryptionAlgorithm() {
     _encryptionTypeEntity.loading();
 
-    final String? encryptionType = model.encryptionAlgorithm;
-    _codeGenerator = ICodeGenerator(encryptionType);
+    final encryptionType = model.encryptionAlgorithm;
+    _encryptionTypeEntity.content(encryptionType);
 
-    _encryptionTypeEntity.content(_codeGenerator.type);
+    _codeGenerator = ICodeGenerator(encryptionType);
   }
 
   final _wordController = TextEditingController();
@@ -280,10 +280,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
 
   @override
   Future<void> onSettingsTap() async {
-    await AutoRouter.of(context).push(SettingsRoute(
-      initialEncryptionType: _encryptionTypeEntity.value.data!,
-    ));
-
+    await AutoRouter.of(context).push(const SettingsRoute());
     _initEncryptionAlgorithm();
   }
 
