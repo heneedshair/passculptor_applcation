@@ -1,5 +1,6 @@
 import 'package:code_generator_app/common/extensions/build_context.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_wm.dart';
+import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/__animated_app_bar_action.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/keyword_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:elementary/elementary.dart';
@@ -24,17 +25,6 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
           ValueListenableBuilder(
             valueListenable: wm.isSearchModeListenable,
             builder: (_, isSearchMode, __) {
-              Widget animatedAction(Widget child) {
-                return AnimatedSize(
-                  duration: const Duration(milliseconds: 220),
-                  curve: Curves.easeOutCubic,
-                  child: SizedBox(
-                    width: isSearchMode ? 0 : kToolbarHeight,
-                    child: child,
-                  ),
-                );
-              }
-
               return SliverAppBar(
                 backgroundColor: wm.context.colors.surface,
                 pinned: true,
@@ -53,14 +43,16 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                     icon: Icon(isSearchMode ? Icons.close : Icons.search),
                     onPressed: wm.onSearchTap,
                   ),
-                  animatedAction(
-                    IconButton(
+                  AnimatedAppBarAction(
+                    visible: !isSearchMode,
+                    child: IconButton(
                       icon: const Icon(Icons.info_outline_rounded),
                       onPressed: () {},
                     ),
                   ),
-                  animatedAction(
-                    IconButton(
+                  AnimatedAppBarAction(
+                    visible: !isSearchMode,
+                    child: IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: wm.onClearAllTap,
                     ),
