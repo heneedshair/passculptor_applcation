@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:code_generator_app/common/extensions/build_context.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_wm.dart';
-import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/__animated_app_bar_action.dart';
+import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/animated_app_bar_action.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/keyword_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:elementary/elementary.dart';
@@ -9,6 +11,9 @@ import 'package:flutter/material.dart';
 
 class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel> {
   const DirectoryDrawerWidget({super.key}) : super(defaultDirectoryDrawerWidgetModelFactory);
+
+  //TODO мб можно поменять на SafeArea
+  static double get bottomPadding => Platform.isAndroid || Platform.isIOS ? 25 : 10;
 
   @override
   Widget build(IDirectoryDrawerWidgetModel wm) {
@@ -38,6 +43,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                   onPressed: wm.onBackTap,
                   icon: const Icon(Icons.arrow_back_ios_new_rounded),
                 ),
+                actionsPadding: const EdgeInsets.only(right: 10),
                 actions: [
                   IconButton(
                     icon: Icon(isSearchMode ? Icons.close : Icons.search),
@@ -112,7 +118,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                     ),
                   ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 25)),
+          SliverToBoxAdapter(child: SizedBox(height: bottomPadding)),
         ],
       ),
     );

@@ -16,7 +16,7 @@ class AnimatedAppBarAction extends StatelessWidget {
       duration: const Duration(milliseconds: 220),
       curve: Curves.easeOutCubic,
       child: SizedBox(
-        width: visible ? kToolbarHeight : 0,
+        width: visible ? 40 : 0,
         child: child,
       ),
     );
