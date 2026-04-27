@@ -32,6 +32,10 @@ abstract interface class IMainScreenModel extends ElementaryModel {
 
   Future<void> setDoSave(bool value);
 
+  bool get doCopyPassword;
+
+  ValueListenable<bool> get doCopyPasswordListenable;
+
   EncryptionType get encryptionAlgorithm;
 
   ValueListenable<EncryptionType> get encryptionTypeListenable;
@@ -92,6 +96,12 @@ class MainScreenModel extends IMainScreenModel {
 
   @override
   Future<void> setDoSave(bool value) => _repository.setDoSave(value);
+
+  @override
+  bool get doCopyPassword => _repository.doCopyPassword;
+
+  @override
+  ValueListenable<bool> get doCopyPasswordListenable => _repository.doCopyPasswordListenable;
 
   @override
   EncryptionType get encryptionAlgorithm => EncryptionType.fromString(_repository.encryptionAlgorithm);

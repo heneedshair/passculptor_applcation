@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
@@ -15,6 +17,14 @@ abstract interface class ISettingsScreenWidgetModel implements IWidgetModel {
   void onEncryptionAlgorithmChanged(String? selectedValue);
 
   ValueListenable<EncryptionType> get encryptionTypeListenable;
+
+  ValueListenable<bool> get doCopyPasswordListenable;
+
+  ValueListenable<bool> get doSaveListenable;
+
+  void onCopyPasswordCheckTap();
+
+  void onSaveProfileCheckTap();
 
   void onBackTap();
 
@@ -43,6 +53,22 @@ class SettingsScreenWidgetModel extends WidgetModel<SettingsScreen, ISettingsScr
 
   @override
   ValueListenable<EncryptionType> get encryptionTypeListenable => model.encryptionTypeListenable;
+
+  @override
+  ValueListenable<bool> get doCopyPasswordListenable => model.doCopyPasswordListenable;
+
+  @override
+  ValueListenable<bool> get doSaveListenable => model.doSaveListenable;
+
+  @override
+  void onCopyPasswordCheckTap() {
+    unawaited(model.setDoCopyPassword(!model.doCopyPassword));
+  }
+
+  @override
+  void onSaveProfileCheckTap() {
+    unawaited(model.setDoSave(!model.doSave));
+  }
 
   @override
   void onBackTap() => AutoRouter.of(context).maybePop();

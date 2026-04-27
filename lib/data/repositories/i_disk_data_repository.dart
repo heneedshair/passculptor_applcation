@@ -52,6 +52,12 @@ abstract interface class IDiskDataRepository {
 
   Future<void> setDoSave(bool value);
 
+  bool get doCopyPassword;
+
+  ValueListenable<bool> get doCopyPasswordListenable;
+
+  Future<void> setDoCopyPassword(bool value);
+
   String? get encryptionAlgorithm;
 
   ValueListenable<EncryptionType> get encryptionTypeListenable;

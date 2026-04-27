@@ -164,10 +164,13 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
       );
     }
 
-    _setPasswordToClipboard();
+    if (model.doCopyPassword) {
+      unawaited(_setPasswordToClipboard());
+    }
+
     AppNotification.showSnackBar(
       context: context,
-      message: 'Пароль успешно создан и скопирован!',
+      message: model.doCopyPassword ? 'Пароль успешно создан и скопирован!' : 'Пароль успешно создан!',
     );
   }
 

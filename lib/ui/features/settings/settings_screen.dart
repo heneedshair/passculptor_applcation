@@ -70,10 +70,22 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
               ),
             ),
             const SizedBox(height: 18),
-            CheckPositionWirdget(
-              label: 'Копировать пароль автоматически',
-              onSaveCheckTap: () {},
-              doSave: true,
+            ValueListenableBuilder(
+              valueListenable: wm.doCopyPasswordListenable,
+              builder: (_, doCopyPassword, __) => CheckPositionWirdget(
+                label: 'Копировать пароль автоматически',
+                onSaveCheckTap: wm.onCopyPasswordCheckTap,
+                doSave: doCopyPassword,
+              ),
+            ),
+            const SizedBox(height: 18),
+            ValueListenableBuilder(
+              valueListenable: wm.doSaveListenable,
+              builder: (_, doSave, __) => CheckPositionWirdget(
+                label: 'Сохранять профиль после генерации',
+                onSaveCheckTap: wm.onSaveProfileCheckTap,
+                doSave: doSave,
+              ),
             ),
             const SizedBox(height: 18),
             Divider(color: wm.colors.secondaryFixedDim),

@@ -9,6 +9,18 @@ abstract interface class ISettingsScreenModel extends ElementaryModel {
   EncryptionType get encryptionType;
 
   ValueListenable<EncryptionType> get encryptionTypeListenable;
+
+  bool get doCopyPassword;
+
+  ValueListenable<bool> get doCopyPasswordListenable;
+
+  Future<void> setDoCopyPassword(bool value);
+
+  bool get doSave;
+
+  ValueListenable<bool> get doSaveListenable;
+
+  Future<void> setDoSave(bool value);
 }
 
 class SettingsScreenModel extends ISettingsScreenModel {
@@ -24,4 +36,22 @@ class SettingsScreenModel extends ISettingsScreenModel {
 
   @override
   ValueListenable<EncryptionType> get encryptionTypeListenable => _repository.encryptionTypeListenable;
+
+  @override
+  bool get doCopyPassword => _repository.doCopyPassword;
+
+  @override
+  ValueListenable<bool> get doCopyPasswordListenable => _repository.doCopyPasswordListenable;
+
+  @override
+  Future<void> setDoCopyPassword(bool value) => _repository.setDoCopyPassword(value);
+
+  @override
+  bool get doSave => _repository.doSave;
+
+  @override
+  ValueListenable<bool> get doSaveListenable => _repository.doSaveListenable;
+
+  @override
+  Future<void> setDoSave(bool value) => _repository.setDoSave(value);
 }

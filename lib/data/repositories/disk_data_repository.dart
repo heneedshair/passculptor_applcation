@@ -17,6 +17,7 @@ class DiskDataRepository implements IDiskDataRepository {
         _isKeyObscuredNotifier = ValueNotifier<bool>(preferences.getBool(_PrefsKeys.isKeyObscured) ?? true),
         _isPasswordObscuredNotifier = ValueNotifier<bool>(preferences.getBool(_PrefsKeys.isPasswordObscured) ?? true),
         _doSaveNotifier = ValueNotifier<bool>(preferences.getBool(_PrefsKeys.doSave) ?? true),
+        _doCopyPasswordNotifier = ValueNotifier<bool>(preferences.getBool(_PrefsKeys.doCopyPassword) ?? true),
         _encryptionTypeNotifier = ValueNotifier<EncryptionType>(
           EncryptionType.fromString(preferences.getString(_PrefsKeys.encryptionAlgorithm)),
         );
@@ -29,6 +30,7 @@ class DiskDataRepository implements IDiskDataRepository {
   final ValueNotifier<bool> _isKeyObscuredNotifier;
   final ValueNotifier<bool> _isPasswordObscuredNotifier;
   final ValueNotifier<bool> _doSaveNotifier;
+  final ValueNotifier<bool> _doCopyPasswordNotifier;
   final ValueNotifier<EncryptionType> _encryptionTypeNotifier;
 
   static Future<IDiskDataRepository> create() async {
@@ -162,6 +164,18 @@ class DiskDataRepository implements IDiskDataRepository {
   }
 
   @override
+  bool get doCopyPassword => doCopyPasswordListenable.value;
+
+  @override
+  ValueListenable<bool> get doCopyPasswordListenable => _doCopyPasswordNotifier;
+
+  @override
+  Future<void> setDoCopyPassword(bool value) async {
+    await _preferences.setBool(_PrefsKeys.doCopyPassword, value);
+    _doCopyPasswordNotifier.value = value;
+  }
+
+  @override
   String? get encryptionAlgorithm => encryptionTypeListenable.value.name;
 
   @override
@@ -206,5 +220,6 @@ abstract final class _PrefsKeys {
   static const isKeyObscured = 'isKeyObscured';
   static const isPasswordObscured = 'isPasswordObscured';
   static const doSave = 'doSave';
+  static const doCopyPassword = 'doCopyPassword';
   static const encryptionAlgorithm = 'encryptionAlgorithm';
 }
