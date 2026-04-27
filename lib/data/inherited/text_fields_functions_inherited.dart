@@ -15,7 +15,8 @@ class TextFieldsFunctionsInherited extends InheritedWidget {
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
 
   static TextFieldsFunctionsInherited? read(BuildContext context) {
-    return context.getElementForInheritedWidgetOfExactType<TextFieldsFunctionsInherited>()?.widget
-        as TextFieldsFunctionsInherited?;
+    return context
+        .getElementForInheritedWidgetOfExactType<TextFieldsFunctionsInherited>()
+        ?.widget as TextFieldsFunctionsInherited?;
   }
 }

@@ -1,69 +1,75 @@
-import 'package:code_generator_app/data/models/keyword/keyword.dart';
-import 'package:code_generator_app/data/models/login/login.dart';
+import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:elementary/elementary.dart';
-import 'package:hive/hive.dart';
 
 abstract interface class IMainScreenModel extends ElementaryModel {
   Future<void> addWebsite(String login, String website, String key);
 
   bool containsSameKeyword(String enteredKeyword);
+
+  bool get isLoginObscured;
+
+  Future<void> setLoginObscured(bool value);
+
+  bool get isKeyObscured;
+
+  Future<void> setKeyObscured(bool value);
+
+  bool get isPasswordObscured;
+
+  Future<void> setPasswordObscured(bool value);
+
+  bool get doSave;
+
+  Future<void> setDoSave(bool value);
+
+  String? get encryptionAlgorithm;
 }
 
 class MainScreenModel extends IMainScreenModel {
-  MainScreenModel();
+  MainScreenModel(this._repository);
 
-  //TODO Удалить и сделать общение с памятью через репозиторий
+  final IDiskDataRepository _repository;
+
   @override
   Future<void> addWebsite(
     String enteredLogin,
     String enteredWebsite,
     String enteredKeyword,
   ) async {
-    enteredKeyword = _maskString(enteredKeyword);
-
-    final websites = Hive.box<Keyword>('websites');
-    final keywords = websites.values.toList();
-    final keyword = _getKeyword(keywords, enteredKeyword);
-    final login = keyword.getLogin(enteredLogin)..addWebsite(enteredWebsite);
-
-    keyword.addNewLogin(login);
-    await _updateBox(websites, keywords, keyword);
+    await _repository.addWebsite(
+      login: enteredLogin,
+      website: enteredWebsite,
+      keyword: enteredKeyword,
+    );
   }
 
   @override
-  bool containsSameKeyword(String enteredKeyword) {
-    final websites = Hive.box<Keyword>('websites');
-    final keywords = websites.values.toList();
+  bool containsSameKeyword(String enteredKeyword) => _repository.containsSameKeyword(enteredKeyword);
 
-    return keywords.any(
-      (keyword) => keyword.name[0] == enteredKeyword[0] && keyword.name.length != enteredKeyword.length,
-    );
-  }
+  @override
+  bool get isLoginObscured => _repository.isLoginObscured;
 
-  static String _maskString(String input) {
-    if (input.isEmpty) return input;
-    return input[0] + '*' * (input.length - 1);
-  }
+  @override
+  Future<void> setLoginObscured(bool value) => _repository.setLoginObscured(value);
 
-  static Keyword _getKeyword(List<Keyword> keywords, String enteredKeyword) {
-    return keywords.firstWhere(
-      (keyword) => keyword.name == enteredKeyword,
-      orElse: () => Keyword(enteredKeyword, <Login>[]),
-    );
-  }
+  @override
+  bool get isKeyObscured => _repository.isKeyObscured;
 
-  static Future<void> _updateBox(
-    Box<Keyword> websites,
-    List<Keyword> keywords,
-    Keyword keyword,
-  ) async {
-    final keywordIndex = keywords.indexWhere((item) => item.name == keyword.name);
+  @override
+  Future<void> setKeyObscured(bool value) => _repository.setKeyObscured(value);
 
-    if (keywordIndex == -1) {
-      await websites.add(keyword);
-      return;
-    }
+  @override
+  bool get isPasswordObscured => _repository.isPasswordObscured;
 
-    await websites.putAt(keywordIndex, keyword);
-  }
+  @override
+  Future<void> setPasswordObscured(bool value) => _repository.setPasswordObscured(value);
+
+  @override
+  bool get doSave => _repository.doSave;
+
+  @override
+  Future<void> setDoSave(bool value) => _repository.setDoSave(value);
+
+  @override
+  String? get encryptionAlgorithm => _repository.encryptionAlgorithm;
 }

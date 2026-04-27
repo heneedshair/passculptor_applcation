@@ -1,11 +1,13 @@
 import 'package:code_generator_app/common/utils/notification/app_notification.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
+import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_widget.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_model.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 abstract interface class IDirectoryDrawerWidgetModel implements IWidgetModel {
   TextEditingController get searchController;
@@ -42,7 +44,7 @@ DirectoryDrawerWidgetModel defaultDirectoryDrawerWidgetModelFactory(
   BuildContext context,
 ) {
   return DirectoryDrawerWidgetModel(
-    DirectoryDrawerModel(),
+    DirectoryDrawerModel(context.read<IDiskDataRepository>()),
   );
 }
 

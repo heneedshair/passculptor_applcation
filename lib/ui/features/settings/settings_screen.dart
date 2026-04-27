@@ -20,7 +20,7 @@ class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.only(
+          borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(20),
             bottomRight: Radius.circular(20),
           ),

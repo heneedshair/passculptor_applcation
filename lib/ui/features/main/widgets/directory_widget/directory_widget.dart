@@ -101,7 +101,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                     ),
                   )
                 : SliverPadding(
-                    padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     sliver: SliverList.separated(
                       itemCount: keywords.length,
                       separatorBuilder: (context, index) => const SizedBox(height: 15),
