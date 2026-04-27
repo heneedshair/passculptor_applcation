@@ -1,7 +1,27 @@
+import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
+import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 
-abstract interface class ISettingsScreenModel extends ElementaryModel {}
+abstract interface class ISettingsScreenModel extends ElementaryModel {
+  Future<void> setEncryptionAlgorithm(String value);
+
+  EncryptionType get encryptionType;
+
+  ValueListenable<EncryptionType> get encryptionTypeListenable;
+}
 
 class SettingsScreenModel extends ISettingsScreenModel {
-  SettingsScreenModel();
+  SettingsScreenModel(this._repository);
+
+  final IDiskDataRepository _repository;
+
+  @override
+  Future<void> setEncryptionAlgorithm(String value) => _repository.setEncryptionAlgorithm(value);
+
+  @override
+  EncryptionType get encryptionType => EncryptionType.fromString(_repository.encryptionAlgorithm);
+
+  @override
+  ValueListenable<EncryptionType> get encryptionTypeListenable => _repository.encryptionTypeListenable;
 }

@@ -1,16 +1,19 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/utils/notification/app_notification.dart';
 import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/common/utils/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
 import 'package:code_generator_app/data/models/password/password.dart';
+import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:code_generator_app/ui/features/main/main_model.dart';
 import 'package:code_generator_app/ui/features/main/main_screen.dart';
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   TextEditingController get wordController;
@@ -33,13 +36,13 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onSaveCheckTap();
 
-  EntityValueListenable<bool> get isLoginObscuredListenable;
+  ValueListenable<bool> get isLoginObscuredListenable;
 
-  EntityValueListenable<bool> get isKeywordObscuredListenable;
+  ValueListenable<bool> get isKeywordObscuredListenable;
 
-  EntityValueListenable<bool> get isPasswordObscuredListenable;
+  ValueListenable<bool> get isPasswordObscuredListenable;
 
-  EntityValueListenable<bool> get doSaveListenable;
+  ValueListenable<bool> get doSaveListenable;
 
   void onDrawerTap(BuildContext context);
 
@@ -65,7 +68,7 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onSettingsTap();
 
-  EntityValueListenable<EncryptionType> get encryptionTypeListenable;
+  ValueListenable<EncryptionType> get encryptionTypeListenable;
 
   void onNextTapFromLogin();
 
@@ -80,37 +83,20 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
 MainScreenWidgetModel defaultMainScreenWidgetModelFactory(BuildContext context) {
   return MainScreenWidgetModel(
-    MainScreenModel(),
+    MainScreenModel(context.read<IDiskDataRepository>()),
   );
 }
 
 class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> implements IMainScreenWidgetModel {
   MainScreenWidgetModel(super.model);
 
-  //TODO сделать через репозиторий в model
-  late final SharedPreferences _prefs;
-
   late ICodeGenerator _codeGenerator;
 
   @override
-  Future<void> initWidgetModel() async {
-    _prefs = await SharedPreferences.getInstance();
-
-    _initEntityStates();
-
-    _initEncryptionAlgorithm();
+  void initWidgetModel() {
+    _codeGenerator = ICodeGenerator(model.encryptionAlgorithm);
 
     super.initWidgetModel();
-  }
-
-  void _initEncryptionAlgorithm() {
-    _encryptionTypeEntity.loading();
-
-    //TODO переименовать encryptionAlgorithm => encryptionType
-    final String? encryptionType = _prefs.getString('encryptionAlgorithm');
-    _codeGenerator = ICodeGenerator(encryptionType);
-
-    _encryptionTypeEntity.content(_codeGenerator.type);
   }
 
   final _wordController = TextEditingController();
@@ -147,11 +133,13 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
     );
     password.value = Password(label: result, value: result);
 
-    if (doSaveListenable.value.data!) {
-      model.addWebsite(
-        _loginController.text,
-        _wordController.text,
-        _keyController.text,
+    if (doSaveListenable.value) {
+      unawaited(
+        model.addWebsite(
+          _loginController.text,
+          _wordController.text,
+          _keyController.text,
+        ),
       );
     }
 
@@ -184,61 +172,37 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
 
   @override
   void onObscureLoginTap() {
-    _isLoginObscuredEntity.content(!_isLoginObscuredEntity.value.data!);
-    _prefs.setBool('isLoginObscured', _isLoginObscuredEntity.value.data!);
+    unawaited(model.setLoginObscured(!model.isLoginObscured));
   }
 
   @override
   void onObscureKeywordTap() {
-    _isKeyObscuredEntity.content(!_isKeyObscuredEntity.value.data!);
-    _prefs.setBool('isKeyObscured', _isKeyObscuredEntity.value.data!);
+    unawaited(model.setKeyObscured(!model.isKeyObscured));
   }
 
   @override
   void onObscurePasswordTap() {
-    _isPasswordObscuredEntity.content(!_isPasswordObscuredEntity.value.data!);
-    _prefs.setBool('isPasswordObscured', _isPasswordObscuredEntity.value.data!);
+    unawaited(model.setPasswordObscured(!model.isPasswordObscured));
   }
 
-  final _isLoginObscuredEntity = EntityStateNotifier<bool>();
+  @override
+  ValueListenable<bool> get isLoginObscuredListenable => model.isLoginObscuredListenable;
 
   @override
-  EntityValueListenable<bool> get isLoginObscuredListenable => _isLoginObscuredEntity;
-
-  final _isKeyObscuredEntity = EntityStateNotifier<bool>();
+  ValueListenable<bool> get isKeywordObscuredListenable => model.isKeyObscuredListenable;
 
   @override
-  EntityValueListenable<bool> get isKeywordObscuredListenable => _isKeyObscuredEntity;
-
-  final _isPasswordObscuredEntity = EntityStateNotifier<bool>();
-
-  @override
-  EntityValueListenable<bool> get isPasswordObscuredListenable => _isPasswordObscuredEntity;
+  ValueListenable<bool> get isPasswordObscuredListenable => model.isPasswordObscuredListenable;
 
   @override
   void onDrawerTap(BuildContext context) => Scaffold.of(context).openEndDrawer();
 
-  final _doSaveEntity = EntityStateNotifier<bool>();
-
   @override
-  EntityValueListenable<bool> get doSaveListenable => _doSaveEntity;
+  ValueListenable<bool> get doSaveListenable => model.doSaveListenable;
 
   @override
   void onSaveCheckTap() {
-    _doSaveEntity.content(!_doSaveEntity.value.data!);
-    _prefs.setBool('doSave', _doSaveEntity.value.data!);
-  }
-
-  void _initEntityStates() {
-    _isLoginObscuredEntity.loading();
-    _isKeyObscuredEntity.loading();
-    _isPasswordObscuredEntity.loading();
-    _doSaveEntity.loading();
-
-    _isLoginObscuredEntity.content(_prefs.getBool('isLoginObscured') ?? false);
-    _isKeyObscuredEntity.content(_prefs.getBool('isKeyObscured') ?? true);
-    _isPasswordObscuredEntity.content(_prefs.getBool('isPasswordObscured') ?? true);
-    _doSaveEntity.content(_prefs.getBool('doSave') ?? true);
+    unawaited(model.setDoSave(!model.doSave));
   }
 
   @override
@@ -282,17 +246,12 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
 
   @override
   Future<void> onSettingsTap() async {
-    await AutoRouter.of(context).push(SettingsRoute(
-      initialEncryptionType: _encryptionTypeEntity.value.data!,
-    ));
-
-    _initEncryptionAlgorithm();
+    await AutoRouter.of(context).push(const SettingsRoute());
+    _codeGenerator = ICodeGenerator(model.encryptionAlgorithm);
   }
 
-  final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
-
   @override
-  EntityValueListenable<EncryptionType> get encryptionTypeListenable => _encryptionTypeEntity;
+  ValueListenable<EncryptionType> get encryptionTypeListenable => model.encryptionTypeListenable;
 
   final _loginFocusNode = FocusNode();
 

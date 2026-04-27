@@ -1,6 +1,6 @@
 import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/ui/widgets/buttons/app_elevated_button.dart';
-import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class EnterButton extends StatelessWidget {
@@ -10,34 +10,28 @@ class EnterButton extends StatelessWidget {
     required this.onEnterTap,
   });
 
-  final EntityValueListenable<EncryptionType> listenableEntityState;
+  final ValueListenable<EncryptionType> listenableEntityState;
   final VoidCallback onEnterTap;
 
   @override
   Widget build(BuildContext context) {
-    return EntityStateNotifierBuilder(
-      listenableEntityState: listenableEntityState,
-      loadingBuilder: (_, __) => const Center(child: CircularProgressIndicator()),
-      builder: (_, encryptionType) {
-        final sideIcon = encryptionType == EncryptionType.hashMethod
-            ? const Text('#')
-            : const Icon(
-                Icons.restart_alt_rounded,
-              );
+    return ValueListenableBuilder(
+      valueListenable: listenableEntityState,
+      builder: (_, encryptionType, __) {
+        final sideIcon =
+            encryptionType == EncryptionType.hashMethod ? const Text('#') : const Icon(Icons.restart_alt_rounded);
 
-        return encryptionType == null
-            ? const SizedBox.shrink()
-            : AppElevatedButton.primary(
-                onPressed: onEnterTap,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    sideIcon,
-                    const Text('Создать пароль'),
-                    sideIcon,
-                  ],
-                ),
-              );
+        return AppElevatedButton.primary(
+          onPressed: onEnterTap,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              sideIcon,
+              const Text('Создать пароль'),
+              sideIcon,
+            ],
+          ),
+        );
       },
     );
   }

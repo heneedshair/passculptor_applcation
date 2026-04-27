@@ -24,9 +24,7 @@ class KeywordTileWidget extends StatelessWidget {
     required String enteredKeyword,
   }) onDeleteWebsite;
 
-  static final defaultShape = RoundedRectangleBorder(
-    borderRadius: BorderRadiusGeometry.circular(20),
-  );
+  static final defaultShape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(20));
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +83,6 @@ class KeywordTileWidget extends StatelessWidget {
             thickness: isLast ? 5 : 2,
             height: isLast ? 5 : 2,
             color: context.colors.primaryContainer,
-            radius: BorderRadius.circular(20),
           ),
         ),
       );

@@ -11,16 +11,10 @@ abstract interface class ICodeGenerator {
 
   EncryptionType get type;
 
-  factory ICodeGenerator(String? encryptionType) {
-    switch (encryptionType) {
-      case 'Упрощенный':
-        return CodeGenerator();
-      case 'Hash-метод':
-      case null:
-      default:
-        return HashCodeGenerator();
-    }
-  }
+  factory ICodeGenerator(EncryptionType encryptionType) => switch (encryptionType) {
+        EncryptionType.hashMethod => HashCodeGenerator(),
+        EncryptionType.builtIn => CodeGenerator(),
+      };
 
   @override
   String toString() => type.name;

@@ -54,10 +54,10 @@ class AppTextField extends StatelessWidget {
   }
 
   void _onTapOutside(BuildContext context) => FocusManager.instance.primaryFocus?.unfocus();
-  
+
   void _onChanged(BuildContext context, {required String value}) {
     FieldsFuncs.read(context)?.onAnyTexFieldChanged();
-    
+
     onChanged?.call(value);
   }
 }

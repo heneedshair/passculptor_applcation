@@ -30,17 +30,10 @@ class MainRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [SettingsScreen]
-class SettingsRoute extends PageRouteInfo<SettingsRouteArgs> {
-  SettingsRoute({
-    Key? key,
-    required EncryptionType initialEncryptionType,
-    List<PageRouteInfo>? children,
-  }) : super(
+class SettingsRoute extends PageRouteInfo<void> {
+  const SettingsRoute({List<PageRouteInfo>? children})
+      : super(
           SettingsRoute.name,
-          args: SettingsRouteArgs(
-            key: key,
-            initialEncryptionType: initialEncryptionType,
-          ),
           initialChildren: children,
         );
 
@@ -49,27 +42,7 @@ class SettingsRoute extends PageRouteInfo<SettingsRouteArgs> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<SettingsRouteArgs>();
-      return SettingsScreen(
-        key: args.key,
-        initialEncryptionType: args.initialEncryptionType,
-      );
+      return const SettingsScreen();
     },
   );
-}
-
-class SettingsRouteArgs {
-  const SettingsRouteArgs({
-    this.key,
-    required this.initialEncryptionType,
-  });
-
-  final Key? key;
-
-  final EncryptionType initialEncryptionType;
-
-  @override
-  String toString() {
-    return 'SettingsRouteArgs{key: $key, initialEncryptionType: $initialEncryptionType}';
-  }
 }

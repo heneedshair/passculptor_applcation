@@ -1,18 +1,19 @@
 import 'package:code_generator_app/common/utils/notification/app_notification.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
+import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_widget.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_model.dart';
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 abstract interface class IDirectoryDrawerWidgetModel implements IWidgetModel {
   TextEditingController get searchController;
 
   ValueListenable<bool> get isSearchModeListenable;
 
-  EntityValueListenable<List<Keyword>> get keywordsListenable;
+  ValueListenable<List<Keyword>> get keywordsListenable;
 
   void onBackTap();
 
@@ -42,7 +43,7 @@ DirectoryDrawerWidgetModel defaultDirectoryDrawerWidgetModelFactory(
   BuildContext context,
 ) {
   return DirectoryDrawerWidgetModel(
-    DirectoryDrawerModel(),
+    DirectoryDrawerModel(context.read<IDiskDataRepository>()),
   );
 }
 
@@ -52,9 +53,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
 
   final _searchController = TextEditingController();
   final _isSearchModeEntity = ValueNotifier<bool>(false);
-  final _keywordsEntity = EntityStateNotifier<List<Keyword>>();
-
-  List<Keyword> _keywords = const [];
+  final _keywordsNotifier = ValueNotifier<List<Keyword>>(const []);
 
   @override
   TextEditingController get searchController => _searchController;
@@ -63,41 +62,28 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
   ValueNotifier<bool> get isSearchModeListenable => _isSearchModeEntity;
 
   @override
-  EntityValueListenable<List<Keyword>> get keywordsListenable => _keywordsEntity;
+  ValueListenable<List<Keyword>> get keywordsListenable => _keywordsNotifier;
 
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _initKeywords();
+    model.keywordsListenable.addListener(_updateKeywords);
+    _updateKeywords();
   }
 
   @override
   void dispose() {
+    model.keywordsListenable.removeListener(_updateKeywords);
     _searchController.dispose();
     _isSearchModeEntity.dispose();
-    _keywordsEntity.dispose();
+    _keywordsNotifier.dispose();
     super.dispose();
   }
 
-  Future<void> _initKeywords() async {
-    _keywordsEntity.loading();
-
-    try {
-      _keywords = await model.keywordsList;
-      _applySearch();
-    } on Exception {
-      _keywordsEntity.error();
-    }
-  }
-
-  void _applySearch() {
-    _keywordsEntity.content(
-      model.filterKeywords(
-        source: _keywords,
+  void _updateKeywords() => _keywordsNotifier.value = model.filterKeywords(
+        source: model.keywordsListenable.value,
         query: _searchController.text,
-      ),
-    );
-  }
+      );
 
   @override
   void onBackTap() => Navigator.pop(context);
@@ -108,12 +94,12 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
 
     if (!_isSearchModeEntity.value) {
       _searchController.clear();
-      _applySearch();
+      _updateKeywords();
     }
   }
 
   @override
-  void onSearchChanged(String value) => _applySearch();
+  void onSearchChanged(String value) => _updateKeywords();
 
   @override
   Future<void> onClearAllTap() async {
@@ -122,7 +108,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
       content: 'Вы уверены что хотите очистить список?',
       onConfirmTap: () async {
         await model.clearAll();
-        await _initKeywords();
+        _updateKeywords();
       },
     );
   }
@@ -138,7 +124,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
       enteredLogin: enteredLogin,
       enteredKeyword: enteredKeyword,
     );
-    await _initKeywords();
+    _updateKeywords();
   }
 
   @override
@@ -156,7 +142,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
           enteredLogin: enteredLogin,
           enteredKeyword: enteredKeyword,
         );
-        await _initKeywords();
+        _updateKeywords();
       },
     );
   }
@@ -168,7 +154,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
       content: 'Вы уверены что хотите удалить слово $enteredKeyword?',
       onConfirmTap: () async {
         await model.deleteKeyword(enteredKeyword);
-        await _initKeywords();
+        _updateKeywords();
       },
     );
   }

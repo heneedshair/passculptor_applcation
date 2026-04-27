@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/ui/features/main/widgets/check_position_wirdget.dart';
 import 'package:code_generator_app/ui/features/settings/settings_wm.dart';
 import 'package:code_generator_app/ui/features/settings/widgets/algorithm_dropdown_widget.dart';
@@ -8,19 +7,14 @@ import 'package:flutter/material.dart';
 
 @RoutePage()
 class SettingsScreen extends ElementaryWidget<ISettingsScreenWidgetModel> {
-  final EncryptionType initialEncryptionType;
-
-  const SettingsScreen({
-    super.key,
-    required this.initialEncryptionType,
-  }) : super(defaultSettingsScreenWidgetModelFactory);
+  const SettingsScreen({super.key}) : super(defaultSettingsScreenWidgetModelFactory);
 
   @override
   Widget build(ISettingsScreenWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.only(
+          borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(20),
             bottomRight: Radius.circular(20),
           ),

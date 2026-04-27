@@ -19,8 +19,7 @@ class DirectoryFunctionsInherited extends InheritedWidget {
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
 
   static DirectoryFunctionsInherited? read(BuildContext context) {
-    return context
-        .getElementForInheritedWidgetOfExactType<DirectoryFunctionsInherited>()
-        ?.widget as DirectoryFunctionsInherited?;
+    return context.getElementForInheritedWidgetOfExactType<DirectoryFunctionsInherited>()?.widget
+        as DirectoryFunctionsInherited?;
   }
 }
