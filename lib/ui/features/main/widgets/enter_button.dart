@@ -1,4 +1,4 @@
-import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
+import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/ui/widgets/buttons/app_elevated_button.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';

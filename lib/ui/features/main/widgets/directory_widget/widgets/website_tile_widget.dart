@@ -1,7 +1,7 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
 import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
-import 'package:code_generator_app/ui/features/main/widgets/directory_widget/custom_dismissible_widget.dart';
+import 'package:code_generator_app/common/widgets/custom_dismissible_widget.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -11,16 +11,22 @@ class WebsiteTileWidget extends StatelessWidget {
     required this.website,
     required this.parentLogin,
     required this.parentKeyword,
+    required this.onDeleteWebsite,
   });
 
   final String website;
   final Login parentLogin;
   final Keyword parentKeyword;
+  final void Function({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) onDeleteWebsite;
 
   @override
   Widget build(BuildContext context) {
     return CustomDismissibleWidget(
-      onDismissed: (_) => onDeleteWebsite(context),
+      onDismissed: (_) => _onDeleteWebsite(),
       child: Material(
         color: context.colors.surface,
         child: ListTile(
@@ -41,7 +47,7 @@ class WebsiteTileWidget extends StatelessWidget {
     );
   }
 
-  void onDeleteWebsite(BuildContext context) => DirectFuncs.read(context)?.onDeleteWebsite(
+  void _onDeleteWebsite() => onDeleteWebsite(
         enteredWebsite: website,
         enteredLogin: parentLogin.username,
         enteredKeyword: parentKeyword.name,

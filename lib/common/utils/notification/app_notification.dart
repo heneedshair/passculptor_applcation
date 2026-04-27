@@ -1,4 +1,4 @@
-import 'package:code_generator_app/common/notifications/app_notification.dart/dialogs/confirm_dialog.dart';
+import 'package:code_generator_app/common/utils/notification/dialogs/confirm_dialog/confirm_dialog.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 

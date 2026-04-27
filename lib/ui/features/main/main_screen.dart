@@ -108,14 +108,9 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
         ),
       ),
       drawerEdgeDragWidth: MediaQuery.of(wm.context).size.width,
-      onEndDrawerChanged: wm.onDrawerChanged,
       endDrawer: DirectFuncs(
-        onClearAllTap: wm.onClearAllTap,
-        onDeleteWebsite: wm.onDeleteWebsite,
         onWebsiteTap: wm.onWebsiteTap,
-        onLoginLongPress: wm.onLoginLongPress,
-        onKeywordLongPress: wm.onKeywordLongPress,
-        child: DirectoryDrawerWidget(listenableEntityState: wm.savedKeywordsListenable),
+        child: const DirectoryDrawerWidget(),
       ),
     );
   }

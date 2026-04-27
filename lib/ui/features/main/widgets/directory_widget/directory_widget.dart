@@ -1,89 +1,124 @@
-import 'package:code_generator_app/data/models/keyword/keyword.dart';
-import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
-import 'package:code_generator_app/ui/features/main/widgets/directory_widget/keyword_tile_widget.dart';
+import 'dart:io';
+
+import 'package:code_generator_app/common/extensions/build_context.dart';
+import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_wm.dart';
+import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/animated_app_bar_action.dart';
+import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/keyword_tile_widget.dart';
+import 'package:code_generator_app/ui/theme/app_theme.dart';
+import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
-//TODO вынести в отдельный елементери
-class DirectoryDrawerWidget extends StatelessWidget {
-  const DirectoryDrawerWidget({
-    super.key,
-    required this.listenableEntityState,
-  });
+class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel> {
+  const DirectoryDrawerWidget({super.key}) : super(defaultDirectoryDrawerWidgetModelFactory);
 
-  final EntityValueListenable<List<Keyword>> listenableEntityState;
-
-  void _onBackTap(BuildContext context) => Navigator.pop(context);
+  //TODO мб можно поменять на SafeArea
+  static double get bottomPadding => Platform.isAndroid || Platform.isIOS ? 25 : 10;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(IDirectoryDrawerWidgetModel wm) {
     return Drawer(
-      width: MediaQuery.of(context).size.width * 5 / 6,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(20),
+      width: wm.context.width * 5 / 6,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          bottomLeft: Radius.circular(30),
+        ),
       ),
       child: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            pinned: true,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadiusGeometry.circular(20),
-            ),
-            leading: IconButton(
-              onPressed: () => _onBackTap(context),
-              icon: const Icon(Icons.arrow_back_ios_new_rounded),
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: const Icon(Icons.info_outline_rounded),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: DirectFuncs.read(context)?.onClearAllTap,
-              ),
-            ],
-            title: const Text(
-              'Сайты',
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 15),
+          ValueListenableBuilder(
+            valueListenable: wm.isSearchModeListenable,
+            builder: (_, isSearchMode, __) {
+              return SliverAppBar(
+                backgroundColor: wm.context.colors.surface,
+                pinned: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30),
+                  ),
+                ),
+                leading: IconButton(
+                  onPressed: wm.onBackTap,
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                ),
+                actionsPadding: const EdgeInsets.only(right: 10),
+                actions: [
+                  IconButton(
+                    icon: Icon(isSearchMode ? Icons.close : Icons.search),
+                    onPressed: wm.onSearchTap,
+                  ),
+                  AnimatedAppBarAction(
+                    visible: !isSearchMode,
+                    child: IconButton(
+                      icon: const Icon(Icons.info_outline_rounded),
+                      onPressed: () {},
+                    ),
+                  ),
+                  AnimatedAppBarAction(
+                    visible: !isSearchMode,
+                    child: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: wm.onClearAllTap,
+                    ),
+                  ),
+                ],
+                title: isSearchMode
+                    ? TextField(
+                        controller: wm.searchController,
+                        autofocus: true,
+                        onChanged: wm.onSearchChanged,
+                        decoration: const InputDecoration(
+                          hintText: 'Поиск',
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.zero,
+                          filled: false,
+                          isDense: true,
+                        ),
+                      )
+                    : const Text(
+                        'Сайты',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+              );
+            },
           ),
           EntityStateNotifierBuilder(
-            listenableEntityState: listenableEntityState,
+            listenableEntityState: wm.keywordsListenable,
             loadingBuilder: (_, __) => const SliverFillRemaining(
               hasScrollBody: false,
-              child: CircularProgressIndicator(),
+              child: Center(child: CircularProgressIndicator()),
             ),
-            builder: (_, keywords) => keywords!.isEmpty
+            builder: (_, keywords) => keywords == null || keywords.isEmpty
                 ? const SliverFillRemaining(
                     hasScrollBody: false,
                     child: Center(
-                        child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      child: Text('Список еще пуст...'),
-                    )),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        child: Text('Ничего не найдено'),
+                      ),
+                    ),
                   )
                 : SliverPadding(
                     padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
                     sliver: SliverList.separated(
                       itemCount: keywords.length,
                       separatorBuilder: (context, index) => const SizedBox(height: 15),
-                      itemBuilder: (_, index) => KeywordTileWidget(
-                        keyword: keywords[index],
-                      ),
+                      itemBuilder: (_, index) {
+                        final keyword = keywords[index];
+
+                        return KeywordTileWidget(
+                          keyword: keyword,
+                          onLongPress: () => wm.onKeywordLongPress(keyword.name),
+                          onLoginLongPress: wm.onLoginLongPress,
+                          onDeleteWebsite: wm.onDeleteWebsite,
+                        );
+                      },
                     ),
                   ),
           ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 25),
-          ),
+          SliverToBoxAdapter(child: SizedBox(height: bottomPadding)),
         ],
       ),
     );
