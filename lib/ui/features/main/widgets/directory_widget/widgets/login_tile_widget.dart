@@ -1,6 +1,5 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
-import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/website_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -10,16 +9,27 @@ class LoginTileWidget extends StatelessWidget {
     super.key,
     required this.login,
     required this.parentKeyword,
+    required this.onLongPress,
+    required this.onDeleteWebsite,
   });
 
   final Login login;
   final Keyword parentKeyword;
+  final void Function({
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) onLongPress;
+  final void Function({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) onDeleteWebsite;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onLongPress: () => DirectFuncs.read(context)?.onLoginLongPress(
-        enteredLogin: login.username.isEmpty ? 'Без логина' : login.username,
+      onLongPress: () => onLongPress(
+        enteredLogin: login.username,
         enteredKeyword: parentKeyword.name,
       ),
       child: ExpansionTile(
@@ -42,6 +52,7 @@ class LoginTileWidget extends StatelessWidget {
                   website: website,
                   parentLogin: login,
                   parentKeyword: parentKeyword,
+                  onDeleteWebsite: onDeleteWebsite,
                 ))
             .toList(),
       ),

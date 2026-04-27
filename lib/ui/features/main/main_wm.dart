@@ -3,7 +3,6 @@ import 'package:code_generator_app/common/notifications/app_notification.dart/ap
 import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
-import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/password/password.dart';
 import 'package:code_generator_app/ui/features/main/main_model.dart';
 import 'package:code_generator_app/ui/features/main/main_screen.dart';
@@ -56,25 +55,8 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
 
   void onGuideTap();
 
-  EntityValueListenable<List<Keyword>> get savedKeywordsListenable;
-
-  void onDrawerChanged(bool isDrawerOpened);
-
-  void onClearAllTap();
-
-  Future<void> onDeleteWebsite({
-    required String enteredWebsite,
-    required String enteredLogin,
-    required String enteredKeyword,
-  });
-
   void onWebsiteTap({
     required String enteredWebsite,
-    required String enteredLogin,
-    required String enteredKeyword,
-  });
-
-  Future<void> onLoginLongPress({
     required String enteredLogin,
     required String enteredKeyword,
   });
@@ -84,8 +66,6 @@ abstract interface class IMainScreenWidgetModel implements IWidgetModel {
   void onSettingsTap();
 
   EntityValueListenable<EncryptionType> get encryptionTypeListenable;
-
-  Future<void> onKeywordLongPress(String enteredKeyword);
 
   void onNextTapFromLogin();
 
@@ -114,8 +94,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
 
   @override
   Future<void> initWidgetModel() async {
-    _savedKeywordsEntity.loading();
-
     _prefs = await SharedPreferences.getInstance();
 
     _initEntityStates();
@@ -175,8 +153,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
         _wordController.text,
         _keyController.text,
       );
-
-      needsDrawerUpdate = true;
     }
 
     _setPasswordToClipboard();
@@ -270,57 +246,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
     // TODO: implement onGuideTap
   }
 
-  @override
-  Future<void> onDrawerChanged(bool isDrawerOpened) async {
-    if (isDrawerOpened && needsDrawerUpdate) {
-      await _initDrawer();
-    }
-  }
-
-  Future<void> _initDrawer() async {
-    _savedKeywordsEntity.loading();
-    // await Future.delayed(const Duration(seconds: 1));
-
-    try {
-      _savedKeywordsEntity.content(await model.keywordsList);
-    } on Exception {
-      _savedKeywordsEntity.error();
-    }
-  }
-
-  bool needsDrawerUpdate = true;
-
-  final _savedKeywordsEntity = EntityStateNotifier<List<Keyword>>();
-
-  @override
-  EntityValueListenable<List<Keyword>> get savedKeywordsListenable => _savedKeywordsEntity;
-
-  @override
-  Future<void> onClearAllTap() async {
-    await AppNotification.showConfirmDialog(
-      context: context,
-      content: 'Вы уверены что хотите очистить список?',
-      onConfirmTap: () async {
-        await model.clearAll();
-        await _initDrawer();
-      },
-    );
-  }
-
-  @override
-  Future<void> onDeleteWebsite({
-    required String enteredWebsite,
-    required String enteredLogin,
-    required String enteredKeyword,
-  }) async {
-    await model.deleteWebsite(
-      enteredWebsite: enteredWebsite,
-      enteredLogin: enteredLogin,
-      enteredKeyword: enteredKeyword,
-    );
-    await _initDrawer();
-  }
-
   final FocusNode _keywordFocusNode = FocusNode();
 
   @override
@@ -356,24 +281,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   }
 
   @override
-  Future<void> onLoginLongPress({
-    required String enteredLogin,
-    required String enteredKeyword,
-  }) async {
-    await AppNotification.showConfirmDialog(
-      context: context,
-      content: 'Вы уверены что хотите удалить логин $enteredLogin?',
-      onConfirmTap: () async {
-        await model.deleteLogin(
-          enteredLogin: enteredLogin,
-          enteredKeyword: enteredKeyword,
-        );
-        await _initDrawer();
-      },
-    );
-  }
-
-  @override
   Future<void> onSettingsTap() async {
     await AutoRouter.of(context).push(SettingsRoute(
       initialEncryptionType: _encryptionTypeEntity.value.data!,
@@ -386,18 +293,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
 
   @override
   EntityValueListenable<EncryptionType> get encryptionTypeListenable => _encryptionTypeEntity;
-
-  @override
-  Future<void> onKeywordLongPress(String enteredKeyword) async {
-    await AppNotification.showConfirmDialog(
-      context: context,
-      content: 'Вы уверены что хотите удалить слово $enteredKeyword?',
-      onConfirmTap: () async {
-        await model.deleteKeyword(enteredKeyword);
-        await _initDrawer();
-      },
-    );
-  }
 
   final _loginFocusNode = FocusNode();
 

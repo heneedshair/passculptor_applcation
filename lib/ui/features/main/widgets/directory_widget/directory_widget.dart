@@ -1,6 +1,4 @@
 import 'package:code_generator_app/common/extensions/build_context.dart';
-import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
-import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_widget_wm.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/keyword_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
@@ -9,12 +7,7 @@ import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
 class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel> {
-  const DirectoryDrawerWidget({
-    super.key,
-    required this.listenableEntityState,
-  }) : super(defaultDirectoryDrawerWidgetModelFactory);
-
-  final EntityValueListenable<List<Keyword>> listenableEntityState;
+  const DirectoryDrawerWidget({super.key}) : super(defaultDirectoryDrawerWidgetModelFactory);
 
   @override
   Widget build(IDirectoryDrawerWidgetModel wm) {
@@ -55,7 +48,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete),
-                    onPressed: DirectFuncs.read(wm.context)?.onClearAllTap,
+                    onPressed: wm.onClearAllTap,
                   ),
                 ],
                 title: isSearchMode
@@ -77,42 +70,38 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
             },
           ),
           EntityStateNotifierBuilder(
-            listenableEntityState: listenableEntityState,
+            listenableEntityState: wm.keywordsListenable,
             loadingBuilder: (_, __) => const SliverFillRemaining(
               hasScrollBody: false,
               child: CircularProgressIndicator(),
             ),
-            builder: (_, keywords) {
-              final source = keywords ?? const <Keyword>[];
+            builder: (_, keywords) => keywords == null || keywords.isEmpty
+                ? const SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        child: Text('Ничего не найдено'),
+                      ),
+                    ),
+                  )
+                : SliverPadding(
+                    padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
+                    sliver: SliverList.separated(
+                      itemCount: keywords.length,
+                      separatorBuilder: (context, index) => const SizedBox(height: 15),
+                      itemBuilder: (_, index) {
+                        final keyword = keywords[index];
 
-              return ValueListenableBuilder(
-                valueListenable: wm.searchController,
-                builder: (_, __, ___) {
-                  final filteredKeywords = wm.filterKeywords(source);
-
-                  return filteredKeywords.isEmpty
-                      ? const SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                              child: Text('Ничего не найдено'),
-                            ),
-                          ),
-                        )
-                      : SliverPadding(
-                          padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
-                          sliver: SliverList.separated(
-                            itemCount: filteredKeywords.length,
-                            separatorBuilder: (context, index) => const SizedBox(height: 15),
-                            itemBuilder: (_, index) => KeywordTileWidget(
-                              keyword: filteredKeywords[index],
-                            ),
-                          ),
+                        return KeywordTileWidget(
+                          keyword: keyword,
+                          onLongPress: () => wm.onKeywordLongPress(keyword.name),
+                          onLoginLongPress: wm.onLoginLongPress,
+                          onDeleteWebsite: wm.onDeleteWebsite,
                         );
-                },
-              );
-            },
+                      },
+                    ),
+                  ),
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 25)),
         ],

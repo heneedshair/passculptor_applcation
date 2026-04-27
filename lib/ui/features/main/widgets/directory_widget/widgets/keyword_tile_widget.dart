@@ -1,4 +1,3 @@
-import 'package:code_generator_app/data/inherited/directory_functions_inherited.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/login_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
@@ -8,9 +7,22 @@ class KeywordTileWidget extends StatelessWidget {
   const KeywordTileWidget({
     super.key,
     required this.keyword,
+    required this.onLongPress,
+    required this.onLoginLongPress,
+    required this.onDeleteWebsite,
   });
 
   final Keyword keyword;
+  final VoidCallback onLongPress;
+  final void Function({
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) onLoginLongPress;
+  final void Function({
+    required String enteredWebsite,
+    required String enteredLogin,
+    required String enteredKeyword,
+  }) onDeleteWebsite;
 
   static final defaultShape = RoundedRectangleBorder(
     borderRadius: BorderRadiusGeometry.circular(20),
@@ -20,7 +32,7 @@ class KeywordTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(20),
-      onLongPress: () => DirectFuncs.read(context)?.onKeywordLongPress(keyword.name),
+      onLongPress: onLongPress,
       child: ExpansionTile(
         backgroundColor: context.colors.primaryContainer,
         collapsedBackgroundColor: context.colors.primaryContainer,
@@ -57,6 +69,8 @@ class KeywordTileWidget extends StatelessWidget {
         LoginTileWidget(
           login: keyword.logins[i],
           parentKeyword: keyword,
+          onLongPress: onLoginLongPress,
+          onDeleteWebsite: onDeleteWebsite,
         ),
       );
 

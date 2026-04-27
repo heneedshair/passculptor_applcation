@@ -4,34 +4,15 @@ import 'package:elementary/elementary.dart';
 import 'package:hive/hive.dart';
 
 abstract interface class IMainScreenModel extends ElementaryModel {
-  void addWebsite(String login, String website, String key);
+  Future<void> addWebsite(String login, String website, String key);
 
-  Future<List<Keyword>> get keywordsList;
-
-  Future<void> clearAll();
-
-  Future<void> deleteWebsite({
-    required String enteredWebsite,
-    required String enteredLogin,
-    required String enteredKeyword,
-  });
-
-  Future<void> deleteLogin({
-    required String enteredLogin,
-    required String enteredKeyword,
-  });
-
-  Future<void> deleteKeyword(String enteredKeyword);
-
-  /// Проверяет, содержится ли список слово, которое начинается с такой же буквы, 
-  /// но имеет другую длину.
   bool containsSameKeyword(String enteredKeyword);
 }
 
 class MainScreenModel extends IMainScreenModel {
   MainScreenModel();
 
-  //TODO мб стоит заинитить список и box
+  //TODO Удалить и сделать общение с памятью через репозиторий
   @override
   Future<void> addWebsite(
     String enteredLogin,
@@ -41,18 +22,22 @@ class MainScreenModel extends IMainScreenModel {
     enteredKeyword = _maskString(enteredKeyword);
 
     final websites = Hive.box<Keyword>('websites');
-    final List<Keyword> keywords = websites.values.toList();
+    final keywords = websites.values.toList();
+    final keyword = _getKeyword(keywords, enteredKeyword);
+    final login = keyword.getLogin(enteredLogin)..addWebsite(enteredWebsite);
 
-    Keyword? keyword = _getKeyword(keywords, enteredKeyword);
-    Login? login = keyword.getLogin(enteredLogin);
-
-    login.addWebsite(enteredWebsite);
-
-    // Обновляем логин в ключевом слове
     keyword.addNewLogin(login);
-
-    // Обновляем ключевое слово в Box
     await _updateBox(websites, keywords, keyword);
+  }
+
+  @override
+  bool containsSameKeyword(String enteredKeyword) {
+    final websites = Hive.box<Keyword>('websites');
+    final keywords = websites.values.toList();
+
+    return keywords.any(
+      (keyword) => keyword.name[0] == enteredKeyword[0] && keyword.name.length != enteredKeyword.length,
+    );
   }
 
   static String _maskString(String input) {
@@ -62,108 +47,23 @@ class MainScreenModel extends IMainScreenModel {
 
   static Keyword _getKeyword(List<Keyword> keywords, String enteredKeyword) {
     return keywords.firstWhere(
-      (k) => k.name == enteredKeyword,
-      orElse: () => Keyword(enteredKeyword, []),
+      (keyword) => keyword.name == enteredKeyword,
+      orElse: () => Keyword(enteredKeyword, <Login>[]),
     );
   }
 
-  /// Обновляем ключевое слово в Box.
   static Future<void> _updateBox(
     Box<Keyword> websites,
     List<Keyword> keywords,
     Keyword keyword,
   ) async {
-    int keywordIndex = _getKeywordIndex(keywords, keyword);
-    if (keywordIndex != -1) {
-      await websites.putAt(keywordIndex, keyword); // Обновляем существующее
-    } else {
-      await websites.add(keyword); // Добавляем новое
+    final keywordIndex = keywords.indexWhere((item) => item.name == keyword.name);
+
+    if (keywordIndex == -1) {
+      await websites.add(keyword);
+      return;
     }
-  }
 
-  static int _getKeywordIndex(List<Keyword> keywords, Keyword keyword) {
-    final int keywordIndex = keywords.indexWhere((k) {
-      return k.name == keyword.name;
-    });
-    return keywordIndex;
-  }
-
-  @override
-  Future<List<Keyword>> get keywordsList async {
-    final websites = await Hive.openBox<Keyword>('websites');
-    return websites.values.toList();
-  }
-
-  @override
-  Future<void> clearAll() async {
-    final websites = Hive.box<Keyword>('websites');
-    await websites.clear();
-  }
-
-  @override
-  Future<void> deleteWebsite({
-    required String enteredWebsite,
-    required String enteredLogin,
-    required String enteredKeyword,
-  }) async {
-    final websites = Hive.box<Keyword>('websites');
-    final List<Keyword> keywords = websites.values.toList();
-
-    Keyword keyword = _getKeyword(keywords, enteredKeyword);
-    Login login = keyword.getLogin(enteredLogin);
-    login.deleteWebsite(enteredWebsite);
-
-    // Удаление логина при пустом списке сайтов.
-    if (login.websites.isEmpty) {
-      await deleteLogin(
-        enteredLogin: enteredLogin,
-        enteredKeyword: enteredKeyword,
-      );
-    } else {
-      await _updateBox(websites, keywords, keyword);
-    }
-  }
-
-  @override
-  Future<void> deleteLogin({
-    required String enteredLogin,
-    required String enteredKeyword,
-  }) async {
-    final websites = Hive.box<Keyword>('websites');
-    final List<Keyword> keywords = websites.values.toList();
-
-    Keyword keyword = _getKeyword(keywords, enteredKeyword);
-
-    keyword.deleteLogin(enteredLogin);
-
-    // Удаление ключевого слова при пустом списке логинов.
-    if (keyword.logins.isEmpty) {
-      await deleteKeyword(enteredKeyword);
-    } else {
-      await _updateBox(websites, keywords, keyword);
-    }
-  }
-
-  @override
-  Future<void> deleteKeyword(String enteredKeyword) async {
-    final websites = Hive.box<Keyword>('websites');
-    final List<Keyword> keywords = websites.values.toList();
-
-    final int keywordIndex = keywords.indexWhere((k) {
-      return k.name == enteredKeyword;
-    });
-    await websites.deleteAt(keywordIndex);
-  }
-
-  @override
-  bool containsSameKeyword(String enteredKeyword) {
-    final websites = Hive.box<Keyword>('websites');
-    final List<Keyword> keywords = websites.values.toList();
-
-    return keywords.any(
-      (keyword) =>
-          keyword.name[0] == enteredKeyword[0] &&
-          keyword.name.length != enteredKeyword.length,
-    );
+    await websites.putAt(keywordIndex, keyword);
   }
 }
