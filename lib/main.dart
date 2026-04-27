@@ -7,7 +7,6 @@ import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,18 +15,9 @@ Future<void> main() async {
   Hive.registerAdapter(KeywordAdapter());
   Hive.registerAdapter(LoginAdapter());
 
-  // TODO перенсти в init репозитория
-  final websitesBox = await Hive.openBox<Keyword>('websites');
-  final preferences = await SharedPreferences.getInstance();
-
-  final diskDataRepository = DiskDataRepository(
-    websitesBox: websitesBox,
-    preferences: preferences,
-  );
-
   runApp(
     Provider<IDiskDataRepository>.value(
-      value: diskDataRepository,
+      value: await DiskDataRepository.create(),
       child: MyApp(),
     ),
   );

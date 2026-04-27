@@ -13,7 +13,7 @@ class AlgorithmDropdownWidget extends StatelessWidget {
 
   final Function(String? selectedValue) onEncryptionAlgorithmChanged;
   final List<String> encryptionAlgorithmList;
-  final ValueNotifier<EntityState<EncryptionType>> encryptionAlgorithmListenable;
+  final EntityValueListenable<EncryptionType> encryptionAlgorithmListenable;
 
   @override
   Widget build(BuildContext context) {

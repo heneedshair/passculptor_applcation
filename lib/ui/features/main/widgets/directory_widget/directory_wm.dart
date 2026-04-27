@@ -70,26 +70,30 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
   @override
   void initWidgetModel() {
     super.initWidgetModel();
+    model.keywordsListenable.addListener(_onKeywordsChanged);
     _initKeywords();
   }
 
   @override
   void dispose() {
+    model.keywordsListenable.removeListener(_onKeywordsChanged);
     _searchController.dispose();
     _isSearchModeEntity.dispose();
     _keywordsEntity.dispose();
     super.dispose();
   }
 
-  Future<void> _initKeywords() async {
-    _keywordsEntity.loading();
+  void _onKeywordsChanged() {
+    final keywords = model.keywordsListenable.value.data;
+    if (keywords == null) return;
 
-    try {
-      _keywords = await model.keywordsList;
-      _applySearch();
-    } on Exception {
-      _keywordsEntity.error();
-    }
+    _keywords = keywords;
+    _applySearch();
+  }
+
+  void _initKeywords() {
+    _keywords = model.keywordsListenable.value.data ?? [];
+    _applySearch();
   }
 
   void _applySearch() {
@@ -124,7 +128,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
       content: 'Вы уверены что хотите очистить список?',
       onConfirmTap: () async {
         await model.clearAll();
-        await _initKeywords();
+        _initKeywords();
       },
     );
   }
@@ -140,7 +144,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
       enteredLogin: enteredLogin,
       enteredKeyword: enteredKeyword,
     );
-    await _initKeywords();
+    _initKeywords();
   }
 
   @override
@@ -158,7 +162,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
           enteredLogin: enteredLogin,
           enteredKeyword: enteredKeyword,
         );
-        await _initKeywords();
+        _initKeywords();
       },
     );
   }
@@ -170,7 +174,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
       content: 'Вы уверены что хотите удалить слово $enteredKeyword?',
       onConfirmTap: () async {
         await model.deleteKeyword(enteredKeyword);
-        await _initKeywords();
+        _initKeywords();
       },
     );
   }

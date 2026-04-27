@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
@@ -16,7 +14,7 @@ abstract interface class ISettingsScreenWidgetModel implements IWidgetModel {
 
   void onEncryptionAlgorithmChanged(String? selectedValue);
 
-  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable;
+  EntityValueListenable<EncryptionType> get encryptionTypeListenable;
 
   void onBackTap();
 
@@ -34,12 +32,6 @@ class SettingsScreenWidgetModel extends WidgetModel<SettingsScreen, ISettingsScr
   SettingsScreenWidgetModel(super.model);
 
   @override
-  void initWidgetModel() {
-    super.initWidgetModel();
-    _encryptionTypeEntity.content(model.encryptionType);
-  }
-
-  @override
   List<String> get encryptionAlgorithmList => EncryptionType.values.map((value) => value.name).toList();
 
   @override
@@ -47,14 +39,10 @@ class SettingsScreenWidgetModel extends WidgetModel<SettingsScreen, ISettingsScr
     if (selectedValue == null) return;
 
     await model.setEncryptionAlgorithm(selectedValue);
-
-    _encryptionTypeEntity.content(EncryptionType.fromString(selectedValue));
   }
 
-  final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
-
   @override
-  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable => _encryptionTypeEntity;
+  EntityValueListenable<EncryptionType> get encryptionTypeListenable => model.encryptionTypeListenable;
 
   @override
   void onBackTap() => AutoRouter.of(context).maybePop();
