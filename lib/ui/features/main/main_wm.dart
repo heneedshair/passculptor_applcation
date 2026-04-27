@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:code_generator_app/common/notifications/app_notification.dart/app_notification.dart';
-import 'package:code_generator_app/common/objects/code_generator/code_generator_types.dart';
-import 'package:code_generator_app/common/objects/code_generator/i_code_generator.dart';
+import 'package:code_generator_app/common/utils/notification/app_notification.dart';
+import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
+import 'package:code_generator_app/common/utils/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
 import 'package:code_generator_app/data/models/password/password.dart';
 import 'package:code_generator_app/ui/features/main/main_model.dart';

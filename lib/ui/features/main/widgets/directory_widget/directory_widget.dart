@@ -1,5 +1,5 @@
 import 'package:code_generator_app/common/extensions/build_context.dart';
-import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_widget_wm.dart';
+import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_wm.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/keyword_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:elementary/elementary.dart';
@@ -73,7 +73,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
             listenableEntityState: wm.keywordsListenable,
             loadingBuilder: (_, __) => const SliverFillRemaining(
               hasScrollBody: false,
-              child: CircularProgressIndicator(),
+              child: Center(child: CircularProgressIndicator()),
             ),
             builder: (_, keywords) => keywords == null || keywords.isEmpty
                 ? const SliverFillRemaining(

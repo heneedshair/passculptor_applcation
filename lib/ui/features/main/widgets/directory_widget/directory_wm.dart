@@ -1,4 +1,4 @@
-import 'package:code_generator_app/common/notifications/app_notification.dart/app_notification.dart';
+import 'package:code_generator_app/common/utils/notification/app_notification.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_widget.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_model.dart';
