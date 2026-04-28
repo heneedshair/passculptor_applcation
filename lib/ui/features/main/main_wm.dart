@@ -96,13 +96,14 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
 
   @override
   void initWidgetModel() {
-    _codeGenerator = ICodeGenerator(encryptionTypeListenable.value);
-
     super.initWidgetModel();
+    encryptionTypeListenable.addListener(_updateCodeGenerator);
+    _updateCodeGenerator();
   }
 
   @override
   void dispose() {
+    encryptionTypeListenable.removeListener(_updateCodeGenerator);
     _wordController.dispose();
     _keyController.dispose();
     _loginController.dispose();
@@ -177,13 +178,14 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   @override
   Future<void> onPasswordTap() async {
     await _setPasswordToClipboard();
-    AppNotification.showSnackBar(
-      // ignore: use_build_context_synchronously
-      context: context,
-      message: 'Пароль успешно скопирован!',
-      isSuccsess: _password.value.value != null,
-      unsuccessMessage: 'Пароль еще не создан',
-    );
+    if (context.mounted) {
+      AppNotification.showSnackBar(
+        context: context,
+        message: 'Пароль успешно скопирован!',
+        isSuccsess: _password.value.value != null,
+        unsuccessMessage: 'Пароль еще не создан',
+      );
+    }
   }
 
   Future<void> _setPasswordToClipboard() async {
@@ -267,15 +269,12 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   }
 
   @override
-  Future<void> onSettingsTap() async {
-    await AutoRouter.of(context).push(const SettingsRoute());
-
-    //TODO перенести в listener
-    _codeGenerator = ICodeGenerator(encryptionTypeListenable.value);
-  }
+  Future<void> onSettingsTap() async => await AutoRouter.of(context).push(const SettingsRoute());
 
   @override
   ValueListenable<EncryptionType> get encryptionTypeListenable => model.encryptionTypeListenable;
+
+  void _updateCodeGenerator() => _codeGenerator = ICodeGenerator(encryptionTypeListenable.value);
 
   final _loginFocusNode = FocusNode();
 
