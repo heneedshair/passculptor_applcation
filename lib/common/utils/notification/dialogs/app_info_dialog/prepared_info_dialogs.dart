@@ -6,7 +6,6 @@ class PreparedInfoDialogs {
   static const howItWorks = AppInfoDialog(
     title: 'Как это работает?',
     description: 'PasSculptor создаёт надёжный пароль из введённых данных, но не сохраняет сам пароль в приложении.',
-    icon: Icons.help_outline_rounded,
     closeLabel: 'Понятно',
     childrens: [
       AppInfoSection(

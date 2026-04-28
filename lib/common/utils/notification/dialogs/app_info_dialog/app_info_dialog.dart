@@ -1,5 +1,6 @@
 import 'package:code_generator_app/common/extensions/build_context.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
+import 'package:code_generator_app/ui/widgets/buttons/app_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class AppInfoDialog extends StatelessWidget {
@@ -71,19 +72,14 @@ class AppInfoDialog extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 42,
-                  child: ElevatedButton(
+                  child: AppElevatedButton.primary(
                     onPressed: () => Navigator.of(context).pop(),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      shadowColor: Colors.transparent,
-                      backgroundColor: context.colors.primary,
-                      foregroundColor: context.colors.onPrimary,
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    padding: EdgeInsets.zero,
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
                     ),
-                    child: Text(closeLabel),
+                    label: closeLabel,
                   ),
                 ),
               ],

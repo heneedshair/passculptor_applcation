@@ -56,7 +56,7 @@ class AppInfoSection extends StatelessWidget {
             ],
             const SizedBox(height: 4),
             Padding(
-              padding: const EdgeInsets.only(left: 42),
+              padding: const EdgeInsets.only(left: 42, right: 5),
               child: Text(
                 text,
                 style: TextStyle(
