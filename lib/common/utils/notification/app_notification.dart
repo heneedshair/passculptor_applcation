@@ -39,6 +39,12 @@ abstract class AppNotification {
     );
   }
 
+  static Future<void> showPreparedInfoDialog({
+    required BuildContext context,
+    required AppInfoDialog appInfoDialog,
+  }) async =>
+      await showDialog(context: context, builder: (_) => appInfoDialog);
+
   static void showSnackBar({
     required BuildContext context,
     required String message,
