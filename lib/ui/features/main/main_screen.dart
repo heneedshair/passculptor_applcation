@@ -71,7 +71,6 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                           onFieldSubmitted: wm.onEnterTap,
                           labelText: 'Ключевое слово',
                           prefixIcon: const Icon(Icons.key_rounded),
-                          //TODO Менять действие, если не заполнены поля
                           textInputAction: TextInputAction.done,
                           validator: wm.keywordValidator,
                         ),
