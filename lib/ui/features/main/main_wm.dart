@@ -236,8 +236,6 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
       context: context,
       title: 'Как это работает?',
       description: 'PasSculptor создаёт надёжный пароль из введённых данных, но не сохраняет сам пароль в приложении.',
-      icon: Icons.help_outline_rounded,
-      closeLabel: 'Понятно',
       childrens: const [
         AppInfoSection(
           subtitle: 'Логин',

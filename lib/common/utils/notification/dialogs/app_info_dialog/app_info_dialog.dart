@@ -21,13 +21,13 @@ class AppInfoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 26, vertical: 24),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 24),
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: 460,
-          maxHeight: context.height * 0.8,
+          maxHeight: context.height * 0.83,
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(
