@@ -1,23 +1,12 @@
+import 'package:code_generator_app/common/extensions/build_context.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-
-class AppInfoDialogSection {
-  const AppInfoDialogSection({
-    required this.subtitle,
-    required this.text,
-    this.icon,
-  });
-
-  final String subtitle;
-  final String text;
-  final IconData? icon;
-}
 
 class AppInfoDialog extends StatelessWidget {
   const AppInfoDialog({
     super.key,
     required this.title,
-    required this.sections,
+    required this.childrens,
     this.description,
     this.icon = Icons.info_outline_rounded,
     this.closeLabel = 'Понятно',
@@ -25,9 +14,9 @@ class AppInfoDialog extends StatelessWidget {
 
   final String title;
   final String? description;
-  final List<AppInfoDialogSection> sections;
   final IconData icon;
   final String closeLabel;
+  final List<Widget> childrens;
 
   @override
   Widget build(BuildContext context) {
@@ -38,22 +27,13 @@ class AppInfoDialog extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: 460,
-          maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+          maxHeight: context.height * 0.8,
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: context.colors.primaryContainer,
             borderRadius: BorderRadius.circular(34),
-            border: Border.all(
-              color: context.colors.primaryFixedDim.withAlpha(180),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(80),
-                blurRadius: 28,
-                offset: const Offset(0, 18),
-              ),
-            ],
+            border: Border.all(color: context.colors.primaryFixedDim.withAlpha(180)),
           ),
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -76,17 +56,13 @@ class AppInfoDialog extends StatelessWidget {
                     ),
                   ),
                 ],
-                if (sections.isNotEmpty) ...[
+                if (childrens.isNotEmpty) ...[
                   const SizedBox(height: 16),
                   Flexible(
                     child: SingleChildScrollView(
                       child: Column(
-                        children: [
-                          for (int index = 0; index < sections.length; index++) ...[
-                            _InfoSection(section: sections[index]),
-                            if (index != sections.length - 1) const SizedBox(height: 10),
-                          ],
-                        ],
+                        spacing: 10,
+                        children: [...childrens],
                       ),
                     ),
                   ),
@@ -131,7 +107,6 @@ class _DialogHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           height: 46,
@@ -162,75 +137,6 @@ class _DialogHeader extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _InfoSection extends StatelessWidget {
-  const _InfoSection({
-    required this.section,
-  });
-
-  final AppInfoDialogSection section;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: context.colors.surface.withAlpha(120),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: context.colors.primaryFixedDim.withAlpha(120),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (section.icon != null) ...[
-              Container(
-                height: 34,
-                width: 34,
-                decoration: BoxDecoration(
-                  color: context.colors.primaryFixedDim.withAlpha(120),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  section.icon,
-                  size: 18,
-                  color: context.colors.primary,
-                ),
-              ),
-              const SizedBox(width: 10),
-            ],
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    section.subtitle,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      color: context.colors.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    section.text,
-                    style: TextStyle(
-                      fontSize: 14,
-                      height: 1.4,
-                      color: context.colors.onSurface.withAlpha(210),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

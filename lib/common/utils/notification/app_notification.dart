@@ -1,4 +1,5 @@
 import 'package:code_generator_app/common/utils/notification/dialogs/app_info_dialog/app_info_dialog.dart';
+import 'package:code_generator_app/common/utils/notification/dialogs/app_info_dialog/widgets/info_section.dart';
 import 'package:code_generator_app/common/utils/notification/dialogs/confirm_dialog/confirm_dialog.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ abstract class AppNotification {
   static Future<void> showInfoDialog({
     required BuildContext context,
     required String title,
-    required List<AppInfoDialogSection> sections,
+    required List<AppInfoSection> sections,
     String? description,
     IconData icon = Icons.info_outline_rounded,
     String closeLabel = 'Понятно',
@@ -31,7 +32,7 @@ abstract class AppNotification {
       builder: (_) => AppInfoDialog(
         title: title,
         description: description,
-        sections: sections,
+        childrens: sections,
         icon: icon,
         closeLabel: closeLabel,
       ),

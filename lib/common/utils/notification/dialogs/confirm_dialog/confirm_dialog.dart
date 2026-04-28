@@ -24,6 +24,7 @@ class ConfirmDialog extends StatelessWidget {
         decoration: BoxDecoration(
           color: context.colors.primaryContainer,
           borderRadius: BorderRadius.circular(38),
+          border: Border.all(color: context.colors.primaryFixedDim.withAlpha(180)),
         ),
         child: Padding(
           padding: const EdgeInsets.all(20),
