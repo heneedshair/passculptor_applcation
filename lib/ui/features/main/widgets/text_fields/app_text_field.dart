@@ -49,7 +49,7 @@ class AppTextField extends StatelessWidget {
         FilteringTextInputFormatter.allow(RegExp(r'[a-z]')),
       ],
       validator: (value) => validator(value),
-      //TODO добавить errorText при вводе некорректных символов
+      //TODO добавить errorText при вводе некорректных символов, обработать ввод заглавных букв
     );
   }
 

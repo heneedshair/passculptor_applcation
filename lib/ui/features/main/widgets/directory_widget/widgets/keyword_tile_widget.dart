@@ -47,8 +47,7 @@ class KeywordTileWidget extends StatelessWidget {
         trailing: const Icon(Icons.key_rounded),
         subtitle: const Text('Ключевое слово'),
         children: [
-          // TODO убрать контейнер
-          Container(
+          ColoredBox(
             color: context.colors.surface,
             child: Column(
               children: _generateLogins(context),
