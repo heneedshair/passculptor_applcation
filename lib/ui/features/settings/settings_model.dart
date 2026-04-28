@@ -6,17 +6,11 @@ import 'package:flutter/foundation.dart';
 abstract interface class ISettingsScreenModel extends ElementaryModel {
   Future<void> setEncryptionAlgorithm(String value);
 
-  EncryptionType get encryptionType;
-
   ValueListenable<EncryptionType> get encryptionTypeListenable;
-
-  bool get doCopyPassword;
 
   ValueListenable<bool> get doCopyPasswordListenable;
 
   Future<void> setDoCopyPassword(bool value);
-
-  bool get doSave;
 
   ValueListenable<bool> get doSaveListenable;
 
@@ -32,22 +26,13 @@ class SettingsScreenModel extends ISettingsScreenModel {
   Future<void> setEncryptionAlgorithm(String value) => _repository.setEncryptionAlgorithm(value);
 
   @override
-  EncryptionType get encryptionType => EncryptionType.fromString(_repository.encryptionAlgorithm);
-
-  @override
   ValueListenable<EncryptionType> get encryptionTypeListenable => _repository.encryptionTypeListenable;
-
-  @override
-  bool get doCopyPassword => _repository.doCopyPassword;
 
   @override
   ValueListenable<bool> get doCopyPasswordListenable => _repository.doCopyPasswordListenable;
 
   @override
   Future<void> setDoCopyPassword(bool value) => _repository.setDoCopyPassword(value);
-
-  @override
-  bool get doSave => _repository.doSave;
 
   @override
   ValueListenable<bool> get doSaveListenable => _repository.doSaveListenable;

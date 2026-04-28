@@ -96,7 +96,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
 
   @override
   void initWidgetModel() {
-    _codeGenerator = ICodeGenerator(model.encryptionAlgorithm);
+    _codeGenerator = ICodeGenerator(encryptionTypeListenable.value);
 
     super.initWidgetModel();
   }
@@ -164,13 +164,13 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
       );
     }
 
-    if (model.doCopyPassword) {
+    if (model.doCopyPasswordListenable.value) {
       unawaited(_setPasswordToClipboard());
     }
 
     AppNotification.showSnackBar(
       context: context,
-      message: model.doCopyPassword ? 'Пароль успешно создан и скопирован!' : 'Пароль успешно создан!',
+      message: 'Пароль успешно создан${model.doCopyPasswordListenable.value ? 'и скопирован' : ''}!',
     );
   }
 
@@ -196,17 +196,17 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
 
   @override
   void onObscureLoginTap() {
-    unawaited(model.setLoginObscured(!model.isLoginObscured));
+    unawaited(model.setLoginObscured(!isLoginObscuredListenable.value));
   }
 
   @override
   void onObscureKeywordTap() {
-    unawaited(model.setKeyObscured(!model.isKeyObscured));
+    unawaited(model.setKeyObscured(!isKeywordObscuredListenable.value));
   }
 
   @override
   void onObscurePasswordTap() {
-    unawaited(model.setPasswordObscured(!model.isPasswordObscured));
+    unawaited(model.setPasswordObscured(!isPasswordObscuredListenable.value));
   }
 
   @override
@@ -225,9 +225,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   ValueListenable<bool> get doSaveListenable => model.doSaveListenable;
 
   @override
-  void onSaveCheckTap() {
-    unawaited(model.setDoSave(!model.doSave));
-  }
+  void onSaveCheckTap() => unawaited(model.setDoSave(!doSaveListenable.value));
 
   @override
   void onGuideTap() {
@@ -271,7 +269,9 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   @override
   Future<void> onSettingsTap() async {
     await AutoRouter.of(context).push(const SettingsRoute());
-    _codeGenerator = ICodeGenerator(model.encryptionAlgorithm);
+
+    //TODO перенести в listener
+    _codeGenerator = ICodeGenerator(encryptionTypeListenable.value);
   }
 
   @override

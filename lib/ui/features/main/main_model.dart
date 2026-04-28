@@ -8,35 +8,23 @@ abstract interface class IMainScreenModel extends ElementaryModel {
 
   bool containsSameKeyword(String enteredKeyword);
 
-  bool get isLoginObscured;
-
   ValueListenable<bool> get isLoginObscuredListenable;
 
   Future<void> setLoginObscured(bool value);
-
-  bool get isKeyObscured;
 
   ValueListenable<bool> get isKeyObscuredListenable;
 
   Future<void> setKeyObscured(bool value);
 
-  bool get isPasswordObscured;
-
   ValueListenable<bool> get isPasswordObscuredListenable;
 
   Future<void> setPasswordObscured(bool value);
-
-  bool get doSave;
 
   ValueListenable<bool> get doSaveListenable;
 
   Future<void> setDoSave(bool value);
 
-  bool get doCopyPassword;
-
   ValueListenable<bool> get doCopyPasswordListenable;
-
-  EncryptionType get encryptionAlgorithm;
 
   ValueListenable<EncryptionType> get encryptionTypeListenable;
 }
@@ -62,16 +50,10 @@ class MainScreenModel extends IMainScreenModel {
   bool containsSameKeyword(String enteredKeyword) => _repository.containsSameKeyword(enteredKeyword);
 
   @override
-  bool get isLoginObscured => _repository.isLoginObscured;
-
-  @override
   ValueListenable<bool> get isLoginObscuredListenable => _repository.isLoginObscuredListenable;
 
   @override
   Future<void> setLoginObscured(bool value) => _repository.setLoginObscured(value);
-
-  @override
-  bool get isKeyObscured => _repository.isKeyObscured;
 
   @override
   ValueListenable<bool> get isKeyObscuredListenable => _repository.isKeyObscuredListenable;
@@ -80,16 +62,10 @@ class MainScreenModel extends IMainScreenModel {
   Future<void> setKeyObscured(bool value) => _repository.setKeyObscured(value);
 
   @override
-  bool get isPasswordObscured => _repository.isPasswordObscured;
-
-  @override
   ValueListenable<bool> get isPasswordObscuredListenable => _repository.isPasswordObscuredListenable;
 
   @override
   Future<void> setPasswordObscured(bool value) => _repository.setPasswordObscured(value);
-
-  @override
-  bool get doSave => _repository.doSave;
 
   @override
   ValueListenable<bool> get doSaveListenable => _repository.doSaveListenable;
@@ -98,13 +74,7 @@ class MainScreenModel extends IMainScreenModel {
   Future<void> setDoSave(bool value) => _repository.setDoSave(value);
 
   @override
-  bool get doCopyPassword => _repository.doCopyPassword;
-
-  @override
   ValueListenable<bool> get doCopyPasswordListenable => _repository.doCopyPasswordListenable;
-
-  @override
-  EncryptionType get encryptionAlgorithm => EncryptionType.fromString(_repository.encryptionAlgorithm);
 
   @override
   ValueListenable<EncryptionType> get encryptionTypeListenable => _repository.encryptionTypeListenable;

@@ -116,9 +116,6 @@ class DiskDataRepository implements IDiskDataRepository {
   }
 
   @override
-  bool get isLoginObscured => isLoginObscuredListenable.value;
-
-  @override
   ValueListenable<bool> get isLoginObscuredListenable => _isLoginObscuredNotifier;
 
   @override
@@ -126,9 +123,6 @@ class DiskDataRepository implements IDiskDataRepository {
     await _preferences.setBool(_PrefsKeys.isLoginObscured, value);
     _isLoginObscuredNotifier.value = value;
   }
-
-  @override
-  bool get isKeyObscured => isKeyObscuredListenable.value;
 
   @override
   ValueListenable<bool> get isKeyObscuredListenable => _isKeyObscuredNotifier;
@@ -140,9 +134,6 @@ class DiskDataRepository implements IDiskDataRepository {
   }
 
   @override
-  bool get isPasswordObscured => isPasswordObscuredListenable.value;
-
-  @override
   ValueListenable<bool> get isPasswordObscuredListenable => _isPasswordObscuredNotifier;
 
   @override
@@ -150,9 +141,6 @@ class DiskDataRepository implements IDiskDataRepository {
     await _preferences.setBool(_PrefsKeys.isPasswordObscured, value);
     _isPasswordObscuredNotifier.value = value;
   }
-
-  @override
-  bool get doSave => doSaveListenable.value;
 
   @override
   ValueListenable<bool> get doSaveListenable => _doSaveNotifier;
@@ -164,9 +152,6 @@ class DiskDataRepository implements IDiskDataRepository {
   }
 
   @override
-  bool get doCopyPassword => doCopyPasswordListenable.value;
-
-  @override
   ValueListenable<bool> get doCopyPasswordListenable => _doCopyPasswordNotifier;
 
   @override
@@ -174,9 +159,6 @@ class DiskDataRepository implements IDiskDataRepository {
     await _preferences.setBool(_PrefsKeys.doCopyPassword, value);
     _doCopyPasswordNotifier.value = value;
   }
-
-  @override
-  String? get encryptionAlgorithm => encryptionTypeListenable.value.name;
 
   @override
   ValueListenable<EncryptionType> get encryptionTypeListenable => _encryptionTypeNotifier;

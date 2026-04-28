@@ -61,14 +61,10 @@ class SettingsScreenWidgetModel extends WidgetModel<SettingsScreen, ISettingsScr
   ValueListenable<bool> get doSaveListenable => model.doSaveListenable;
 
   @override
-  void onCopyPasswordCheckTap() {
-    unawaited(model.setDoCopyPassword(!model.doCopyPassword));
-  }
+  void onCopyPasswordCheckTap() => unawaited(model.setDoCopyPassword(!model.doCopyPasswordListenable.value));
 
   @override
-  void onSaveProfileCheckTap() {
-    unawaited(model.setDoSave(!model.doSave));
-  }
+  void onSaveProfileCheckTap() => unawaited(model.setDoSave(!model.doSaveListenable.value));
 
   @override
   void onBackTap() => AutoRouter.of(context).maybePop();

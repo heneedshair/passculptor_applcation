@@ -28,37 +28,25 @@ abstract interface class IDiskDataRepository {
 
   Future<void> deleteKeyword(String keyword);
 
-  bool get isLoginObscured;
-
   ValueListenable<bool> get isLoginObscuredListenable;
 
   Future<void> setLoginObscured(bool value);
-
-  bool get isKeyObscured;
 
   ValueListenable<bool> get isKeyObscuredListenable;
 
   Future<void> setKeyObscured(bool value);
 
-  bool get isPasswordObscured;
-
   ValueListenable<bool> get isPasswordObscuredListenable;
 
   Future<void> setPasswordObscured(bool value);
-
-  bool get doSave;
 
   ValueListenable<bool> get doSaveListenable;
 
   Future<void> setDoSave(bool value);
 
-  bool get doCopyPassword;
-
   ValueListenable<bool> get doCopyPasswordListenable;
 
   Future<void> setDoCopyPassword(bool value);
-
-  String? get encryptionAlgorithm;
 
   ValueListenable<EncryptionType> get encryptionTypeListenable;
 
