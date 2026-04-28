@@ -52,7 +52,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                     visible: !isSearchMode,
                     child: IconButton(
                       icon: const Icon(Icons.info_outline_rounded),
-                      onPressed: () {},
+                      onPressed: wm.onInfoTap,
                     ),
                   ),
                   AnimatedAppBarAction(

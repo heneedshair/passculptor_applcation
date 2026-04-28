@@ -1,4 +1,5 @@
 import 'package:code_generator_app/common/utils/notification/app_notification.dart';
+import 'package:code_generator_app/common/utils/notification/dialogs/app_info_dialog/app_info_dialog.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_widget.dart';
@@ -20,6 +21,8 @@ abstract interface class IDirectoryDrawerWidgetModel implements IWidgetModel {
   void onSearchTap();
 
   void onSearchChanged(String value);
+
+  Future<void> onInfoTap();
 
   Future<void> onClearAllTap();
 
@@ -100,6 +103,33 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
 
   @override
   void onSearchChanged(String value) => _updateKeywords();
+
+  @override
+  Future<void> onInfoTap() async {
+    await AppNotification.showInfoDialog(
+      context: context,
+      title: 'Список сайтов',
+      description: 'Здесь хранятся сохраненные связки ключевых слов, логинов и сайтов для быстрого создания паролей.',
+      sections: const [
+        AppInfoDialogSection(
+          subtitle: 'Ключевые слова',
+          text: 'Каждое ключевое слово объединяет сайты, для которых используется один секретный ключ.',
+          icon: Icons.key_rounded,
+        ),
+        AppInfoDialogSection(
+          subtitle: 'Поиск',
+          text: 'Нажмите на лупу, чтобы быстро найти сайт, логин или ключевое слово в сохраненном списке.',
+          icon: Icons.search_rounded,
+        ),
+        AppInfoDialogSection(
+          subtitle: 'Удаление',
+          text:
+              'Долгое нажатие удаляет ключевое слово или логин, а кнопка корзины очищает весь список после подтверждения.',
+          icon: Icons.delete_outline_rounded,
+        ),
+      ],
+    );
+  }
 
   @override
   Future<void> onClearAllTap() async {

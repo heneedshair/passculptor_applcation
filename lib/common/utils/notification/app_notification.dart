@@ -1,3 +1,4 @@
+import 'package:code_generator_app/common/utils/notification/dialogs/app_info_dialog/app_info_dialog.dart';
 import 'package:code_generator_app/common/utils/notification/dialogs/confirm_dialog/confirm_dialog.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,26 @@ abstract class AppNotification {
       builder: (_) => ConfirmDialog(
         content: content,
         onConfirmTap: () => onConfirmTap(),
+      ),
+    );
+  }
+
+  static Future<void> showInfoDialog({
+    required BuildContext context,
+    required String title,
+    required List<AppInfoDialogSection> sections,
+    String? description,
+    IconData icon = Icons.info_outline_rounded,
+    String closeLabel = 'Понятно',
+  }) async {
+    await showDialog(
+      context: context,
+      builder: (_) => AppInfoDialog(
+        title: title,
+        description: description,
+        sections: sections,
+        icon: icon,
+        closeLabel: closeLabel,
       ),
     );
   }
