@@ -5,6 +5,7 @@ import 'package:code_generator_app/common/utils/notification/app_notification.da
 import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/common/utils/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
+import 'package:code_generator_app/common/utils/notification/dialogs/app_info_dialog/widgets/info_section.dart';
 import 'package:code_generator_app/data/models/password/password.dart';
 import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:code_generator_app/ui/features/main/main_model.dart';
@@ -231,7 +232,45 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
 
   @override
   void onGuideTap() {
-    // TODO: implement onGuideTap
+    AppNotification.showInfoDialog(
+      context: context,
+      title: 'Как это работает?',
+      description: 'PasSculptor создаёт надёжный пароль из введённых данных, но не сохраняет сам пароль в приложении.',
+      icon: Icons.help_outline_rounded,
+      closeLabel: 'Понятно',
+      childrens: const [
+        AppInfoSection(
+          subtitle: 'Логин',
+          icon: Icons.person_rounded,
+          text:
+              'Введите логин от аккаунта, если он есть. Это может быть почта, никнейм или имя пользователя. Поле можно оставить пустым, если на сайте у вас только один аккаунт.',
+        ),
+        AppInfoSection(
+          subtitle: 'Сайт/приложение',
+          icon: Icons.web_asset_rounded,
+          text:
+              'Введите название сайта или приложения, для которого нужен пароль. Например: gmail, vk, steam или gosuslugi. Для каждого сайта будет создаваться свой уникальный пароль.',
+        ),
+        AppInfoSection(
+          subtitle: 'Ключевое слово',
+          icon: Icons.vpn_key_rounded,
+          text:
+              'Введите секретное слово, которое знаете только вы. Оно используется как главный ключ для создания пароля и не хранится в открытом виде.',
+        ),
+        AppInfoSection(
+          subtitle: 'Создание пароля',
+          icon: Icons.lock_rounded,
+          text:
+              'Пароль создаётся из трёх данных: логин, сайт и ключевое слово. Если ввести те же данные снова, приложение создаст тот же самый пароль. Если изменить хотя бы один символ, пароль получится другим.',
+        ),
+        AppInfoSection(
+          subtitle: 'Сохранение',
+          icon: Icons.bookmark_rounded,
+          text:
+              'Если включено сохранение, приложение запомнит сайт и логин. Сам пароль и ключевое слово не сохраняются. В следующий раз можно выбрать сайт из списка и снова создать пароль.',
+        ),
+      ],
+    );
   }
 
   final FocusNode _keywordFocusNode = FocusNode();

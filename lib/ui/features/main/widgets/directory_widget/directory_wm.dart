@@ -110,7 +110,7 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
       context: context,
       title: 'Список сайтов',
       description: 'Здесь хранятся сохраненные связки ключевых слов, логинов и сайтов для быстрого создания паролей.',
-      sections: const [
+      childrens: const [
         AppInfoSection(
           subtitle: 'Ключевые слова',
           text: 'Каждое ключевое слово объединяет сайты, для которых используется один секретный ключ.',

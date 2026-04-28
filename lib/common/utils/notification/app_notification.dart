@@ -22,7 +22,7 @@ abstract class AppNotification {
   static Future<void> showInfoDialog({
     required BuildContext context,
     required String title,
-    required List<AppInfoSection> sections,
+    required List<AppInfoSection> childrens,
     String? description,
     IconData icon = Icons.info_outline_rounded,
     String closeLabel = 'Понятно',
@@ -32,7 +32,7 @@ abstract class AppNotification {
       builder: (_) => AppInfoDialog(
         title: title,
         description: description,
-        childrens: sections,
+        childrens: childrens,
         icon: icon,
         closeLabel: closeLabel,
       ),
