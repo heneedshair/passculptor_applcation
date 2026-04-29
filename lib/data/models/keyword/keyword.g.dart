@@ -37,8 +37,5 @@ class KeywordAdapter extends TypeAdapter<Keyword> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is KeywordAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      identical(this, other) || other is KeywordAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

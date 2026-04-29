@@ -6,7 +6,6 @@ import 'package:code_generator_app/ui/features/main/widgets/directory_widget/wid
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/widgets/keyword_tile_widget.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
 class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel> {
@@ -53,7 +52,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                     visible: !isSearchMode,
                     child: IconButton(
                       icon: const Icon(Icons.info_outline_rounded),
-                      onPressed: () {},
+                      onPressed: wm.onInfoTap,
                     ),
                   ),
                   AnimatedAppBarAction(
@@ -84,13 +83,9 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
               );
             },
           ),
-          EntityStateNotifierBuilder(
-            listenableEntityState: wm.keywordsListenable,
-            loadingBuilder: (_, __) => const SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-            builder: (_, keywords) => keywords == null || keywords.isEmpty
+          ValueListenableBuilder(
+            valueListenable: wm.keywordsListenable,
+            builder: (_, keywords, __) => keywords.isEmpty
                 ? const SliverFillRemaining(
                     hasScrollBody: false,
                     child: Center(
@@ -101,7 +96,7 @@ class DirectoryDrawerWidget extends ElementaryWidget<IDirectoryDrawerWidgetModel
                     ),
                   )
                 : SliverPadding(
-                    padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     sliver: SliverList.separated(
                       itemCount: keywords.length,
                       separatorBuilder: (context, index) => const SizedBox(height: 15),

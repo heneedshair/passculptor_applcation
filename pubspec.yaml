@@ -43,6 +43,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   crypto: ^3.0.6
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_test:
@@ -59,14 +60,15 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
 
-flutter_icons:
+flutter_launcher_icons:
   android: true
   ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon.png"
   windows:
     generate: true
-  linux: true
-  macos: true
-  image_path: "assets/icon.png"
+    image_path: "assets/icon.png"
+    icon_size: 256
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

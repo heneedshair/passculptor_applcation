@@ -26,6 +26,7 @@ class WebsiteTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomDismissibleWidget(
+      key: valueKey,
       onDismissed: (_) => _onDeleteWebsite(),
       child: Material(
         color: context.colors.surface,
@@ -46,6 +47,8 @@ class WebsiteTileWidget extends StatelessWidget {
       ),
     );
   }
+
+  ValueKey<String> get valueKey => ValueKey('${parentKeyword.name}:${parentLogin.username}:$website');
 
   void _onDeleteWebsite() => onDeleteWebsite(
         enteredWebsite: website,

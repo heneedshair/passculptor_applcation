@@ -1,5 +1,5 @@
 import 'package:code_generator_app/ui/features/main/widgets/check_position_wirdget.dart';
-import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MiddleBarWidget extends StatelessWidget {
@@ -10,7 +10,7 @@ class MiddleBarWidget extends StatelessWidget {
     required this.doSaveListenable,
   });
 
-  final EntityValueListenable<bool> doSaveListenable;
+  final ValueListenable<bool> doSaveListenable;
   final VoidCallback onSaveCheckTap;
   final VoidCallback onGuideTap;
 
@@ -21,19 +21,16 @@ class MiddleBarWidget extends StatelessWidget {
       children: [
         Tooltip(
           preferBelow: false,
-          message:
-              'Включает/выключает сохранение вводимых данных после нажатия "Создать пароль" в боковой список',
+          message: 'Включает/выключает сохранение вводимых данных после нажатия "Создать пароль" в боковой список',
           child: TextButton(
             onPressed: () => onSaveCheckTap(),
-            child: EntityStateNotifierBuilder(
-              listenableEntityState: doSaveListenable,
-              builder: (_, doSave) => doSave == null
-                  ? const SizedBox.shrink()
-                  : CheckPositionWirdget(
-                      label: 'Сохранять',
-                      onSaveCheckTap: onSaveCheckTap,
-                      doSave: doSave,
-                    ),
+            child: ValueListenableBuilder(
+              valueListenable: doSaveListenable,
+              builder: (_, doSave, __) => CheckPositionWirdget(
+                label: 'Сохранять',
+                onSaveCheckTap: onSaveCheckTap,
+                doSave: doSave,
+              ),
             ),
           ),
         ),

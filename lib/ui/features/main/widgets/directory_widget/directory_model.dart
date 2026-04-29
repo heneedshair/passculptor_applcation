@@ -1,10 +1,11 @@
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
+import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:elementary/elementary.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter/foundation.dart';
 
 abstract interface class IDirectoryDrawerModel extends ElementaryModel {
-  Future<List<Keyword>> get keywordsList;
+  ValueListenable<List<Keyword>> get keywordsListenable;
 
   List<Keyword> filterKeywords({
     required List<Keyword> source,
@@ -28,11 +29,12 @@ abstract interface class IDirectoryDrawerModel extends ElementaryModel {
 }
 
 class DirectoryDrawerModel extends IDirectoryDrawerModel {
+  DirectoryDrawerModel(this._repository);
+
+  final IDiskDataRepository _repository;
+
   @override
-  Future<List<Keyword>> get keywordsList async {
-    final websites = await Hive.openBox<Keyword>('websites');
-    return websites.values.toList();
-  }
+  ValueListenable<List<Keyword>> get keywordsListenable => _repository.keywordsListenable;
 
   @override
   List<Keyword> filterKeywords({
@@ -74,80 +76,30 @@ class DirectoryDrawerModel extends IDirectoryDrawerModel {
   }
 
   @override
-  Future<void> clearAll() async {
-    final websites = Hive.box<Keyword>('websites');
-    await websites.clear();
-  }
+  Future<void> clearAll() => _repository.clearKeywords();
 
   @override
   Future<void> deleteWebsite({
     required String enteredWebsite,
     required String enteredLogin,
     required String enteredKeyword,
-  }) async {
-    final websites = Hive.box<Keyword>('websites');
-    final keywords = websites.values.toList();
-    final keyword = _getKeyword(keywords, enteredKeyword);
-    final login = keyword.getLogin(enteredLogin)..deleteWebsite(enteredWebsite);
-
-    if (login.websites.isEmpty) {
-      await deleteLogin(
-        enteredLogin: enteredLogin,
-        enteredKeyword: enteredKeyword,
+  }) =>
+      _repository.deleteWebsite(
+        website: enteredWebsite,
+        login: enteredLogin,
+        keyword: enteredKeyword,
       );
-      return;
-    }
-
-    await _updateBox(websites, keywords, keyword);
-  }
 
   @override
   Future<void> deleteLogin({
     required String enteredLogin,
     required String enteredKeyword,
-  }) async {
-    final websites = Hive.box<Keyword>('websites');
-    final keywords = websites.values.toList();
-    final keyword = _getKeyword(keywords, enteredKeyword)..deleteLogin(enteredLogin);
-
-    if (keyword.logins.isEmpty) {
-      await deleteKeyword(enteredKeyword);
-      return;
-    }
-
-    await _updateBox(websites, keywords, keyword);
-  }
+  }) =>
+      _repository.deleteLogin(
+        login: enteredLogin,
+        keyword: enteredKeyword,
+      );
 
   @override
-  Future<void> deleteKeyword(String enteredKeyword) async {
-    final websites = Hive.box<Keyword>('websites');
-    final keywords = websites.values.toList();
-    final keywordIndex = keywords.indexWhere((keyword) => keyword.name == enteredKeyword);
-
-    if (keywordIndex != -1) {
-      await websites.deleteAt(keywordIndex);
-    }
-  }
-
-  static Keyword _getKeyword(List<Keyword> keywords, String enteredKeyword) {
-    return keywords.firstWhere(
-      (keyword) => keyword.name == enteredKeyword,
-      orElse: () => Keyword(enteredKeyword, []),
-    );
-  }
-
-  static Future<void> _updateBox(
-    Box<Keyword> websites,
-    List<Keyword> keywords,
-    Keyword keyword,
-  ) async {
-    final keywordIndex = keywords.indexWhere((item) => item.name == keyword.name);
-
-    if (keywordIndex == -1) {
-      await websites.add(keyword);
-      return;
-    }
-
-    await websites.putAt(keywordIndex, keyword);
-  }
+  Future<void> deleteKeyword(String enteredKeyword) => _repository.deleteKeyword(enteredKeyword);
 }

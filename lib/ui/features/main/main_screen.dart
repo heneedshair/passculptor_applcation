@@ -38,7 +38,7 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const SizedBox(height: 25),
-                        const Logo(),
+                        Logo(animationTrigger: wm.passwordGenerationSuccessListenable),
                         const TextLargeTitleWidget(),
                         SizedBox(
                           height: MediaQuery.of(wm.context).size.height / 10,
@@ -71,7 +71,6 @@ class MainScreen extends ElementaryWidget<IMainScreenWidgetModel> {
                           onFieldSubmitted: wm.onEnterTap,
                           labelText: 'Ключевое слово',
                           prefixIcon: const Icon(Icons.key_rounded),
-                          // Менять действие, если не заполнены поля
                           textInputAction: TextInputAction.done,
                           validator: wm.keywordValidator,
                         ),

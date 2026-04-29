@@ -1,18 +1,26 @@
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/models/login/login.dart';
+import 'package:code_generator_app/data/repositories/disk_data_repository.dart';
+import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
-  // HIVE
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
   Hive.registerAdapter(KeywordAdapter());
   Hive.registerAdapter(LoginAdapter());
-  await Hive.openBox<Keyword>('websites');
 
-  runApp(MyApp());
+  runApp(
+    Provider<IDiskDataRepository>.value(
+      value: await DiskDataRepository.create(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

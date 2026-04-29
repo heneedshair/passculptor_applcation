@@ -8,7 +8,9 @@ enum EncryptionType {
 
   const EncryptionType(this.name);
 
-  factory EncryptionType.create(String name) {
+  factory EncryptionType.fromString(String? name) {
+    if (name == null) return EncryptionType.hashMethod;
+
     for (final value in EncryptionType.values) {
       if (value.name == name) return value;
     }

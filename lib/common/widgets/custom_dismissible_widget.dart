@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomDismissibleWidget extends StatelessWidget {
   const CustomDismissibleWidget({
-    super.key,
+    required super.key,
     required this.child,
     this.onDismissed,
   });
@@ -22,8 +22,7 @@ class CustomDismissibleWidget extends StatelessWidget {
         padding: const EdgeInsets.only(right: 24),
         child: const Icon(Icons.delete_rounded),
       ),
-      //TODO мб надо поменять на другой ключ
-      key: UniqueKey(),
+      key: key!,
       direction: DismissDirection.endToStart,
       onDismissed: onDismissed,
       child: child,

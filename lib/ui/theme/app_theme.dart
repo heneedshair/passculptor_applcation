@@ -70,7 +70,6 @@ class AppThemeData {
         /// ELEVATED BUTTON
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            //TODO Изменить цвет нажатия
             padding: const WidgetStatePropertyAll(
               EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             ),

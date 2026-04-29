@@ -1,6 +1,6 @@
 import 'package:code_generator_app/ui/features/main/widgets/text_fields/app_text_field.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
-import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ObscurableTextField extends StatelessWidget {
@@ -18,7 +18,7 @@ class ObscurableTextField extends StatelessWidget {
     this.onChanged,
   });
 
-  final EntityValueListenable<bool> listenableEntityState;
+  final ValueListenable<bool> listenableEntityState;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final VoidCallback onObscureTap;
@@ -31,31 +31,28 @@ class ObscurableTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EntityStateNotifierBuilder(
-      listenableEntityState: listenableEntityState,
-      builder: (_, isObscured) => isObscured == null
-          ? const SizedBox.shrink()
-          : AppTextField(
-              labelText: labelText,
-              prefixIcon: prefixIcon,
-              suffixIcon: IconButton(
-                icon: Icon(
-                  Icons.remove_red_eye_rounded,
-                  color: isObscured ? null : context.colors.secondary,
-                ),
-
-                // TODO поменять на логтап, добавить уведомление для пользователя, почему так надо.
-                // TODO Сделать пункт в настройках + перенаправление к этому пункту из уведомления.
-                onPressed: onObscureTap,
-              ),
-              controller: controller,
-              focusNode: focusNode,
-              textInputAction: textInputAction,
-              onFieldSubmitted: onFieldSubmitted,
-              onChanged: onChanged,
-              isObscured: isObscured,
-              validator: validator,
-            ),
+    return ValueListenableBuilder(
+      valueListenable: listenableEntityState,
+      builder: (_, isObscured, __) => AppTextField(
+        labelText: labelText,
+        prefixIcon: prefixIcon,
+        suffixIcon: IconButton(
+          icon: Icon(
+            Icons.remove_red_eye_rounded,
+            color: isObscured ? null : context.colors.secondary,
+          ),
+          // TODO поменять на логтап, добавить уведомление для пользователя, почему так надо.
+          // TODO Сделать пункт в настройках + перенаправление к этому пункту из уведомления.
+          onPressed: onObscureTap,
+        ),
+        controller: controller,
+        focusNode: focusNode,
+        textInputAction: textInputAction,
+        onFieldSubmitted: onFieldSubmitted,
+        onChanged: onChanged,
+        isObscured: isObscured,
+        validator: validator,
+      ),
     );
   }
 }

@@ -9,7 +9,7 @@ extension ElementaryExtensions on WidgetModel {
   double get height => context.height;
 
   double get width => context.width;
-  
+
   ThemeData get gradients => context.theme;
 
   ColorScheme get colors => context.colors;

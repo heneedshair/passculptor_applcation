@@ -49,15 +49,15 @@ class AppTextField extends StatelessWidget {
         FilteringTextInputFormatter.allow(RegExp(r'[a-z]')),
       ],
       validator: (value) => validator(value),
-      //TODO добавить errorText при вводе некорректных символов
+      //TODO добавить errorText при вводе некорректных символов, обработать ввод заглавных букв
     );
   }
 
   void _onTapOutside(BuildContext context) => FocusManager.instance.primaryFocus?.unfocus();
-  
+
   void _onChanged(BuildContext context, {required String value}) {
     FieldsFuncs.read(context)?.onAnyTexFieldChanged();
-    
+
     onChanged?.call(value);
   }
 }

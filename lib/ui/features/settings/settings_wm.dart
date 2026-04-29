@@ -1,19 +1,30 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
+import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:code_generator_app/ui/features/settings/settings_model.dart';
 import 'package:code_generator_app/ui/features/settings/settings_screen.dart';
 import 'package:code_generator_app/ui/theme/app_theme.dart';
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 abstract interface class ISettingsScreenWidgetModel implements IWidgetModel {
   List<String> get encryptionAlgorithmList;
 
   void onEncryptionAlgorithmChanged(String? selectedValue);
 
-  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable;
+  ValueListenable<EncryptionType> get encryptionTypeListenable;
+
+  ValueListenable<bool> get doCopyPasswordListenable;
+
+  ValueListenable<bool> get doSaveListenable;
+
+  void onCopyPasswordCheckTap();
+
+  void onSaveProfileCheckTap();
 
   void onBackTap();
 
@@ -22,7 +33,7 @@ abstract interface class ISettingsScreenWidgetModel implements IWidgetModel {
 
 SettingsScreenWidgetModel defaultSettingsScreenWidgetModelFactory(BuildContext context) {
   return SettingsScreenWidgetModel(
-    SettingsScreenModel(),
+    SettingsScreenModel(context.read<IDiskDataRepository>()),
   );
 }
 
@@ -30,34 +41,30 @@ class SettingsScreenWidgetModel extends WidgetModel<SettingsScreen, ISettingsScr
     implements ISettingsScreenWidgetModel {
   SettingsScreenWidgetModel(super.model);
 
-  late final SharedPreferences _prefs;
-
-  @override
-  Future<void> initWidgetModel() async {
-    _prefs = await SharedPreferences.getInstance();
-
-    _encryptionTypeEntity.content(widget.initialEncryptionType);
-
-    super.initWidgetModel();
-  }
-
   @override
   List<String> get encryptionAlgorithmList => EncryptionType.values.map((value) => value.name).toList();
 
   @override
-  void onEncryptionAlgorithmChanged(String? selectedValue) {
-    _prefs.setString(
-      'encryptionAlgorithm',
-      selectedValue!,
-    );
+  Future<void> onEncryptionAlgorithmChanged(String? selectedValue) async {
+    if (selectedValue == null) return;
 
-    _encryptionTypeEntity.content(EncryptionType.create(selectedValue));
+    await model.setEncryptionAlgorithm(selectedValue);
   }
 
-  final _encryptionTypeEntity = EntityStateNotifier<EncryptionType>();
+  @override
+  ValueListenable<EncryptionType> get encryptionTypeListenable => model.encryptionTypeListenable;
 
   @override
-  ValueNotifier<EntityState<EncryptionType>> get encryptionTypeListenable => _encryptionTypeEntity;
+  ValueListenable<bool> get doCopyPasswordListenable => model.doCopyPasswordListenable;
+
+  @override
+  ValueListenable<bool> get doSaveListenable => model.doSaveListenable;
+
+  @override
+  void onCopyPasswordCheckTap() => unawaited(model.setDoCopyPassword(!model.doCopyPasswordListenable.value));
+
+  @override
+  void onSaveProfileCheckTap() => unawaited(model.setDoSave(!model.doSaveListenable.value));
 
   @override
   void onBackTap() => AutoRouter.of(context).maybePop();
