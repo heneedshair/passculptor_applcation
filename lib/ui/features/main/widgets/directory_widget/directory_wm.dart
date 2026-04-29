@@ -1,4 +1,5 @@
 import 'package:code_generator_app/common/utils/notification/app_notification.dart';
+import 'package:code_generator_app/common/utils/notification/dialogs/app_info_dialog/prepared_info_dialogs.dart';
 import 'package:code_generator_app/data/models/keyword/keyword.dart';
 import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:code_generator_app/ui/features/main/widgets/directory_widget/directory_widget.dart';
@@ -20,6 +21,8 @@ abstract interface class IDirectoryDrawerWidgetModel implements IWidgetModel {
   void onSearchTap();
 
   void onSearchChanged(String value);
+
+  Future<void> onInfoTap();
 
   Future<void> onClearAllTap();
 
@@ -100,6 +103,10 @@ class DirectoryDrawerWidgetModel extends WidgetModel<DirectoryDrawerWidget, IDir
 
   @override
   void onSearchChanged(String value) => _updateKeywords();
+
+  @override
+  Future<void> onInfoTap() async =>
+      await AppNotification.showPreparedInfoDialog(context: context, appInfoDialog: PreparedInfoDialogs.aboutDirectory);
 
   @override
   Future<void> onClearAllTap() async {

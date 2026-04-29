@@ -5,6 +5,7 @@ import 'package:code_generator_app/common/utils/notification/app_notification.da
 import 'package:code_generator_app/common/utils/code_generator/code_generator_types.dart';
 import 'package:code_generator_app/common/utils/code_generator/i_code_generator.dart';
 import 'package:code_generator_app/common/utils/navigation/app_router.dart';
+import 'package:code_generator_app/common/utils/notification/dialogs/app_info_dialog/prepared_info_dialogs.dart';
 import 'package:code_generator_app/data/models/password/password.dart';
 import 'package:code_generator_app/data/repositories/i_disk_data_repository.dart';
 import 'package:code_generator_app/ui/features/main/main_model.dart';
@@ -230,9 +231,8 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, IMainScreenModel> im
   void onSaveCheckTap() => unawaited(model.setDoSave(!doSaveListenable.value));
 
   @override
-  void onGuideTap() {
-    // TODO: implement onGuideTap
-  }
+  Future<void> onGuideTap() async =>
+      await AppNotification.showPreparedInfoDialog(context: context, appInfoDialog: PreparedInfoDialogs.howItWorks);
 
   final FocusNode _keywordFocusNode = FocusNode();
 
